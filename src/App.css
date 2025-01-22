@@ -1,0 +1,1434 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+  --color-background: #211f27;
+  --color-white: #202528;
+  --color-dark: #edeffd;
+
+  --color-success: hsl(120, 95%, 65%);
+  --color-danger: hsl(0, 97%, 55%);
+  --color-gray: hsl(252, 15%, 68%);
+  --color-primary: hsl(252, 67%, 51%);
+  --color-light: rgba(27, 24, 24, 0.4);
+  --box-shadow: 0 4rem 4rem var(--color-primary-variant);
+  --color-primary-variant: #1d1d1d;
+  --color-btn-edit: #999999;
+
+  --border-radius: 2rem;
+  --card-border-radius: 1rem;
+  --btn-padding: 0.65rem 1.7rem;
+  --search-padding: 0.6rem 1rem;
+  --card-padding: 0.9rem;
+
+  --sticky-top-left: 5.3rem;
+  --sticky-top-right: 5.3rem;
+}
+
+.light-theme-variables {
+  --color-background: #f0eded;
+
+  --color-white: rgb(247, 247, 247);
+  --color-light: hsl(0, 0%, 93%);
+  --color-secondary: hsl(252, 100%, 90%);
+  --color-dark: hsl(252, 38%, 21%);
+  --color-btn-edit: #28233d;
+
+  --color-black: hsl(252, 30%, 10%);
+  --color-primary-variant: #bebebef3;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  border: none;
+}
+
+body {
+  font-family: poppins;
+  color: var(--color-dark);
+  background: var(--color-background);
+  overflow-x: hidden;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.center-container img {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.container {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.logo h2 {
+  font-size: 1.3rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  width: 2rem;
+  height: auto;
+  gap: 0.5rem;
+  margin-right: 1rem;
+}
+
+.profile-photo {
+  width: 2.7rem;
+  height: 2.7rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+.messenger-img img {
+  color: white;
+  width: 2.1rem;
+  height: auto;
+  cursor: pointer;
+}
+
+.btn {
+  display: inline-block;
+  padding: var(--btn-padding);
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  font-size: 0.8rem;
+  margin-right: 0.7rem;
+}
+
+.btn:hover {
+  opacity: 0.6;
+  cursor: pointer;
+  transition: all 500ms ease;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+  width: 2rem;
+  height: auto;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--color-primary-variant);
+  color: white;
+}
+
+.btn-white {
+  background-color: var(--color-btn-edit);
+  color: var(--color-background);
+}
+.text-bold {
+  font-weight: 500;
+}
+
+.text-muted {
+  color: var(--color-gray);
+}
+
+/* ============NAVBAR============== */
+nav {
+  width: 100%;
+  background: var(--color-white);
+  padding: 0.5rem 0;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 0 1rem var(--color-primary-variant);
+}
+
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-bar {
+  background: var(--color-light);
+  border-radius: var(--border-radius);
+  padding: var(--search-padding);
+}
+
+.search-bar input[type="search"] {
+  background: transparent;
+  width: 40vw;
+  margin-left: 1rem;
+  font-size: 0.8rem;
+  color: var(--color-dark);
+}
+
+.search-bar input[type="search"]::placeholder {
+  color: var(--color-gray);
+}
+
+.theme-toggler {
+  background: var(--color-background);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1.5rem;
+  width: 3.5rem;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 1rem var(--color-primary-variant);
+  position: absolute;
+  right: 1rem;
+}
+
+.theme-toggler span {
+  font-size: 1rem;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggler span.active {
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--border-radius);
+}
+
+/* ============Profile================ */
+.profile-container {
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--card-padding);
+  /* background-color: var(--color-light);
+  border-radius: var(--border-radius); */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+
+.profile-picture img {
+  width: 8.5rem;
+  height: 8.5rem;
+  align-self: start;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--color-primary);
+}
+
+.profile-description.small {
+  display: none;
+}
+
+.profile-description {
+  margin: 1rem;
+}
+
+.edit-profile {
+  display: flex;
+  justify-content: space-around;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.profile-info h4 {
+  margin: 5px 0;
+  color: var(--color-gray);
+}
+
+.profile-info p {
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+.follower-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.follower-info span {
+  margin: 1rem;
+}
+
+.profile-posts {
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* ==========================POSTS CSS============================== */
+.post-title {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin: 0.7rem auto;
+}
+
+.post-title a {
+  color: var(--color-black);
+}
+
+.divider {
+  height: 0.5px;
+  background-color: var(--color-dark);
+  margin: 16px 0;
+  width: 100%;
+}
+
+.post-card {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-white);
+  font-size: 0.85rem;
+  line-height: 1.5rem;
+  box-shadow: 0 0 1rem var(--color-primary-variant);
+}
+
+.post-card .head {
+  display: none;
+}
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+.post-details {
+  display: none;
+  width: 50%;
+  background-color: var(--color-white);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.post-details p,
+.post-details ul {
+  margin: 8px 0;
+}
+
+.post-details ul {
+  padding-left: 16px;
+}
+
+.post-details li {
+  margin-bottom: 4px;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.post-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #202528;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.post-card:hover .post-overlay {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.post-likes {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bolder;
+}
+
+/* ============================PostModal CSS===================================== */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  display: flex;
+  align-items: center;
+  background: var(--color-white);
+  width: 80%;
+  height: 90%;
+  max-width: 1600px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal-image {
+  width: 50%;
+  height: auto;
+  display: block;
+  margin-right: 1rem;
+}
+
+.modal-details {
+  padding: 0 var(--card-padding);
+  padding: 0.3rem;
+  /* width: 50%; */
+  height: 90%;
+  background-color: var(--color-white);
+}
+
+.modal-details .caption {
+  position: absolute;
+  top: 5rem;
+  margin: 0 10px;
+}
+
+.modal-details .user {
+  position: absolute;
+  top: 1.5rem;
+}
+
+.modal-details .head .edit {
+  position: absolute;
+  top: 1.5rem;
+  right: 1rem;
+}
+
+.close-button {
+  background: transparent;
+  color: var(--color-dark);
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 2px;
+  z-index: 2000;
+}
+
+/* ====================COMMENT BOX CSS========================= */
+.comment-box {
+  width: 100%;
+  height: 80%;
+  max-width: 100%;
+  background: var(--color-white);
+  padding: 10px;
+}
+
+.comments-section {
+  overflow: auto;
+  width: 36vw;
+  max-height: 35vh;
+  margin: 1.2rem 0;
+}
+
+.user-comment {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 1250px) {
+  .comments-section {
+    width: 35vw;
+    max-height: 20vh;
+  }
+}
+
+@media (max-width: 1050px) {
+  .comments-section {
+    width: 35vw;
+    max-height: 5vh;
+  }
+}
+
+.comment {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.no-comments {
+  color: var(--color-dark);
+  font-size: 0.85rem;
+}
+
+.add-comment-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.add-comment-section input {
+  width: 100%;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--color-primary-variant);
+  font-size: 0.9rem;
+  background-color: var(--color-white);
+  color: var(--color-dark);
+  border-radius: 20px;
+}
+
+.add-comment-section input:focus {
+  outline: none;
+  border: 1px solid var(--color-gray);
+}
+
+.add-comment-section button {
+  background: transparent;
+  color: var(--color-gray);
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.add-comment-section button:disabled {
+  color: #b2dffc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 800px) {
+  .modal-backdrop {
+    display: none;
+  }
+}
+
+@media (max-width: 1250px) {
+  .modal-content {
+    height: auto;
+  }
+}
+
+/* Media query for tablets (768px and below) */
+@media (max-width: 768px) {
+  .post-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .post-card {
+    flex-direction: column;
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+  }
+
+  .post-image,
+  .post-details {
+    display: block;
+    width: 100%;
+  }
+}
+
+/* ----------------------MAIN---------------------------------- */
+main {
+  position: relative;
+  top: 5.4rem;
+}
+
+main .container {
+  display: grid;
+  grid-template-columns: 16vw auto 26vw;
+  column-gap: 2rem;
+  position: relative;
+}
+
+.center {
+  width: 70vw;
+}
+
+.left .profile .handle {
+  font-size: 0.9rem;
+  height: 2rem;
+}
+
+/* ------------------LEFT--------------------- */
+main .container .left {
+  height: max-content;
+  position: sticky;
+  top: var(--sticky-top-left);
+}
+
+main .container .left .profile {
+  padding: var(--card-padding);
+  background: var(--color-white);
+  border-radius: var(--card-border-radius);
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+  width: 100%;
+  box-shadow: 0 0 0.7rem var(--color-primary-variant);
+}
+
+/* -----------------SIDEBAR--------------------------- */
+.left .sidebar {
+  margin-top: 1rem;
+  background: var(--color-white);
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 0 0.7rem var(--color-primary-variant);
+}
+
+.left .sidebar .menu-item {
+  display: flex;
+  align-items: center;
+  height: auto;
+  color: var(--color-gray);
+  cursor: pointer;
+  position: relative;
+  padding: 0.6rem 0;
+}
+
+.left .sidebar .menu-item:hover {
+  background: var(--color-light);
+}
+
+.left .sidebar i {
+  font-size: 1.4rem;
+  color: var(--color-dark);
+  margin-left: 1.5rem;
+  position: relative;
+}
+
+.left .sidebar h3 {
+  color: var(--color-dark);
+  margin-left: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.left .sidebar .active {
+  background: var(--color-white);
+}
+
+.left .sidebar .active i,
+.left .sidebar .active h3 {
+  color: var(--color-dark);
+}
+
+.left .sidebar .active::before {
+  content: "";
+  display: block;
+  width: 0.5rem;
+  height: 100%;
+  position: absolute;
+  background: var(--color-primary);
+}
+
+.left .sidebar .menu-item:first-child.active {
+  border-top-left-radius: var(--card-border-radius);
+  overflow: hidden;
+}
+
+.left .sidebar .menu-item:last-child.active {
+  border-bottom-left-radius: var(--card-border-radius);
+  overflow: hidden;
+}
+
+.left .btn {
+  margin-top: 1rem;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* ----------------Middle------------------------- */
+.middle .notification-container {
+  width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+  background-color: var(--color-white);
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+}
+
+.middle .notification-container .request {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.middle .notification-container .profile-photo {
+  margin-right: 1rem;
+}
+
+.middle small {
+  display: block;
+  font-size: 0.75rem;
+}
+
+.middle .notification-body {
+  margin-right: 6rem;
+}
+
+.middle .notification-body p {
+  font-size: 0.85rem;
+}
+
+.middle .stories {
+  display: flex;
+  justify-content: space-evenly;
+  height: 6rem;
+  width: 34rem;
+  gap: 1rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.middle .stories::-webkit-scrollbar {
+  display: none;
+}
+
+.middle .stories .story {
+  display: inline-block;
+  position: relative;
+  height: 4rem;
+  width: auto;
+  cursor: pointer;
+}
+
+.middle .stories .story::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 5rem;
+  position: absolute;
+  bottom: 0;
+}
+
+.middle .stories .story .name {
+  width: 2rem;
+  font-size: 0.6rem;
+  margin: 3px 7px;
+  text-align: center;
+}
+
+.middle .story .profile-photo {
+  width: 4.7rem;
+  height: 4.7rem;
+  align-self: start;
+  object-fit: cover;
+  border: 3.5px solid var(--color-primary);
+}
+
+/* ------------------Create post-------------------- */
+.middle .create-post {
+  width: 100%;
+  display: flex;
+  /* display: none; */
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  background: var(--color-white);
+  padding: 0.2rem var(--card-padding);
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 0.2rem var(--color-primary-variant);
+}
+
+.middle .create-post .profile-photo {
+  width: 3.2rem;
+  height: auto;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.middle .create-post input[type="text"] {
+  justify-self: start;
+  width: 100%;
+  padding: 0.8rem;
+  background: transparent;
+  color: var(--color-dark);
+  margin-right: 1rem;
+  font-size: 0.8rem;
+}
+
+/* Scrollers */
+.middle .stories button span {
+  font-size: 0.7rem;
+}
+
+.scroll-button {
+  background-color: #000023;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  position: absolute;
+  display: block;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.scroll-button:hover {
+  background-color: #282531;
+}
+
+.scroll-button.left {
+  left: 0;
+}
+
+.scroll-button.right {
+  right: 0;
+}
+
+/* -------------Feeds------------------------- */
+.feed {
+  background: var(--color-white);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  margin: 1rem 0;
+  margin-right: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.5rem;
+  box-shadow: 0 0 1rem var(--color-primary-variant);
+  width: 90%;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.user {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.head .ingo h3 {
+  font-size: 0.9rem;
+  line-height: 1rem;
+}
+
+.head .ingo small {
+  font-size: 0.7rem;
+  color: var(--color-gray);
+}
+
+.middle .feed .photo {
+  border-radius: var(--card-border-radius);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.action-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  margin: 0.6rem;
+}
+
+.liked {
+  fill: red;
+  stroke: red;
+}
+
+.bookmarked {
+  fill: white;
+  stroke: white;
+}
+
+.interaction-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.interaction-buttons span {
+  margin-right: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.interaction-buttons svg {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.bookmark {
+  display: flex;
+  align-items: center;
+}
+
+.bookmark span {
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.liked-by {
+  display: flex;
+}
+
+.liked-by span {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--color-white);
+  margin-left: -0.6rem;
+}
+
+.liked-by span:first-child {
+  margin: 0;
+}
+
+.liked-by p {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.caption p {
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+}
+
+.caption b {
+  font-size: 0.9rem;
+}
+
+.caption b:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.comments a {
+  color: var(--color-gray);
+  font-size: 0.9rem;
+}
+
+.comments a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------RIGHT----------------------- */
+main .container .right {
+  height: max-content;
+  position: sticky;
+  top: var(--sticky-top-right);
+  bottom: 0;
+  border-radius: var(--card-border-radius);
+}
+
+.suggestions-container {
+  height: auto;
+  width: auto;
+  /* background-color: var(--color-white); */
+  color: var(--color-dark);
+  padding: var(--card-padding);
+  border-radius: var(--border-radius);
+}
+
+.suggestions-container .profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  margin-right: 1.2rem;
+}
+
+.suggestion-body {
+  line-height: 1.1rem;
+}
+
+.suggestions-container p {
+  font-size: 0.8rem;
+}
+
+.suggestions-container small {
+  font-size: 0.65rem;
+}
+
+.text-purple {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+}
+
+.suggestions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.3rem 0;
+}
+
+.right .messages .search-bar i {
+  font-size: 1.1rem;
+}
+
+.right .messages {
+  background: var(--color-white);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  box-shadow: 0 0 1rem var(--color-primary-variant);
+  display: none;
+}
+
+.right .messages .heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.right .messages i {
+  font-size: 1.3rem;
+}
+
+.right .messages .search-bar {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.right .messages .search-bar input {
+  font-size: 0.8rem;
+}
+
+.right .messages .category {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.right .messages .category h6 {
+  width: 100%;
+  text-align: center;
+  border-bottom: 4px solid var(--color-light);
+  padding-bottom: 0.5rem;
+}
+
+.right .messages .category .active {
+  border-color: var(--color-dark);
+}
+
+.right .messages .message-requests {
+  color: var(--color-primary);
+}
+
+.right .messages .message {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: start;
+  cursor: pointer;
+}
+
+.right .messages .message h5 {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.right .messages .message p {
+  font-size: 0.7rem;
+  color: var(--color-gray);
+}
+
+.right .message .profile-photo {
+  position: relative;
+  /* overflow: visible; */
+}
+
+.right .profile-photo img {
+  border-radius: 50%;
+}
+
+.right .messages .message:last-child {
+  margin: 0;
+}
+
+.right .messages .message p {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.right .messages .message .profile-photo .active {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  border: 3px solid var(--color-white);
+  background: var(--color-success);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* -------------Friend requests------------------ */
+.right .friend-requests {
+  margin-top: 1rem;
+  display: none;
+}
+
+.right .friend-requests .info h5 {
+  color: var(--color-dark);
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+}
+
+.right .request {
+  background: var(--color-white);
+  padding: 1.5rem;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 0 1rem var(--color-primary-variant);
+  margin-bottom: 1rem;
+}
+
+.right .request .info {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.right .request .action {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* -----------------------Search Influencers------------------------- */
+.main-body {
+  position: fixed;
+  top: 8%;
+  left: 0;
+  justify-content: center;
+  z-index: 100;
+  display: grid;
+}
+
+.main-body.active {
+  backdrop-filter: brightness(0.5);
+  width: 100vw;
+  height: 100vh;
+  transition: all 700ms ease;
+}
+
+.search-influencers {
+  position: absolute;
+  width: 50vw;
+  height: auto;
+  left: 26%;
+  top: 3%;
+  background: var(--color-white);
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  flex-direction: column;
+  gap: 0.5rem;
+  display: none;
+}
+
+.search-influencers p.active {
+  display: none;
+}
+
+.search-influencers .influencer {
+  /* display: flex; */
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  display: none;
+}
+
+.search-influencers .influencer:hover {
+  background: var(--color-light);
+  transition: all 400ms ease;
+}
+
+.search-influencers::before {
+  content: "";
+  width: 1.8rem;
+  height: 1.8rem;
+  display: block;
+  background: var(--color-white);
+  position: absolute;
+  top: -0.7rem;
+  left: 2rem;
+  transform: rotate(45deg);
+}
+
+/* ################################SETTINGS CSS########################################### */
+.settings-box {
+  background-color: var(--color-white);
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  width: 100%;
+  height: auto;
+}
+
+/*############################################ Footer####################################################### */
+footer {
+  background: var(--color-white);
+  padding: 1rem;
+  box-shadow: var(--box-shadow);
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+  display: none;
+}
+
+footer .menu-item a {
+  display: flex;
+}
+
+footer .menu-item span i {
+  align-items: center;
+  justify-content: center;
+  margin: 0 1.2rem;
+}
+
+footer .menu-item h3 {
+  display: none;
+}
+
+@media screen and (max-width: 980px) {
+  .container {
+    width: 96%;
+  }
+
+  .center {
+    width: 80vw;
+  }
+
+  .profile-info {
+    width: 60vw;
+  }
+
+  main .container {
+    grid-template-columns: 5rem auto 0;
+    gap: 1rem;
+  }
+
+  .theme-toggler {
+    height: 2rem;
+    width: 5.1rem;
+  }
+
+  .left {
+    z-index: 5;
+  }
+
+  .left .sidebar .menu-item span i {
+    font-size: 1.3rem;
+  }
+
+  .left .sidebar .menu-item span {
+    font-size: 1.5rem;
+  }
+
+  .middle .stories {
+    height: 7rem;
+    width: 38rem;
+  }
+
+  .left .sidebar h3 {
+    display: none;
+  }
+
+  .left .btn {
+    display: none;
+  }
+
+  .search-influencers {
+    left: 23%;
+  }
+
+  .right {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .btn {
+    padding: 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .center {
+    width: 97vw;
+  }
+
+  nav .search-bar {
+    display: none;
+  }
+
+  nav {
+    padding: 1rem 0.3rem;
+  }
+
+  nav .create {
+    display: none;
+  }
+
+  .logo h2 {
+    font-size: 1.1rem;
+  }
+
+  main .container {
+    grid-template-columns: 0 auto 0;
+    gap: 0;
+  }
+
+  .middle .notification-body {
+    margin-right: 0.8rem;
+  }
+
+  .middle .notification-body p {
+    font-size: 0.75rem;
+  }
+
+  .text-muted {
+    font-size: 0.7rem;
+  }
+
+  .profile-description {
+    margin: 1rem auto;
+  }
+
+  .edit-profile h4 {
+    font-size: 1rem;
+    /* margin: 0.2rem; */
+  }
+
+  .profile-description.small {
+    display: block;
+  }
+
+  .profile-description.large {
+    display: none;
+  }
+
+  .profile-picture {
+    margin-right: 2rem;
+  }
+
+  .middle .stories {
+    margin: 0 0.3rem;
+    height: 6rem;
+    width: 29rem;
+    gap: 0.3rem;
+  }
+
+  .middle .story .profile-photo {
+    width: 5rem;
+    height: 5rem;
+    align-self: start;
+    object-fit: cover;
+    border: 3.5px solid var(--color-primary);
+  }
+
+  .middle .stories .story {
+    margin-right: 0.6rem;
+  }
+
+  .middle .feeds .feed {
+    width: 100%;
+  }
+
+  .middle .stories .scroll-button {
+    display: none;
+  }
+
+  main .container .middle {
+    grid-column: 1/3;
+    width: 100%;
+  }
+
+  main .container .left {
+    display: none;
+  }
+
+  .profile-picture img {
+    width: 6rem;
+    height: 6rem;
+    align-items: start;
+  }
+
+  footer {
+    display: block;
+  }
+
+  footer .menu-item span i {
+    font-size: 1rem;
+  }
+
+  .theme-toggler {
+    position: absolute;
+    right: 1rem;
+  }
+
+  .middle .active {
+    display: none;
+  }
+
+  .search-influencers {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .middle .stories {
+    height: 6rem;
+    width: 25rem;
+  }
+
+  footer .menu-item span i {
+    font-size: 0.85rem;
+  }
+}

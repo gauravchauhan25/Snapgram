@@ -1,0 +1,92 @@
+.settings-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.settings-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.settings-section {
+  margin-bottom: 2rem;
+}
+
+.settings-section h2 {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: 0.5rem;
+}
+
+.settings-section ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.settings-section ul li {
+  font-size: 1.2rem;
+  padding: 0.8rem 1rem;
+  border-radius: var(--card-border-radius);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  color: var(--color-dark);
+}
+
+.settings-section ul li:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.settings-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  background-color: var(--color-light);
+  border-radius: var(--card-border-radius);
+}
+
+.settings-option label {
+  font-size: 1.2rem;
+  color: var(--color-dark);
+}
+
+.settings-option select,
+.settings-option input[type="checkbox"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: var(--card-border-radius);
+  border: 1px solid var(--color-gray);
+  cursor: pointer;
+}
+
+.settings-save {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.settings-save button {
+  padding: var(--btn-padding);
+  font-size: 1.2rem;
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: var(--card-border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.settings-save button:hover {
+  background-color: var(--color-success);
+}

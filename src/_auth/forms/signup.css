@@ -1,0 +1,147 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  padding: 0;
+  outline: 0;
+  text-decoration: none;
+  list-style: none;
+  border: none;
+}
+
+body {
+  font-family: poppins;
+  overflow-x: hidden;
+}
+
+.signup-main {
+  background-color: #030303;
+  width: 100vw;
+  height: 100vh; /* Full height of the viewport */
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  color: #fff;
+}
+
+.signup-container {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3rem;
+  width: 38%;
+  height: 100%;
+}
+
+.logo-s {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.logo-snapgram {
+  width: 2.2rem;
+  height: auto;
+  gap: 0.5rem;
+}
+
+.signup-container h4 {
+  text-align: center;
+  margin-bottom: 0.01rem;
+  margin-bottom: 0.3rem;
+  font-size: 1.2rem;
+}
+
+.signup-container p {
+  font-size: 0.85rem;
+  color: #6e6c6c;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.signup-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-container form label {
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.signup-container form input {
+  padding: 0.7rem;
+  border: none;
+  border-radius: 0.2rem;
+  outline: none;
+  background-color: #444444;
+  color: #fff;
+}
+
+.signup-container form .btn-signup {
+  margin-top: 1.2rem;
+  padding: 0.65rem 3rem;
+  border-radius: 0.4rem;
+  border: none;
+  outline: none;
+  background-color: #fff;
+  color: #000;
+}
+
+.signup-container form .btn-google {
+  padding: 0.7rem 3rem;
+  border-radius: 0.4rem;
+  border: none;
+  outline: none;
+  background-color: #3648f1;
+  color: #fff;
+}
+
+.signup-container form .btn-google:hover {
+  background-color: #0c1ebe;
+  color: #fff;
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+
+.signup-container form .btn-signup:hover {
+  background-color: hsl(252, 67%, 51%);
+  color: #fff;
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+
+.signup-container form .login-badge {
+  color: hsl(252, 60%, 46%);
+  text-decoration: none;
+}
+
+.back-image {
+  width: 62%;
+  height: 100vh;
+}
+
+.back-image img {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 800px) {
+  .signup-container {
+    margin: 25% 0;
+    padding: 0 2rem;
+    width: 100%;
+    height: 100%;
+  }
+
+  .back-image {
+    display: none;
+  }
+}
