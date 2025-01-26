@@ -1,24 +1,14 @@
-body {
-  background-color: var(--color-background);
-  color: var(--color-dark);
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
 .messages-container {
   display: flex;
-  height: 90vh;
-  max-width: 1200px;
-  margin: 2rem auto;
-  border-radius: var(--border-radius);
-  background-color: var(--color-white);
+  height: 85vh;
+  max-width: 2000px;
+  margin-top: 4.5rem;
+  justify-content: center;
   overflow: hidden;
-  box-shadow: var(--box-shadow);
 }
 
 .chat-list {
-  width: 30%;
+  width: 35%;
   background-color: var(--color-light);
   overflow-y: auto;
   border-right: 1px solid var(--color-gray);
@@ -27,7 +17,7 @@ body {
 
 .chat-list-title {
   font-size: 1.5rem;
-  color: var(--color-primary);
+  color: var(--color-dark);
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -45,11 +35,11 @@ body {
 
 .chat-item.active {
   background-color: var(--color-primary);
-  color: var(--color-white);
+  color: var(--color-dark);
 }
 
 .chat-item:hover {
-  background-color: var(--color-gray);
+  background-color: var(--color-white);
   color: var(--color-dark);
 }
 
@@ -74,7 +64,7 @@ body {
 }
 
 .chat-view {
-  width: 70%;
+  width: 65%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -97,7 +87,7 @@ body {
 
 .chat-header {
   font-size: 1.5rem;
-  color: var(--color-primary);
+  color: var(--color-dark);
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -124,8 +114,8 @@ body {
 }
 
 .message.sent {
-  background-color: var(--color-primary);
-  color: var(--color-white);
+  background-color: var(--color-light);
+  color: var(--color-dark);
   align-self: flex-end;
 }
 
@@ -141,8 +131,9 @@ body {
   flex: 1;
   padding: 0.8rem;
   font-size: 1rem;
-  border: 1px solid var(--color-gray);
   border-radius: var(--card-border-radius);
+  background-color: var(--color-white);
+  color: var(--color-dark);
 }
 
 .chat-send-btn {
@@ -157,5 +148,6 @@ body {
 }
 
 .chat-send-btn:hover {
-  background-color: var(--color-success);
+  opacity: 0.6;
+  transition: all 0.3s ease;
 }

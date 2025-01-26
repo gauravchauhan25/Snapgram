@@ -5,30 +5,42 @@ import "../page-styles/Settings.css";
 import auth from "../services/auth";
 
 export default function Settings() {
+  const [isLightTheme, setIsLightTheme] = useState(false);
+
+  const handleThemeToggle = () => {
+    setIsLightTheme(!isLightTheme);
+    document.body.classList.toggle("light-theme-variables");
+    document.body.style.transition = "all 500ms ease";
+  };
+
   const [isPrivate, setIsPrivate] = useState(false);
   const [language, setLanguage] = useState("English");
-  const [theme, setTheme] = useState("Light");
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Settings";
   }, []);
 
-  const navigate = useNavigate();
+  const handleLogout = async (e) => {
+    e.preventDefault();
 
-  const handleLogout = async () => {
     try {
-      await auth.logout(navigate);
+      const isLogout = await auth.logout();
+      if (isLogout) {
+        window.location.reload();
+        navigate("/sign-in");
+      } else {
+        alert("Error logging out!");
+      }
     } catch (error) {
-      console.error("Logout failed:", error.message);
+      alert("Logout failed:", error.message);
     }
   };
 
   const handleSave = () => {
-    // Placeholder: Save settings to the API
     console.log({
       isPrivate,
       language,
-      theme,
     });
     alert("Settings saved successfully!");
   };
@@ -80,30 +92,11 @@ export default function Settings() {
       {/* General Section */}
       <div className="settings-section">
         <h2>General</h2>
-        <div className="settings-option">
-          <label htmlFor="language-select">Language:</label>
-          <select
-            id="language-select"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-          >
-            <option value="English">English</option>
-            <option value="Spanish">Spanish</option>
-            <option value="French">French</option>
-          </select>
-        </div>
-        <div className="settings-option">
-          <label htmlFor="theme-select">Theme:</label>
-          <select
-            id="theme-select"
-            value={theme}
-            onChange={(e) => setTheme(e.target.value)}
-          >
-            <option value="Light">Light</option>
-            <option value="Dark">Dark</option>
-          </select>
-        </div>
         <ul>
+          <li>Language</li>
+          <li onClick={handleThemeToggle}>{` ${
+            isLightTheme ? "Light Theme Mode" : "Dark Theme Mode"
+          }`}</li>
           <li>Help Center</li>
           <li>About</li>
           <li onclick={handleLogout}>Logout</li>
@@ -112,7 +105,7 @@ export default function Settings() {
 
       {/* Save Button */}
       <div className="settings-save">
-        <button onClick={handleSave}>Save Settings</button>
+        <button onClick={handleLogout}>Save Settings</button>
       </div>
     </div>
   );

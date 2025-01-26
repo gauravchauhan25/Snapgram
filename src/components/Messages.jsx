@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import "../page-styles/Messages.css";
 
-// Connect to the Socket.IO server
 const socket = io("http://localhost:3001");
 
 export default function Messages() {
@@ -10,7 +9,6 @@ export default function Messages() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  // Simulated chat list
   const chats = [
     {
       id: 1,
@@ -30,12 +28,10 @@ export default function Messages() {
   useEffect(() => {
     document.title = "Inbox";
 
-    // Listen for incoming messages from the server
     socket.on("message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
-    // Cleanup the socket connection
     return () => {
       socket.off("message");
     };

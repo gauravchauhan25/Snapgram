@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { notifications } from "../sources/notification";
 
 export default function Notification() {
+  useEffect(() => {
+    document.title = "Notification";
+  }, []);
+
   return (
     <>
       <h2 classNameName="text-muted">Notifications</h2>

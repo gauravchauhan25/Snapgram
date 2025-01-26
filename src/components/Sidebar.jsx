@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { categories } from "../sources/categories";
+import profilePhoto from "../img/profile-photo.jpg";
 
 export default function Sidebar({ selectedCategory, setSelectedCategory }) {
   return (
     <>
       <div className="sidebar">
+        <div className="logo">
+          <img
+            src="https://cdn-icons-png.flaticon.com/128/185/185985.png"
+            alt=""
+          />
+          <h2>Snapgram</h2>
+        </div>
+
         {categories.map((category) => (
           <div className="category">
             <Link
@@ -35,6 +44,13 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
       >
         Create Post
       </label>
+
+      {/* <div className="profile">
+        <div className="profile-photo">
+          <img src={profilePhoto} alt="" />
+        </div>
+        <h4>Gaurav Chauhan</h4>
+      </div> */}
     </>
   );
 }

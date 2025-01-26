@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import profilePhoto from "../img/profile-photo.jpg";
 import Posts from "../components/Posts";
 import PostModal from "./PostModal";
 import { posts } from "../sources/constants";
-
+import '../page-styles/Profile.css';
 const Profile = () => {
   const [selectedPost, setSelectedPost] = useState(null);
 
@@ -14,6 +14,10 @@ const Profile = () => {
   const closeModal = () => {
     setSelectedPost(null);
   };
+
+  useEffect(() => {
+    document.title = "Profile";
+  }, []);
 
   const user = {
     username: "Gaurav Chauhan",

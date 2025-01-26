@@ -1,10 +1,9 @@
-import { Client, Account, Databases, Storage, ID } from "appwrite";
+import { Client, Account, Databases, ID } from "appwrite";
 
 export class authService {
   client = new Client();
   account;
   database;
-  storage;
 
   constructor() {
     this.client
@@ -12,7 +11,6 @@ export class authService {
       .setProject("67864fab003947d4618c");
     this.account = new Account(this.client);
     this.database = new Databases(this.client);
-    this.storage = new Storage(this.client);
   }
 
   async createAccount({ email, password, name }) {
@@ -23,22 +21,19 @@ export class authService {
         password,
         name
       );
-      await this.login({ email, password });
       return userAccount;
     } catch (error) {
       console.error("Error creating account:", error.message);
       throw error;
     }
   }
-
   async login({ email, password, navigate }) {
     try {
       const session = await this.account.createEmailPasswordSession(
         email,
         password
       );
-      console.log("Login successful:", session);
-      if (navigate) navigate("/"); // Redirect to home page after login
+      console.log(session);
       return session;
     } catch (error) {
       console.error("Error logging in:", error.message);
@@ -56,21 +51,18 @@ export class authService {
     }
   }
 
-  async logout(navigate) {
+  async logout() {
     try {
-      const session = await this.account.get();
-      if (session) {
-        await this.account.deleteSessions();
-        console.log("Logged out successfully.");
-        if (navigate) navigate("/sign-in");
-      } else {
-        console.log("No active session to log out.");
-        if (navigate) navigate("/sign-in");
-      }
+      await this.account.deleteSessions(); 
+      console.log("Logged out successfully.");
+      return true; 
     } catch (error) {
-      console.error("Error logging out:", error.message);
+      alert("Error logging out:", error.message);
+      // console.error("Error logging out:", error.message);
+      return false; 
     }
   }
+  
 }
 
 const auth = new authService();

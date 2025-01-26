@@ -16,11 +16,11 @@ body {
 .signup-main {
   background-color: #030303;
   width: 100vw;
-  height: 100vh; /* Full height of the viewport */
   display: flex;
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
+  justify-content: center;
+  align-items: center;
   color: #fff;
+  overflow-y: hidden;
 }
 
 .signup-container {
@@ -134,11 +134,13 @@ body {
 }
 
 @media screen and (max-width: 800px) {
-  .signup-container {
-    margin: 25% 0;
-    padding: 0 2rem;
-    width: 100%;
+  .signup-main {
+    width: 100vw;
     height: 100%;
+  }
+  .signup-container {
+    margin: 50% 0;
+    width: 100%;
   }
 
   .back-image {

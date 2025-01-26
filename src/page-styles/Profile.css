@@ -1,0 +1,350 @@
+/* ============Profile================ */
+.profile-container {
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--card-padding);
+  /* background-color: var(--color-light);
+    border-radius: var(--border-radius); */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+
+.profile-picture img {
+  width: 8.5rem;
+  height: 8.5rem;
+  align-self: start;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--color-primary);
+}
+
+.profile-description.small {
+  display: none;
+}
+
+.profile-description {
+  margin: 1rem;
+}
+
+.edit-profile {
+  display: flex;
+  justify-content: space-around;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.profile-info h4 {
+  margin: 5px 0;
+  color: var(--color-gray);
+}
+
+.profile-info p {
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+.follower-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.follower-info span {
+  margin: 1rem;
+}
+
+.profile-posts {
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* ==========================POSTS CSS============================== */
+.post-title {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin: 0.7rem auto;
+}
+
+.post-title a {
+  color: var(--color-black);
+}
+
+.divider {
+  height: 0.5px;
+  background-color: var(--color-dark);
+  margin: 16px 0;
+  width: 100%;
+}
+
+.post-card {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-white);
+  font-size: 0.85rem;
+  line-height: 1.5rem;
+  box-shadow: 0 0 1rem var(--color-primary-variant);
+}
+
+.post-card .head {
+  display: none;
+}
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+.post-details {
+  display: none;
+  width: 50%;
+  background-color: var(--color-white);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.post-details p,
+.post-details ul {
+  margin: 8px 0;
+}
+
+.post-details ul {
+  padding-left: 16px;
+}
+
+.post-details li {
+  margin-bottom: 4px;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.post-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #202528;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.post-card:hover .post-overlay {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.post-likes {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bolder;
+}
+
+/* ============================PostModal CSS===================================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  display: flex;
+  align-items: center;
+  background: var(--color-white);
+  width: 80%;
+  height: 90%;
+  max-width: 1600px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal-image {
+  width: 50%;
+  height: auto;
+  display: block;
+  margin-right: 1rem;
+}
+
+.modal-details {
+  padding: 0 var(--card-padding);
+  padding: 0.3rem;
+  /* width: 50%; */
+  height: 90%;
+  background-color: var(--color-white);
+}
+
+.modal-details .caption {
+  position: absolute;
+  top: 5rem;
+  margin: 0 10px;
+}
+
+.modal-details .user {
+  position: absolute;
+  top: 1.5rem;
+}
+
+.modal-details .head .edit {
+  position: absolute;
+  top: 1.5rem;
+  right: 1rem;
+}
+
+.close-button {
+  background: transparent;
+  color: var(--color-dark);
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 2px;
+  z-index: 2000;
+}
+
+/* ====================COMMENT BOX CSS========================= */
+.comment-box {
+  width: 100%;
+  height: 80%;
+  max-width: 100%;
+  background: var(--color-white);
+  padding: 10px;
+}
+
+.comments-section {
+  overflow: auto;
+  width: 36vw;
+  max-height: 35vh;
+  margin: 1.2rem 0;
+}
+
+.user-comment {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 1250px) {
+  .comments-section {
+    width: 35vw;
+    max-height: 20vh;
+  }
+}
+
+@media (max-width: 1050px) {
+  .comments-section {
+    width: 35vw;
+    max-height: 5vh;
+  }
+}
+
+.comment {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.no-comments {
+  color: var(--color-dark);
+  font-size: 0.85rem;
+}
+
+.add-comment-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.add-comment-section input {
+  width: 100%;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--color-primary-variant);
+  font-size: 0.9rem;
+  background-color: var(--color-white);
+  color: var(--color-dark);
+  border-radius: 20px;
+}
+
+.add-comment-section input:focus {
+  outline: none;
+  border: 1px solid var(--color-gray);
+}
+
+.add-comment-section button {
+  background: transparent;
+  color: var(--color-gray);
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.add-comment-section button:disabled {
+  color: #b2dffc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 800px) {
+  .modal-backdrop {
+    display: none;
+  }
+}
+
+@media (max-width: 1250px) {
+  .modal-content {
+    height: auto;
+  }
+}
+
+/* Media query for tablets (768px and below) */
+@media (max-width: 768px) {
+  .post-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .post-card {
+    flex-direction: column;
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+  }
+
+  .post-image,
+  .post-details {
+    display: block;
+    width: 100%;
+  }
+}

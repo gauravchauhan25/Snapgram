@@ -10,7 +10,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <main>
         <div
           className="container"
@@ -29,6 +29,13 @@ export default function RootLayout() {
 
           <div className="middle">
             <Outlet />
+          </div>
+
+          <div className="right">
+            <Routes>
+              <Route path="/" element={<Right />}></Route>
+              <Route path="/Home" element={<Right />}></Route>
+            </Routes>
           </div>
         </div>
       </main>

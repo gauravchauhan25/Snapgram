@@ -1,106 +1,132 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./signup.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import auth from "../../services/auth";
 
-const SignupForm = () => {
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload
+  const showToastAlert = (text) => {
+    toast.error(text, {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
     try {
       setLoading(true);
-      await auth.createAccount({ email, password, name });
-      console.log("Account created and logged in successfully.");
+      const userSession = await auth.login({ email, password });
+      if (userSession) {
+        window.location.reload();
+        navigate("/");
+        console.log("Login Successfully");
+      } else {
+        console.log("Login Failed!");
+        showToastAlert("Error logging in!");
+      }
     } catch (error) {
-      console.error("Error creating account:", error.message);
+      console.error("Error logging in:", error.message);
+      if (
+        error.message ==
+        "Invalid credentials. Please check the email and password."
+      ) {
+        showToastAlert("Incorect email or password!");
+      } else if (
+        error.message ==
+        " Invalid `password` param: Password must be between 8 and 256 characters long."
+      ) {
+        showToastAlert("Password must be between 8 and 256 characters long.");
+      } else {
+        showToastAlert("Error logging in!");
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    document.title = "Snapgram - Log In";
+  }, []);
+
   return (
-    <div className="signup-main">
-      <div className="signup-container">
-        <div className="logo-s">
-          <img
-            src="https://cdn-icons-png.flaticon.com/128/185/185985.png"
-            className="logo-snapgram"
-            alt="logo"
-          />
-          <h3>Snapgram</h3>
+    <>
+      <div className="signup-main">
+        <div className="signup-container">
+          <div className="logo-s">
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/185/185985.png"
+              className="logo-snapgram"
+              alt="logo"
+            />
+            <h3>Snapgram</h3>
+          </div>
+
+          <h4>User Login</h4>
+          <p>To use Snapgram, please login!</p>
+
+          <form onSubmit={handleLogin}>
+            <label htmlFor="username">Username</label>
+            <input
+              type="email"
+              className=""
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              className=""
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button type="submit" className="btn-signup" disabled={loading}>
+              {loading ? "Logging In..." : "Log In"}
+            </button>
+            <p>OR</p>
+            <button
+              type="button"
+              className="btn-google"
+              onClick={() => alert("Google Sign-In coming soon!")}
+            >
+              Sign In with Google!
+            </button>
+
+            <p>
+              Don't have an account?{" "}
+              <Link to="/sign-up" className="login-badge">
+                Sign up
+              </Link>
+            </p>
+          </form>
         </div>
 
-        <h4>Create a new Account</h4>
-        <p>To use Snapgram, please enter your details!</p>
-
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+        <div className="back-image">
+          <img
+            src="https://img.freepik.com/free-photo/customer-experience-creative-collage_23-2149371194.jpg?semt=ais_hybrid"
+            alt="background"
           />
-
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="your@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <label htmlFor="phoneNumber">Phone Number</label>
-          <input
-            type="number"
-            name="phoneNumber"
-            placeholder="+91 XXXXXXXX"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <button type="submit" className="btn-signup" disabled={loading}>
-            {loading ? "Signing Up..." : "Sign Up"}
-          </button>
-          <p>OR</p>
-          <button type="button" className="btn-google">
-            Sign up with Google!
-          </button>
-
-          <p>
-            Already have an account?{" "}
-            <Link to="/sign-in" className="login-badge">
-              Log In
-            </Link>
-          </p>
-        </form>
+        </div>
       </div>
-
-      <div className="back-image">
-        <img
-          src="https://img.freepik.com/free-photo/customer-experience-creative-collage_23-2149371194.jpg?semt=ais_hybrid"
-          alt="Signup Background"
-        />
-      </div>
-    </div>
+    </>
   );
 };
 
-export default SignupForm;
+export default SigninForm;

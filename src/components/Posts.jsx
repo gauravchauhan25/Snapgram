@@ -20,12 +20,14 @@ const Post = ({ posts, onPostClick }) => {
     };
   }, []);
 
-
   return (
     <div className="post-grid">
       {posts.map((post) => (
-        <div  className={`post-card ${isDisabled ? "disabled" : ""}`} key={post.id} onClick={() => !isDisabled && onPostClick(post)}
->
+        <div
+          className={`post-card ${isDisabled ? "disabled" : ""}`}
+          key={post.id}
+          onClick={() => !isDisabled && onPostClick(post)}
+        >
           <div className="head">
             <div className="user">
               <div className="profile-photo">
@@ -42,7 +44,7 @@ const Post = ({ posts, onPostClick }) => {
               </i>
             </span>
           </div>
-          
+
           <img
             src={post.imageUrl}
             alt={`Post ${post.id}`}
