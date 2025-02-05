@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../page-styles/Settings.css";
-import auth from "../services/auth";
+import auth from "../services/appwrite";
 
 export default function Settings() {
   const [isLightTheme, setIsLightTheme] = useState(false);
@@ -30,10 +30,10 @@ export default function Settings() {
         window.location.reload();
         navigate("/sign-in");
       } else {
-        alert("Error logging out!");
+        console.log("Error logging out!");
       }
     } catch (error) {
-      alert("Logout failed:", error.message);
+      console.log("Logout failed:", error.message);
     }
   };
 

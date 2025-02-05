@@ -1,14 +1,15 @@
-/* ============Profile================ */
 .profile-container {
-  width: 50vw;
+  width: 70vw;
   margin: 0 auto;
   padding: var(--card-padding);
 }
 
 .profile-header {
+  width: 50vw;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  gap: 2rem;
 }
 
 .profile-picture img {
@@ -17,7 +18,7 @@
   align-self: start;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid var(--color-primary);
+  /* border: 4px solid var(--color-primary); */
 }
 
 .profile-description.small {
@@ -26,26 +27,49 @@
 
 .profile-description {
   margin: 1rem;
+  width: 70%;
 }
 
 .edit-profile {
+  width: 80%;
+  margin: 0 20px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-.profile-info h2 {
+.user-info h4 {
+  font-size: 1rem;
   margin: 0;
-  font-size: 1.5rem;
 }
 
-.profile-info h4 {
-  margin: 5px 0;
+.user-info h5 {
   color: var(--color-gray);
+  margin: 5px 0;
+  font-size: 0.85rem;
+  font-weight: 400;
 }
 
 .profile-info p {
   margin: 10px 0;
   font-size: 0.9rem;
+}
+
+.edit-btn {
+  display: inline-block;
+  padding: 0.6rem 1.7rem;
+  font-weight: 500;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  margin-bottom: 1.8rem;
+  margin-top: 0.4rem;
+  background-color: var(--color-white);
+  color: var(--color-dark);
+}
+
+.profile-info button:hover {
+  cursor: pointer;
+  transition: all 400ms ease;
+  opacity: 0.7;
 }
 
 .follower-info {

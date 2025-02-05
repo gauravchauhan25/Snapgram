@@ -1,12 +1,49 @@
 import React, { useEffect, useState } from "react";
-import profilePhoto from "../img/profile-photo.jpg";
+import { storage, account } from "../services/appwrite";
 import Posts from "../components/Posts";
 import PostModal from "./PostModal";
 import { posts } from "../sources/constants";
+import auth from "../services/appwrite";
 import "../page-styles/Profile.css";
+import { Link } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    document.title = "Profile";
+
+    const fetchUserProfile = async () => {
+      try {
+        const userAccount = await account.get();
+        const email = userAccount.email;
+        const userData = await auth.getUserByEmail(email);
+
+        if (userData) {
+          setUser({
+            username: userData.username,
+            name: userData.name,
+            bio: userData.bio,
+            posts: userData.posts,
+          });
+        } else {
+          console.error("User data not found!");
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    (async () => {
+      await fetchUserProfile();
+    })();
+  }, []);
 
   const openModal = (post) => {
     setSelectedPost(post);
@@ -16,36 +53,29 @@ const Profile = () => {
     setSelectedPost(null);
   };
 
-  useEffect(() => {
-    document.title = "Profile";
-  }, []);
-
-  const user = {
-    username: "Gaurav Chauhan",
-    fullName: "__gauravchauhan_",
-    bio: `👑ɠąųཞą۷ ʂıŋɠɧ ƈɧąųɧąŋ 👑,
-      20 || ɖɛƖɧıɬɛ,
-      MSI 👨‍🎓`,
-    followers: 1580,
-    following: 200,
-    posts: [
-      "https://via.placeholder.com/300",
-      "https://via.placeholder.com/300",
-    ],
-  };
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <>
       <div className="center profile-container">
         <div className="profile-header">
           <div className="profile-picture">
-            <img src={profilePhoto} alt={`${user.username}'s profile`} />
+            <img src={"https://via.placeholder.com/150"} alt="Profile" />
           </div>
 
           <div className="profile-info">
             <div className="edit-profile">
-              <h4>{user.fullName}</h4>
-              {/* <button className="btn btn-primary">Follow</button> */}
+              <div className="user-info">
+                <h4>{user.name}</h4>
+                <h5>@{user.username}</h5>
+              </div>
+
+              <button
+                className="edit-btn"
+                onClick={() => navigate("/edit-profile")}
+              >
+                Edit Profile
+              </button>
             </div>
 
             <div className="profile-description large">
@@ -57,46 +87,28 @@ const Profile = () => {
 
               <div className="follower-info">
                 <span>
-                  <strong>{user.posts.length}</strong> Posts
+                  <strong>{user.posts}</strong> Posts
                 </span>
                 <span>
-                  <strong>{user.followers}</strong> Followers
+                  <strong>2200</strong> Followers
                 </span>
                 <span>
-                  <strong>{user.following}</strong> Following
+                  <strong>100</strong> Following
                 </span>
               </div>
             </div>
           </div>
         </div>
-
-        <div className="profile-description small">
-          <p
-            dangerouslySetInnerHTML={{
-              __html: user.bio.replace(/,/g, ",<br />"),
-            }}
-          ></p>
-          <div className="follower-info">
-            <span>
-              <strong>{user.posts.length}</strong> Posts
-            </span>
-            <span>
-              <strong>{user.followers}</strong> Followers
-            </span>
-            <span>
-              <strong>{user.following}</strong> Following
-            </span>
-          </div>
-        </div>
       </div>
 
-      <div className="posts">
+      {/* <div className="posts">
         <a href="#" className="post-title">
           Posts
         </a>
         <Posts posts={posts} onPostClick={openModal} />
+
         {selectedPost && <PostModal post={selectedPost} onClose={closeModal} />}
-      </div>
+      </div> */}
     </>
   );
 };

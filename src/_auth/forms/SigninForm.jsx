@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./signup.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import auth from "../../services/auth";
+import auth from "../../services/appwrite";
+import bgImage from "./social-media-bg.webp";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
@@ -58,6 +59,18 @@ const SigninForm = () => {
     }
   };
 
+  const googleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      await auth.loginWithGoogle();
+    } catch (error) {
+      console.error("Error logging in:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     document.title = "Snapgram - Log In";
   }, []);
@@ -101,11 +114,8 @@ const SigninForm = () => {
               {loading ? "Logging In..." : "Log In"}
             </button>
             <p>OR</p>
-            <button
-              type="button"
-              className="btn-google"
-              onClick={() => alert("Google Sign-In coming soon!")}
-            >
+
+            <button type="button" className="btn-google" onClick={googleLogin}>
               Sign In with Google!
             </button>
 
@@ -120,7 +130,8 @@ const SigninForm = () => {
 
         <div className="back-image">
           <img
-            src="https://img.freepik.com/free-photo/customer-experience-creative-collage_23-2149371194.jpg?semt=ais_hybrid"
+            src={bgImage}
+            // src="https://img.freepik.com/free-photo/customer-experience-creative-collage_23-2149371194.jpg?semt=ais_hybrid"
             alt="background"
           />
         </div>

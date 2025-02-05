@@ -11,24 +11,26 @@ import Profile from "./components/Profile";
 import Settings from "./components/Settings";
 import Messages from "./components/Messages";
 import Reels from "./components/Reels";
-import auth from "./services/auth";
+import auth from "./services/appwrite";
 import CreatePost from "./components/CreatePost";
+import EditProfile from "./components/EditProfile";
+import Details from "./components/Details";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
       const session = await auth.isLoggedIn();
-      setIsAuthenticated(true);
+      setIsAuthenticated(session);
     };
     checkAuth();
   }, []);
 
   return (
-    <AuthContext.Provider value={isAuthenticated}>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
@@ -36,104 +38,85 @@ export const AuthProvider = ({ children }) => {
 
 const useAuth = () => useContext(AuthContext);
 
-export default function App() {
-  const isAuthenticated = useAuth();
+const ProtectedRoute = ({ element }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? element : <Navigate to="/sign-in" replace />;
+};
 
-  // Show loading indicator during initial auth check
-  if (isAuthenticated === null) {
-    return (
-      <div className="center-container">
-        <img
-          src="https://cdn-icons-png.flaticon.com/128/185/185985.png"
-          alt="Loading"
-        />
-      </div>
-    );
-  }
+export default function App() {
+  const { isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   return (
-    <Routes>
-      {/* Authentication Routes */}
-      <Route element={<AuthLayout />}>
-        <Route
-          path="/sign-in"
-          element={
-            isAuthenticated ? <Navigate to="/" replace /> : <SigninForm />
-          }
-        />
-        <Route
-          path="/sign-up"
-          element={
-            isAuthenticated ? <Navigate to="/" replace /> : <SignupForm />
-          }
-        />
-      </Route>
+    <>
+      {loading && (
+        <div className="center-container">
+          <img
+            src="https://cdn-icons-png.flaticon.com/128/185/185985.png"
+            alt="Loading"
+          />
+        </div>
+      )}
 
-      {/* Root Layout and Protected Routes */}
-      <Route element={<RootLayout />}>
-        <Route
-          index
-          element={
-            isAuthenticated ? <Home /> : <Navigate to="/sign-in" replace />
-          }
-        />
-        <Route
-          path="/Home"
-          element={
-            isAuthenticated ? <Home /> : <Navigate to="/sign-in" replace />
-          }
-        />
-        <Route
-          path="/Search"
-          element={
-            isAuthenticated ? <Search /> : <Navigate to="/sign-in" replace />
-          }
-        />
-        <Route
-          path="/Notification"
-          element={
-            isAuthenticated ? (
-              <Notification />
-            ) : (
-              <Navigate to="/sign-in" replace />
-            )
-          }
-        />
-        <Route
-          path="/Messages"
-          element={
-            isAuthenticated ? <Messages /> : <Navigate to="/sign-in" replace />
-          }
-        />
-        <Route
-          path="/Settings"
-          element={
-            isAuthenticated ? <Settings /> : <Navigate to="/sign-in" replace />
-          }
-        />
-        <Route
-          path="/Reels"
-          element={
-            isAuthenticated ? <Reels /> : <Navigate to="/sign-in" replace />
-          }
-        />
-        <Route
-          path="/Profile"
-          element={
-            isAuthenticated ? <Profile /> : <Navigate to="/sign-in" replace />
-          }
-        />
-        <Route
-          path="/Create"
-          element={
-            isAuthenticated ? (
-              <CreatePost />
-            ) : (
-              <Navigate to="/sign-in" replace />
-            )
-          }
-        />
-      </Route>
-    </Routes>
+      <Routes>
+        {/* Authentication Routes */}
+        <Route element={<AuthLayout />}>
+          <Route
+            path="/sign-in"
+            element={
+              isAuthenticated ? <Navigate to="/" replace /> : <SigninForm />
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              isAuthenticated ? <Navigate to="/" replace /> : <SignupForm />
+            }
+          />
+        </Route>
+
+        {/* Protected Routes */}
+        <Route element={<RootLayout />}>
+          <Route index element={<ProtectedRoute element={<Home />} />} />
+          <Route path="/Home" element={<ProtectedRoute element={<Home />} />} />
+          <Route
+            path="/Search"
+            element={<ProtectedRoute element={<Search />} />}
+          />
+          <Route
+            path="/Notification"
+            element={<ProtectedRoute element={<Notification />} />}
+          />
+          <Route
+            path="/Messages"
+            element={<ProtectedRoute element={<Messages />} />}
+          />
+          <Route
+            path="/Settings"
+            element={<ProtectedRoute element={<Settings />} />}
+          />
+          <Route
+            path="/Reels"
+            element={<ProtectedRoute element={<Reels />} />}
+          />
+          <Route
+            path="/Profile"
+            element={<ProtectedRoute element={<Profile />} />}
+          />
+          <Route
+            path="/Create"
+            element={<ProtectedRoute element={<CreatePost />} />}
+          />
+          <Route
+            path="/edit-profile"
+            element={<ProtectedRoute element={<EditProfile />} />}
+          />
+          <Route
+            path="/enter-details"
+            element={<ProtectedRoute element={<Details />} />}
+          />
+        </Route>
+      </Routes>
+    </>
   );
 }
