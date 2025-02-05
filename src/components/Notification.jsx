@@ -8,8 +8,7 @@ export default function Notification() {
 
   return (
     <>
-      <h2 classNameName="text-muted">Notifications</h2>
-
+      <h2>Notifications</h2>
       <div className="notification-container">
         <div className="request">
           <div className="profile-photo">

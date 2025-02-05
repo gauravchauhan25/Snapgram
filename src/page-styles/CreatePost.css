@@ -1,0 +1,127 @@
+/* CreatePost.css */
+.create-post-container {
+  width: 60vw;
+  height: auto;
+  padding: 0.4rem;
+}
+
+.title {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--color-dark);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--color-gray);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--color-dark);
+  background-color: var(--color-light);
+}
+
+.input:focus,
+.textarea:focus {
+  border: 1px solid #007bff;
+  outline: none;
+}
+
+
+.textarea::-webkit-scrollbar{
+    display: none;
+}
+
+.textarea {
+  resize: none;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+
+.success-message {
+  color: #388e3c;
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+
+.button {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    opacity: 0.7;
+    transition: all 300ms ease;
+}
+
+.button:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+}
+
+/* Hide default file input */
+.hidden-input {
+    display: none;
+}
+  
+  /* Dropzone styles */
+  .dropzone {
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-light);
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease;
+  }
+  
+  .dropzone:hover {
+    opacity: 0.8;
+    transition: all 0.4s ease;
+  }
+  
+  /* Plus sign styles */
+  .plus-sign {
+    font-size: 1rem;
+    color: var(--color-dark);
+  }
+  
+  .file-name {
+    font-size: 1rem;
+    color: var(--color-dark);
+  }
+  
+
+@media screen and (max-width:768px) {
+.create-post-container {
+    width: 90vw;
+  }
+}

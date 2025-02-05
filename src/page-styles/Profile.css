@@ -1,19 +1,14 @@
 /* ============Profile================ */
 .profile-container {
-  justify-content: space-between;
-  width: 100%;
+  width: 50vw;
   margin: 0 auto;
   padding: var(--card-padding);
-  /* background-color: var(--color-light);
-    border-radius: var(--border-radius); */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .profile-header {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  margin: 0 auto;
+  justify-content: space-between;
 }
 
 .profile-picture img {
@@ -69,16 +64,18 @@
 }
 
 /* ==========================POSTS CSS============================== */
+.posts {
+  width: 75vw;
+  height: auto;
+}
+
 .post-title {
   display: flex;
   text-align: center;
   align-items: center;
   justify-content: center;
-  margin: 0.7rem auto;
-}
-
-.post-title a {
   color: var(--color-black);
+  margin: 0.7rem auto;
 }
 
 .divider {
@@ -92,10 +89,8 @@
   display: flex;
   position: relative;
   overflow: hidden;
-  background-color: var(--color-white);
   font-size: 0.85rem;
   line-height: 1.5rem;
-  box-shadow: 0 0 1rem var(--color-primary-variant);
 }
 
 .post-card .head {
@@ -112,7 +107,7 @@
 .post-details {
   display: none;
   width: 50%;
-  background-color: var(--color-white);
+  padding: 0.5rem;
   flex-direction: column;
   justify-content: space-between;
 }
@@ -136,6 +131,7 @@
   display: block;
   aspect-ratio: 1/1;
   object-fit: cover;
+  border-radius: var(--card-border-radius);
 }
 
 .post-overlay {
@@ -330,21 +326,64 @@
   }
 }
 
-/* Media query for tablets (768px and below) */
 @media (max-width: 768px) {
+  .profile-container {
+    width: 87vw;
+  }
+
+  .post-title {
+    display: none;
+  }
+
   .post-grid {
     grid-template-columns: 1fr;
   }
 
   .post-card {
+    width: 83vw;
     flex-direction: column;
-    padding: var(--card-padding);
-    border-radius: var(--card-border-radius);
   }
 
   .post-image,
   .post-details {
     display: block;
     width: 100%;
+  }
+
+  .post-card:hover .post-overlay {
+    cursor: pointer;
+    opacity: 0;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .profile-description {
+    margin: 1rem auto;
+  }
+
+  .edit-profile h4 {
+    font-size: 1rem;
+  }
+
+  .profile-description.small {
+    display: block;
+  }
+
+  .profile-description.large {
+    display: none;
+  }
+
+  .profile-picture {
+    margin-right: 2rem;
+  }
+
+  .profile-picture img {
+    width: 6rem;
+    height: 6rem;
+    align-items: start;
+  }
+
+  .post-card {
+    width: 90vw;
   }
 }

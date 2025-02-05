@@ -3,7 +3,8 @@ import profilePhoto from "../img/profile-photo.jpg";
 import Posts from "../components/Posts";
 import PostModal from "./PostModal";
 import { posts } from "../sources/constants";
-import '../page-styles/Profile.css';
+import "../page-styles/Profile.css";
+
 const Profile = () => {
   const [selectedPost, setSelectedPost] = useState(null);
 
@@ -89,11 +90,13 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="post-title">
-        <a href="#">Posts</a>
+      <div className="posts">
+        <a href="#" className="post-title">
+          Posts
+        </a>
+        <Posts posts={posts} onPostClick={openModal} />
+        {selectedPost && <PostModal post={selectedPost} onClose={closeModal} />}
       </div>
-      <Posts posts={posts} onPostClick={openModal} />
-      {selectedPost && <PostModal post={selectedPost} onClose={closeModal} />}
     </>
   );
 };

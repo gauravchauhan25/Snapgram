@@ -1,5 +1,10 @@
 import { Client, Account, Databases, ID } from "appwrite";
 
+// const config = {
+//   appwriteUrl: "https://cloud.appwrite.io/v1",
+//   appwriteProjectID: "67864fab003947d4618c",
+// };
+
 export class authService {
   client = new Client();
   account;
@@ -11,6 +16,8 @@ export class authService {
       .setProject("67864fab003947d4618c");
     this.account = new Account(this.client);
     this.database = new Databases(this.client);
+    // console.log(config.appwriteProjectID);
+    // console.log(config.appwriteUrl);
   }
 
   async createAccount({ email, password, name }) {
@@ -53,16 +60,15 @@ export class authService {
 
   async logout() {
     try {
-      await this.account.deleteSessions(); 
+      await this.account.deleteSessions();
       console.log("Logged out successfully.");
-      return true; 
+      return true;
     } catch (error) {
       alert("Error logging out:", error.message);
       // console.error("Error logging out:", error.message);
-      return false; 
+      return false;
     }
   }
-  
 }
 
 const auth = new authService();

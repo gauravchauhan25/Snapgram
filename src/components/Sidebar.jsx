@@ -38,12 +38,13 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
         ))}
       </div>
 
-      <label
+      {/* <Link
+        to="/create-post"
         className="btn btn-primary"
         style={selectedCategory === "Messages" ? { display: "none" } : {}}
       >
         Create Post
-      </label>
+      </Link> */}
 
       {/* <div className="profile">
         <div className="profile-photo">
