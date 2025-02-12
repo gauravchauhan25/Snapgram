@@ -36,6 +36,10 @@
   background-color: var(--color-primary);
   color: var(--color-white);
 }
+.settings-section ul li  button {
+  background: transparent;
+  color: var(--color-dark);
+}
 
 .settings-option {
   display: flex;

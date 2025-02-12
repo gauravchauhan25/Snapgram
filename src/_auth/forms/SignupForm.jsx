@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./signup.css";
-import auth from "../../services/appwrite";
-import bgImage from "./social-media-bg.webp";
+import api from "../../services/appwrite";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-// import {showToastAlert, showToastSuccess} from "../../popup/toast";
+import { useUserContext } from "../../context/AuthContext";
+import bgImage from "./social-media-bg.webp";
 
 const showToastAlert = (text) => {
   toast.error(text, {
@@ -40,37 +39,41 @@ const SignupForm = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [dob, setDob] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { checkAuthUser } = useUserContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (password.length < 8 || password.length > 255) {
+      showToastAlert("Password must be between 8 and 255 characters.");
+      return;
+  }
+
     try {
       setLoading(true);
+      const newUser = await api.createAccount({
+        email,
+        password,
+        name,
+        username,
+        phoneNumber
+      });
 
-      // const userAccount = await auth.createAccount({
-      //   email,
-      //   password,
-      //   name,
-      // });
-
-      if (true) {
-        await auth.addUser({ username, name, email, phoneNumber, dob });
-
-        showToastSuccess("Account created! You can login now!");
-        console.log("Account created successfully.");
-
-        navigate("/sign-in");
-      } else {
-        showToastAlert("No account created!");
-        console.log("No account created!");
+      if (!newUser) {
+        showToastAlert("Error creating account");
+        return;
       }
+      else if(newUser) {
+        showToastSuccess("Account created! Login Now!");
+        // navigate("/sign-in");
+      }
+      
     } catch (error) {
-      console.error("Error creating account:", error.message);
-      // showToastAlert(error.message);
+      showToastAlert(error);
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -151,7 +154,7 @@ const SignupForm = () => {
             <button type="submit" className="btn-signup" disabled={loading}>
               {loading ? "Signing Up..." : "Sign Up"}
             </button>
-            <p>OR</p>
+            {/* <p>OR</p> */}
 
             <p>
               Already have an account?{" "}
@@ -161,7 +164,6 @@ const SignupForm = () => {
             </p>
           </form>
         </div>
-
         <div className="back-image">
           <img
             src={bgImage}

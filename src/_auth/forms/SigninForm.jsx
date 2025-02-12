@@ -3,13 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import "./signup.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import auth from "../../services/appwrite";
+import api from "../../services/appwrite";
+import { useUserContext } from "../../context/AuthContext";
 import bgImage from "./social-media-bg.webp";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const { checkAuthUser } = useUserContext();
   const navigate = useNavigate();
 
   const showToastAlert = (text) => {
@@ -28,42 +30,70 @@ const SigninForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    if (password.length < 8 || password.length > 255) {
+      showToastAlert("Password must be between 8 and 255 characters.");
+      return;
+   }
+
     try {
       setLoading(true);
-      const userSession = await auth.login({ email, password });
-      if (userSession) {
+      const session = await api.login({ email, password });
+
+      if (session) {
         window.location.reload();
         navigate("/");
-        console.log("Login Successfully");
       } else {
-        console.log("Login Failed!");
-        showToastAlert("Error logging in!");
+        showToastAlert("Error logging in");
+      }
+
+      const isLoggedIn = await checkAuthUser();
+      if (isLoggedIn) {
+        window.location.reload();
+        navigate("/");
+      } else {
+        return;
       }
     } catch (error) {
-      console.error("Error logging in:", error.message);
-      if (
-        error.message ==
-        "Invalid credentials. Please check the email and password."
-      ) {
-        showToastAlert("Incorect email or password!");
-      } else if (
-        error.message ==
-        " Invalid `password` param: Password must be between 8 and 256 characters long."
-      ) {
-        showToastAlert("Password must be between 8 and 256 characters long.");
-      } else {
-        showToastAlert("Error logging in!");
-      }
+      console.log(error);
     } finally {
       setLoading(false);
     }
+
+    // try {
+    //   const userSession = await api.login({ email, password });
+    //   if (userSession) {
+    //     window.location.reload();
+    //     navigate("/");
+    //     console.log("Login Successfully");
+    //   } else {
+    //     console.log("Login Failed!");
+    //     showToastAlert("Error logging in!");
+    //   }
+    // } catch (error) {
+    //   console.error("Error logging in:", error.message);
+    //   if (
+    //     error.message ==
+    //     "Invalid credentials. Please check the email and password."
+    //   ) {
+    //     showToastAlert("Incorect email or password!");
+    //   } else if (
+    //     error.message ==
+    //     " Invalid `password` param: Password must be between 8 and 256 characters long."
+    //   ) {
+    //     showToastAlert("Password must be between 8 and 256 characters long.");
+    //   } else {
+    //     showToastAlert("Error logging in!");
+    //   }
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const googleLogin = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      await auth.loginWithGoogle();
+      await api.loginWithGoogle();
     } catch (error) {
       console.error("Error logging in:", error.message);
     } finally {
@@ -72,7 +102,7 @@ const SigninForm = () => {
   };
 
   useEffect(() => {
-    document.title = "Snapgram - Log In";
+    document.title = "Log In - Snapgram";
   }, []);
 
   return (
@@ -127,7 +157,6 @@ const SigninForm = () => {
             </p>
           </form>
         </div>
-
         <div className="back-image">
           <img
             src={bgImage}

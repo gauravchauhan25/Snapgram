@@ -1,0 +1,49 @@
+.container-profile-photo{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding: 1rem;
+  gap: 1rem;
+  background-color: var(--color-light);
+  border-radius: var(--card-border-radius);
+  margin: 1rem 0;
+}
+
+.profile-info h3 {
+  color: var(--color-gray);
+}
+
+.edit-profile-picture img {
+    width: 4.5rem;
+    height: 4.5rem;
+    align-self: start;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.edit-profile-picture img:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 400ms ease;
+}
+
+.edit-btn {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  opacity: 0.7;
+  transition: all 0.3s ease;
+
+}

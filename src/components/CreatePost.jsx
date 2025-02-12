@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ID } from "appwrite";
-import auth from "../services/appwrite";
+import api from "../services/appwrite";
 import "../page-styles/CreatePost.css";
 
 const CreatePost = () => {
@@ -23,7 +23,7 @@ const CreatePost = () => {
     setSuccess(false);
 
     try {
-      const create = await auth.createPost({ title, location, caption });
+      const create = await api.createPost({ title, location, caption });
       if (create) {
         setCaption("");
         setLocation("");
@@ -130,7 +130,7 @@ const CreatePost = () => {
                 <p className="mb-6">SVG, PNG, JPG</p>
                 <button
                   type="button"
-                  className="button"
+                  className="create-post-btn"
                   onClick={() => document.getElementById("fileInput").click()}
                 >
                   Select from computer
@@ -152,7 +152,7 @@ const CreatePost = () => {
         {success && (
           <p className="success-message">Post created successfully!</p>
         )}
-        <button type="submit" className="button" disabled={loading}>
+        <button type="submit" className="create-post-btn" disabled={loading}>
           {loading ? "Submitting..." : "Create Post"}
         </button>
       </form>

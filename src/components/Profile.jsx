@@ -3,13 +3,13 @@ import { storage, account } from "../services/appwrite";
 import Posts from "../components/Posts";
 import PostModal from "./PostModal";
 import { posts } from "../sources/constants";
-import auth from "../services/appwrite";
+import api from "../services/appwrite";
 import "../page-styles/Profile.css";
-import { Link } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ Get current route
   const [user, setUser] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,7 +21,7 @@ const Profile = () => {
       try {
         const userAccount = await account.get();
         const email = userAccount.email;
-        const userData = await auth.getUserByEmail(email);
+        const userData = await api.getUserByEmail(email);
 
         if (userData) {
           setUser({
@@ -40,50 +40,43 @@ const Profile = () => {
       }
     };
 
-    (async () => {
-      await fetchUserProfile();
-    })();
+    fetchUserProfile();
   }, []);
 
-  const openModal = (post) => {
-    setSelectedPost(post);
-  };
+  if (isLoading)
+    return (
+      <p style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        Loading...
+      </p>
+    );
 
-  const closeModal = () => {
-    setSelectedPost(null);
-  };
+  const defaultImage =
+    "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
 
-  if (isLoading) return <p>Loading...</p>;
+  if (location.pathname === "/Profile/edit-profile") {
+    return <Outlet />;
+  }
 
   return (
     <>
       <div className="center profile-container">
         <div className="profile-header">
           <div className="profile-picture">
-            <img src={"https://via.placeholder.com/150"} alt="Profile" />
+            <img src={defaultImage} alt="Profile" />
           </div>
-
           <div className="profile-info">
             <div className="edit-profile">
               <div className="user-info">
                 <h4>{user.name}</h4>
                 <h5>@{user.username}</h5>
               </div>
-
-              <button
-                className="edit-btn"
-                onClick={() => navigate("/edit-profile")}
-              >
+              <button className="edit-profile-btn" onClick={() => navigate("edit-profile")}>
                 Edit Profile
               </button>
             </div>
 
             <div className="profile-description large">
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: user.bio.replace(/,/g, ",<br />"),
-                }}
-              ></p>
+              <p dangerouslySetInnerHTML={{ __html: user.bio.replace(/,/g, ",<br />") }}></p>
 
               <div className="follower-info">
                 <span>
@@ -100,15 +93,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-
-      {/* <div className="posts">
-        <a href="#" className="post-title">
-          Posts
-        </a>
-        <Posts posts={posts} onPostClick={openModal} />
-
-        {selectedPost && <PostModal post={selectedPost} onClose={closeModal} />}
-      </div> */}
     </>
   );
 };

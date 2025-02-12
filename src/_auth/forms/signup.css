@@ -24,12 +24,8 @@ body {
 }
 
 .signup-container {
-  /* display: block;
-  align-items: center;
-  justify-content: center; */
-  padding: 0 3rem;
+  padding: 0 2.3rem;
   width: 38%;
-  /* height: 100%; */
 }
 
 .logo-s {
@@ -42,25 +38,28 @@ body {
 }
 
 .logo-snapgram {
-  width: 2.2rem;
+  width: 1.9rem;
   height: auto;
   gap: 0.5rem;
 }
 
+.signup-container h3 {
+  text-align: center;
+  font-size: 1.8rem;
+}
+
 .signup-container h4 {
   text-align: center;
-  margin-bottom: 0.01rem;
   margin-bottom: 0.3rem;
   font-size: 1.1rem;
 }
 
 .signup-container p {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #6e6c6c;
   text-align: center;
   font-weight: 600;
-  margin-bottom: 0.8rem;
-  margin-top: 0.8rem;
+  margin: 0.7rem 0;
 }
 
 .signup-container form {
@@ -77,15 +76,15 @@ body {
 .signup-container form input {
   padding: 0.7rem;
   border: none;
-  border-radius: 0.2rem;
+  border-radius: 0.3rem;
   outline: none;
   background-color: #444444;
   color: #fff;
 }
 
 .signup-container form .btn-signup {
-  margin-top: 1.2rem;
-  padding: 0.65rem 3rem;
+  margin-top: 1.3rem;
+  padding: 0.6rem 3rem;
   border-radius: 0.4rem;
   border: none;
   outline: none;
@@ -94,7 +93,7 @@ body {
 }
 
 .signup-container form .btn-google {
-  padding: 0.7rem 3rem;
+  padding: 0.6rem 3rem;
   border-radius: 0.4rem;
   border: none;
   outline: none;

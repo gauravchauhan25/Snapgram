@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigation } from "react-router-dom";
 import Home from "./_root/Home";
 import SigninForm from "./_auth/forms/SigninForm";
 import SignupForm from "./_auth/forms/SignupForm";
@@ -11,53 +11,22 @@ import Profile from "./components/Profile";
 import Settings from "./components/Settings";
 import Messages from "./components/Messages";
 import Reels from "./components/Reels";
-import auth from "./services/appwrite";
+import api from "./services/appwrite";
 import CreatePost from "./components/CreatePost";
 import EditProfile from "./components/EditProfile";
 import Details from "./components/Details";
-
-const AuthContext = createContext();
-
-export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const session = await auth.isLoggedIn();
-      setIsAuthenticated(session);
-    };
-    checkAuth();
-  }, []);
-
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-const useAuth = () => useContext(AuthContext);
+import { useUserContext } from "./context/AuthContext";
 
 const ProtectedRoute = ({ element }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useUserContext();
   return isAuthenticated ? element : <Navigate to="/sign-in" replace />;
 };
 
 export default function App() {
-  const { isAuthenticated } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { isAuthenticated } = useUserContext();
 
   return (
     <>
-      {loading && (
-        <div className="center-container">
-          <img
-            src="https://cdn-icons-png.flaticon.com/128/185/185985.png"
-            alt="Loading"
-          />
-        </div>
-      )}
-
       <Routes>
         {/* Authentication Routes */}
         <Route element={<AuthLayout />}>
@@ -99,17 +68,14 @@ export default function App() {
             path="/Reels"
             element={<ProtectedRoute element={<Reels />} />}
           />
-          <Route
-            path="/Profile"
-            element={<ProtectedRoute element={<Profile />} />}
-          />
+
+           <Route path="/Profile" element={<ProtectedRoute element={<Profile />} />}>
+               <Route path="edit-profile" element={<EditProfile />} />
+            </Route>
+
           <Route
             path="/Create"
             element={<ProtectedRoute element={<CreatePost />} />}
-          />
-          <Route
-            path="/edit-profile"
-            element={<ProtectedRoute element={<EditProfile />} />}
           />
           <Route
             path="/enter-details"

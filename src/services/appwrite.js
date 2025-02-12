@@ -1,10 +1,18 @@
-import { Client, Account, Databases, ID, Query } from "appwrite";
+import { Client, Account, Databases, ID, Query, Avatars } from "appwrite";
+
+const appwriteConfig = {
+  url: "https://cloud.appwrite.io/v1",
+  projectId: "67864fab003947d4618c",
+  userCollectionId: "679a66480030b6502b44",
+  databaseID: "6787eaef00269d8615ae",
+};
 
 export class Services {
   client = new Client();
   account;
   databases;
   storage;
+  avatars;
 
   constructor() {
     this.client
@@ -13,16 +21,57 @@ export class Services {
 
     this.account = new Account(this.client);
     this.databases = new Databases(this.client);
+    this.avatars = new Avatars(this.client);
   }
 
-  async createAccount({ email, password, name }) {
+  async createAccount({ email, password, name, username, phoneNumber }) {
     try {
-      return await this.account.create(ID.unique(), email, password, name);
+      const newAccount = await this.account.create(
+        ID.unique(),
+        email,
+        password,
+        name
+      );
+
+      if (!newAccount) throw new Error("Account creation failed");
+
+      // const avatarUrl = this.avatars.getInitials(user.name);
+
+      const newUser = await this.addUser( name, email, username, phoneNumber);
+
+      return newUser;
     } catch (error) {
-      console.error("Error creating account:", error.message);
-      throw error;
+      console.log(error);
+      return error;
     }
   }
+
+  async addUser(name, email, username, phoneNumber) {
+    try {
+        const userData = { name, email, username, phoneNumber };
+
+        const accountId = ID.unique();
+        const response = await this.databases.createDocument(
+            "6787eaef00269d8615ae", 
+            "679a66480030b6502b44",
+            accountId, 
+            {
+                accountId: accountId, 
+                username: userData.username,
+                name: userData.name,
+                email: userData.email,
+                phoneNumber: userData.phoneNumber,
+                accountCreatedAt: new Date().toISOString(),
+            }
+        );
+
+        console.log("Added to DB successfully!");
+        return response;
+    } catch (error) {
+        console.log("Error adding to DB!",error);
+        throw error;
+    }
+}
 
   async login({ email, password }) {
     try {
@@ -30,32 +79,47 @@ export class Services {
         email,
         password
       );
-      console.log(session);
       return session;
     } catch (error) {
-      alert("Error logging in:", error.message);
-      throw error;
+      console.log(error);
     }
   }
 
-  async isLoggedIn() {
+  async getAccount() {
     try {
-      const session = await this.account.get();
-      return !!session;
+      return await this.account.get();
     } catch (error) {
-      console.log("Appwrite service :: currentUser :: error", error.message);
-      return false;
+      console.error("Error fetching account:", error);
+      return null;
+    }
+  }
+
+  async getCurrentUser() {
+    try {
+      const currentAccount = await this.getAccount();
+      if (!currentAccount) return null;
+
+      const currentUser = await this.databases.listDocuments(
+        "6787eaef00269d8615ae",
+        "679a66480030b6502b44",
+        [Query.equal("accountId", currentAccount.$id)]
+      );
+
+      if (!currentUser || currentUser.documents.length === 0) return null;
+
+      return currentUser.documents[0];
+    } catch (error) {
+      console.error("Error fetching current user:", error);
+      return null;
     }
   }
 
   async logout() {
     try {
-      await this.account.deleteSessions();
-      console.log("Logged out successfully.");
-      return true;
+      const session = await this.account.deleteSession("current");
+      return session;
     } catch (error) {
-      alert("Error logging out:", error.message);
-      return false;
+      console.log(error);
     }
   }
 
@@ -68,33 +132,6 @@ export class Services {
       );
     } catch (error) {
       console.error("Google Login Error:", error);
-    }
-  }
-
-  async addUser(userData) {
-    try {
-      const user = await account.get();
-      const userId = user.$id;
-
-      const response = await this.databases.createDocument(
-        "6787eaef00269d8615ae",
-        "679a66480030b6502b44",
-        ID.unique(),
-        {
-          userId: userId,
-          username: userData.username,
-          name: userData.name,
-          email: userData.email,
-          phoneNumber: userData.phoneNumber,
-          dob: userData.dob,
-          accountCreatedAt: new Date().toISOString(),
-        }
-      );
-      console.log("User added successfully:", response);
-      return response;
-    } catch (error) {
-      console.error("Error adding user:", error);
-      throw error;
     }
   }
 
@@ -137,35 +174,6 @@ export class Services {
   }
 }
 
-const appwrite = new Services();
-export default appwrite;
-export const { account, database, storage } = appwrite;
-
-// async uploadFile(bucketId, file) {
-//   try {
-//     const response = await this.storage.createFile(
-//       bucketId,
-//       ID.unique(),
-//       file
-//     );
-//     return response;
-//   } catch (error) {
-//     console.error("Error uploading file:", error.message);
-//     throw error;
-//   }
-// }
-
-// async getFileViewUrl(bucketId, fileId) {
-//   return `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${fileId}/view?project=67864fab003947d4618c`;
-// }
-
-// async deleteFile(bucketId, fileId) {
-//   try {
-//     await this.storage.deleteFile(bucketId, fileId);
-//     console.log("File deleted successfully.");
-//     return true;
-//   } catch (error) {
-//     console.error("Error deleting file:", error.message);
-//     return false;
-//   }
-// }
+const api = new Services();
+export default api;
+export const { account, database, storage } = api;

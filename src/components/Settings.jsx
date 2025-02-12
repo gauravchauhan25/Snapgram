@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../page-styles/Settings.css";
-import auth from "../services/appwrite";
+import api from "../services/appwrite";
 
 export default function Settings() {
   const [isLightTheme, setIsLightTheme] = useState(false);
@@ -25,7 +25,7 @@ export default function Settings() {
     e.preventDefault();
 
     try {
-      const isLogout = await auth.logout();
+      const isLogout = await api.logout();
       if (isLogout) {
         window.location.reload();
         navigate("/sign-in");
@@ -99,13 +99,13 @@ export default function Settings() {
           }`}</li>
           <li>Help Center</li>
           <li>About</li>
-          <li onclick={handleLogout}>Logout</li>
+          <li onClick={handleLogout}>Logout</li>
         </ul>
       </div>
 
       {/* Save Button */}
       <div className="settings-save">
-        <button onClick={handleLogout}>Save Settings</button>
+        <button>Save Settings</button>
       </div>
     </div>
   );

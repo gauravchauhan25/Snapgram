@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, Routes, Route } from "react-router-dom";
-import Navbar from "../components/Navbar";
+// import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Right from "../components/Right";
 import Home from "./Home";
@@ -31,12 +31,12 @@ export default function RootLayout() {
             <Outlet />
           </div>
 
-          {/* <div className="right">
+          <div className="right">
             <Routes>
               <Route path="/" element={<Right />}></Route>
               <Route path="/Home" element={<Right />}></Route>
             </Routes>
-          </div> */}
+          </div>
         </div>
       </main>
     </>
