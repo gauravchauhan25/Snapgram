@@ -50,7 +50,7 @@ const SignupForm = () => {
     if (password.length < 8 || password.length > 255) {
       showToastAlert("Password must be between 8 and 255 characters.");
       return;
-  }
+    }
 
     try {
       setLoading(true);
@@ -59,23 +59,21 @@ const SignupForm = () => {
         password,
         name,
         username,
-        phoneNumber
+        phoneNumber,
       });
 
       if (!newUser) {
         showToastAlert("Error creating account");
         return;
-      }
-      else if(newUser) {
+      } else if (newUser) {
         showToastSuccess("Account created! Login Now!");
-        // navigate("/sign-in");
       }
-      
     } catch (error) {
       showToastAlert(error);
       console.log(error);
     } finally {
       setLoading(false);
+      navigate("/sign-in");
     }
   };
 

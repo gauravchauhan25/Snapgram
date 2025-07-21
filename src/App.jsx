@@ -24,6 +24,12 @@ const ProtectedRoute = ({ element }) => {
 
 export default function App() {
   const { isAuthenticated } = useUserContext();
+  const [user, setUser] = useState(null);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    api.getAccount().then(setUser);
+  }, []);
 
   return (
     <>
@@ -63,15 +69,20 @@ export default function App() {
           <Route
             path="/Settings"
             element={<ProtectedRoute element={<Settings />} />}
-          />
+          >
+            <Route path="edit-profile" element={<EditProfile />} />
+          </Route>
+
           <Route
             path="/Reels"
             element={<ProtectedRoute element={<Reels />} />}
           />
-
-           <Route path="/Profile" element={<ProtectedRoute element={<Profile />} />}>
-               <Route path="edit-profile" element={<EditProfile />} />
-            </Route>
+          <Route
+            path="/Profile"
+            element={<ProtectedRoute element={<Profile />} />}
+          >
+            <Route path="edit-profile" element={<EditProfile />} />
+          </Route>
 
           <Route
             path="/Create"

@@ -6,6 +6,7 @@ import "../page-styles/CreatePost.css";
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
+  const [tags, setTags] = useState("");
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -18,9 +19,11 @@ const CreatePost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    api.getDocumentCount();
     setLoading(true);
     setError(null);
     setSuccess(false);
+    api.uploadImage(file);
 
     try {
       const create = await api.createPost({ title, location, caption });
@@ -105,6 +108,20 @@ const CreatePost = () => {
         </div>
 
         <div className="form-group">
+          <label htmlFor="location" className="label">
+            Tags
+          </label>
+          <input
+            type="text"
+            id="tags"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            className="input"
+            required
+          />
+        </div>
+
+        <div className="form-group">
           <label htmlFor="caption" className="label">
             Upload Image
           </label>
@@ -117,12 +134,11 @@ const CreatePost = () => {
               <>
                 <div className="flex flex-1 justify-center w-full p-5 lg:p-10">
                   <img
-                    src={URL.createObjectURL(file)} // Displaying the image preview
+                    src={URL.createObjectURL(file)}
                     alt="image"
                     className="file_uploader-img"
                   />
                 </div>
-                <p>Click or drag photo to replace</p>
               </>
             ) : (
               <div className="form-group">

@@ -88,8 +88,8 @@ body {
   border-radius: 0.4rem;
   border: none;
   outline: none;
-  background-color: #fff;
-  color: #000;
+  background-color: hsl(252, 67%, 51%);
+  color: #fff;
 }
 
 .signup-container form .btn-google {
@@ -102,15 +102,13 @@ body {
 }
 
 .signup-container form .btn-google:hover {
-  background-color: #0c1ebe;
-  color: #fff;
+  opacity: 0.8;
   cursor: pointer;
   transition: all 300ms ease;
 }
 
 .signup-container form .btn-signup:hover {
-  background-color: hsl(252, 67%, 51%);
-  color: #fff;
+  opacity: 0.8;
   cursor: pointer;
   transition: all 300ms ease;
 }

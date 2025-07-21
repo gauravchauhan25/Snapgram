@@ -1,11 +1,20 @@
-import { Client, Account, Databases, ID, Query, Avatars } from "appwrite";
+import {
+  Client,
+  Account,
+  Databases,
+  ID,
+  Query,
+  Avatars,
+  Storage,
+} from "appwrite";
+import config from "./config.js";
 
-const appwriteConfig = {
-  url: "https://cloud.appwrite.io/v1",
-  projectId: "67864fab003947d4618c",
-  userCollectionId: "679a66480030b6502b44",
-  databaseID: "6787eaef00269d8615ae",
-};
+// const appwriteConfig = {
+//   url: "https://cloud.appwrite.io/v1",
+//   projectId: "67864fab003947d4618c",
+//   userCollectionId: "679a66480030b6502b44",
+//   databaseID: "6787eaef00269d8615ae",
+// };
 
 export class Services {
   client = new Client();
@@ -21,9 +30,11 @@ export class Services {
 
     this.account = new Account(this.client);
     this.databases = new Databases(this.client);
+    this.storage = new Storage(this.client);
     this.avatars = new Avatars(this.client);
   }
 
+  //=======CREATE AN ACCOUNT============
   async createAccount({ email, password, name, username, phoneNumber }) {
     try {
       const newAccount = await this.account.create(
@@ -35,9 +46,16 @@ export class Services {
 
       if (!newAccount) throw new Error("Account creation failed");
 
-      // const avatarUrl = this.avatars.getInitials(user.name);
+      // Use the Appwrite Auth user ID
+      const userId = newAccount.$id;
 
-      const newUser = await this.addUser( name, email, username, phoneNumber);
+      const newUser = await this.addUser(
+        userId,
+        name,
+        email,
+        username,
+        phoneNumber
+      );
 
       return newUser;
     } catch (error) {
@@ -46,54 +64,101 @@ export class Services {
     }
   }
 
-  async addUser(name, email, username, phoneNumber) {
+  //===========ADD USER TO DB=============
+  async addUser(userId, name, email, username, phoneNumber) {
     try {
-        const userData = { name, email, username, phoneNumber };
+      const response = await this.databases.createDocument(
+        "6787eaef00269d8615ae",
+        "679a66480030b6502b44",
+        ID.unique(),
+        {
+          userId: userId, // stores Appwrite Auth ID as reference
+          username,
+          name,
+          email,
+          phoneNumber,
+          accountCreatedAt: new Date().toISOString(),
+        }
+      );
 
-        const accountId = ID.unique();
-        const response = await this.databases.createDocument(
-            "6787eaef00269d8615ae", 
-            "679a66480030b6502b44",
-            accountId, 
-            {
-                accountId: accountId, 
-                username: userData.username,
-                name: userData.name,
-                email: userData.email,
-                phoneNumber: userData.phoneNumber,
-                accountCreatedAt: new Date().toISOString(),
-            }
-        );
-
-        console.log("Added to DB successfully!");
-        return response;
+      console.log("Added to DB successfully!");
+      return response;
     } catch (error) {
-        console.log("Error adding to DB!",error);
-        throw error;
+      console.error("Error :: adding to DB!", JSON.stringify(error, null, 2));
+      throw error;
     }
-}
+  }
 
+  //========LOGIN FOR USER==========
   async login({ email, password }) {
     try {
-      const session = await this.account.createEmailPasswordSession(
-        email,
-        password
+      return await this.account.createEmailPasswordSession(email, password);
+    } catch (error) {
+      console.log("Error :: Logging In", error);
+    }
+  }
+
+  // async useUserProfile(userId) {
+  //   const [user, setUser] = useState(null);
+  //   const [loading, setLoading] = useState(true);
+
+  //   useEffect(() => {
+  //     if (!userId) return;
+
+  //     const fetchUser = async () => {
+  //       try {
+  //         const response = await this.databases.getDocument(
+  //           config.appwriteDatabaseID,
+  //           config.appwriteCollectionID,
+  //           userId
+  //         );
+  //         setUser(response);
+  //       } catch (error) {
+  //         console.error("Error fetching user profile:", error);
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     };
+
+  //     fetchUser();
+  //   }, [userId]);
+
+  //   return { user, loading };
+  // };
+
+  //======LOGGING IN WITH THE GOOGLE USING => GOOGLE OAUTH API=========
+  async loginWithGoogle() {
+    try {
+      this.account.createOAuth2Session(
+        "google",
+        "https://77q2rz-3000.csb.app/Home",
+        "https://77q2rz-3000.csb.app/sign-in"
       );
-      return session;
+    } catch (error) {
+      console.error("Google Login Error:", error);
+    }
+  }
+
+  //===========LOGOUT THE USER===============
+  async logout() {
+    try {
+      return await this.account.deleteSessions("current");
     } catch (error) {
       console.log(error);
     }
   }
 
+  //=====CHECK CURRENT ACCOUNT SESSION PRESENT OR NOT=======
   async getAccount() {
     try {
       return await this.account.get();
     } catch (error) {
       console.error("Error fetching account:", error);
-      return null;
     }
+    return null;
   }
 
+  //=====CHECK IF THE USER ACCOUNT IS LISTED OR NOT=========
   async getCurrentUser() {
     try {
       const currentAccount = await this.getAccount();
@@ -102,7 +167,7 @@ export class Services {
       const currentUser = await this.databases.listDocuments(
         "6787eaef00269d8615ae",
         "679a66480030b6502b44",
-        [Query.equal("accountId", currentAccount.$id)]
+        [Query.equal("userId", currentAccount.$id)]
       );
 
       if (!currentUser || currentUser.documents.length === 0) return null;
@@ -114,62 +179,145 @@ export class Services {
     }
   }
 
-  async logout() {
-    try {
-      const session = await this.account.deleteSession("current");
-      return session;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //=======CHECK IF THE EMAIL IS CORRECT OR NOT=========
+  // async getUserByEmail(email) {
+  //   try {
+  //     const response = await this.databases.listDocuments(
+  //       config.appwriteDatabaseID,
+  //       config.appwriteCollectionID,
+  //       [Query.equal("email", email)]
+  //     );
 
-  async loginWithGoogle() {
-    try {
-      this.account.createOAuth2Session(
-        "google",
-        "https://snapgram-private.vercel.app/Home",
-        "https://snapgram-private.vercel.app/sign-in"
-      );
-    } catch (error) {
-      console.error("Google Login Error:", error);
-    }
-  }
+  //     return response.documents.length > 0 ? response.documents[0] : null;
+  //   } catch (error) {
+  //     console.error("Error fetching user:", error);
+  //     return null;
+  //   }
+  // }
 
-  async getUserByEmail(email) {
+  //DATABASE CRUD OPERATIONS
+
+  async getCurrentUserDocumentId() {
     try {
+      const currentUser = await this.account.get();
+      const userId = currentUser.$id;
+
       const response = await this.databases.listDocuments(
         "6787eaef00269d8615ae",
         "679a66480030b6502b44",
-        [Query.equal("email", email)]
+        [Query.equal("userId", userId)]
       );
 
-      return response.documents.length > 0 ? response.documents[0] : null;
+      if (response.documents.length === 0) {
+        throw new Error("No matching user document found.");
+      }
+
+      return response.documents[0].$id;
     } catch (error) {
-      console.error("Error fetching user:", error);
+      console.error("Error fetching user document ID:", error);
       return null;
     }
   }
 
+  //=========EDIT PROFILE==============
+  async updateProfile({ documentId, name, username, bio }) {
+    try {
+      const response = await this.databases.updateDocument(
+        "6787eaef00269d8615ae",
+        "679a66480030b6502b44",
+        documentId,
+        {
+          name: name,
+          username: username,
+          bio: bio,
+        }
+      );
+      return response;
+    } catch (error) {
+      console.log("Error updating document: ", error);
+    }
+  }
+
+  //==========CREATING A NEW POST===================
   async createPost({ title, location, caption }) {
     try {
-      const databaseID = "6787eaef00269d8615ae";
-      const collectionID = "679a67910018bef5cd9e";
+      const imageId = ID.unique();
 
       const newPost = await this.databases.createDocument(
-        databaseID,
-        collectionID,
+        config.appwriteDatabaseID,
+        "679a67910018bef5cd9e",
         ID.unique(),
         {
+          imageId,
           title,
           caption,
           location,
         }
       );
 
-      console.log("Post created successfully:", newPost);
+      alert("Post created successfully:", newPost);
       return newPost;
     } catch (error) {
-      console.log(error);
+      alert(error);
+    }
+  }
+
+  //==========UPLOAD THE IMAGE TO THE BUCKET===========
+  async uploadImage(file) {
+    try {
+      return await this.storage.createFile(
+        "678e84c3003d7bf76e6e",
+        ID.unique(),
+        file
+      );
+    } catch (error) {
+      console.error("Error:: uploading file:", error);
+    }
+  }
+
+  //========EXTRACT AND PROVIDE THE IMAGE URL FOR DISPLAYING ON THE WEBSITE=======
+  async getFilePreview(fileId) {
+    return this.storage.getFilePreview("678e84c3003d7bf76e6e", fileId);
+  }
+
+  //=======DELETE THE IMAGE FROM BUCKET============
+  async deleteImage(fileId) {
+    try {
+      await this.storage.deleteFile(
+        config.appwriteBucketID,
+        ID.unique(),
+        fileId
+      );
+      return true;
+    } catch (error) {
+      console.error("Error:: uploading file:", error);
+    }
+  }
+
+  //=====CHECKING TOTAL NUMBER OF INPUTS IN THE COLLECTION(OR ATTRIBUTES)======
+  async getDocumentCount() {
+    try {
+      const response = await this.databases.listDocuments(
+        "679a67910018bef5cd9e"
+      );
+      const totalCount = response.total;
+      console.log(`Total number of documents: ${totalCount}`);
+    } catch (error) {
+      console.error("Error :: fetching document count:", error);
+    }
+  }
+
+  //======STORYING FILE RELATED INFO INTO DB========
+  async storeFileInfo(fileId) {
+    try {
+      const document = await database.createDocument("679a67910018bef5cd9e", {
+        fileId: fileId,
+        fileName: "image.jpg",
+        uploadedAt: new Date().toISOString(),
+      });
+      console.log("File metadata stored:", document);
+    } catch (error) {
+      console.error("Error :: storing file info:", error);
     }
   }
 }

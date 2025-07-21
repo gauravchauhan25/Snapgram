@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Navigate, useNavigation  } from "react-router-dom";
 import api from "../services/appwrite";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userProfile, setUserProfile] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,9 +36,17 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        userProfile,
+        setUserProfile,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
+
 export const useUserContext = () => useContext(AuthContext);

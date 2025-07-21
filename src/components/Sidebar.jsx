@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { categories } from "../sources/categories";
-import profilePhoto from "../img/profile-photo.jpg";
+import { useUserContext } from "../context/AuthContext";
 
 export default function Sidebar({ selectedCategory, setSelectedCategory }) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { userProfile } = useUserContext();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const filteredCategories = isMobile
+    ? categories.filter(
+        (category) =>
+          category.name !== "Messages" &&
+          category.name !== "Notification" &&
+          category.name !== "Settings"
+      )
+    : categories;
+
+  const defaultImage =
+    "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
+
   return (
     <>
       <div className="sidebar">
-        <div className="logo">
-          <img
-            src="https://cdn-icons-png.flaticon.com/128/185/185985.png"
-            alt=""
-          />
-          <h2>Snapgram</h2>
-        </div>
-
-        {categories.map((category) => (
+        {filteredCategories.map((category) => (
           <div className="category">
             <Link
               to={`/${category.name}`}
@@ -25,7 +41,35 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
               onClick={() => setSelectedCategory(category.name)}
               key={category.name}
             >
-              <span>{category.icon}</span>
+              <span>
+                {category.name === "Profile" ? (
+                  <div
+                    style={{
+                      width: "1.7rem",
+                      height: "auto",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginLeft: "1rem",
+                      marginBottom: "0.4rem",
+                    }}
+                  >
+                    <img
+                      src={userProfile?.avatar_url || defaultImage}
+                      alt="Profile"
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  category.icon
+                )}
+              </span>
+
               <h3
                 style={
                   selectedCategory === "Messages" ? { display: "none" } : {}
@@ -37,21 +81,6 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
           </div>
         ))}
       </div>
-
-      {/* <Link
-        to="/create-post"
-        className="btn btn-primary"
-        style={selectedCategory === "Messages" ? { display: "none" } : {}}
-      >
-        Create Post
-      </Link> */}
-
-      {/* <div className="profile">
-        <div className="profile-photo">
-          <img src={profilePhoto} alt="" />
-        </div>
-        <h4>Gaurav Chauhan</h4>
-      </div> */}
     </>
   );
 }

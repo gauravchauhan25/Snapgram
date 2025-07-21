@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import "../page-styles/Settings.css";
 import api from "../services/appwrite";
 
 export default function Settings() {
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [language, setLanguage] = useState("English");
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [isLightTheme, setIsLightTheme] = useState(false);
 
   const handleThemeToggle = () => {
@@ -12,10 +17,6 @@ export default function Settings() {
     document.body.classList.toggle("light-theme-variables");
     document.body.style.transition = "all 500ms ease";
   };
-
-  const [isPrivate, setIsPrivate] = useState(false);
-  const [language, setLanguage] = useState("English");
-  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Settings";
@@ -45,6 +46,10 @@ export default function Settings() {
     alert("Settings saved successfully!");
   };
 
+  if (location.pathname === "/Settings/edit-profile") {
+    return <Outlet />;
+  }
+
   return (
     <div className="settings-container">
       <h1 className="settings-title">Settings</h1>
@@ -53,10 +58,8 @@ export default function Settings() {
       <div className="settings-section">
         <h2>Account</h2>
         <ul>
-          <li>Edit Profile</li>
+          <li onClick={() => navigate("edit-profile")}>Edit Profile</li>
           <li>Change Password</li>
-          <li>Two-Factor Authentication</li>
-          <li>Linked Accounts</li>
         </ul>
       </div>
 
@@ -72,9 +75,7 @@ export default function Settings() {
           />
         </div>
         <ul>
-          <li>Blocked Accounts</li>
           <li>Activity Status</li>
-          <li>Story Controls</li>
         </ul>
       </div>
 
@@ -84,8 +85,6 @@ export default function Settings() {
         <ul>
           <li>Push Notifications</li>
           <li>Email and SMS</li>
-          <li>Live and IGTV</li>
-          <li>Comments</li>
         </ul>
       </div>
 

@@ -33,7 +33,7 @@ const SigninForm = () => {
     if (password.length < 8 || password.length > 255) {
       showToastAlert("Password must be between 8 and 255 characters.");
       return;
-   }
+    }
 
     try {
       setLoading(true);
@@ -54,39 +54,10 @@ const SigninForm = () => {
         return;
       }
     } catch (error) {
-      console.log(error);
+      showToastAlert("Error logging in!");
     } finally {
       setLoading(false);
     }
-
-    // try {
-    //   const userSession = await api.login({ email, password });
-    //   if (userSession) {
-    //     window.location.reload();
-    //     navigate("/");
-    //     console.log("Login Successfully");
-    //   } else {
-    //     console.log("Login Failed!");
-    //     showToastAlert("Error logging in!");
-    //   }
-    // } catch (error) {
-    //   console.error("Error logging in:", error.message);
-    //   if (
-    //     error.message ==
-    //     "Invalid credentials. Please check the email and password."
-    //   ) {
-    //     showToastAlert("Incorect email or password!");
-    //   } else if (
-    //     error.message ==
-    //     " Invalid `password` param: Password must be between 8 and 256 characters long."
-    //   ) {
-    //     showToastAlert("Password must be between 8 and 256 characters long.");
-    //   } else {
-    //     showToastAlert("Error logging in!");
-    //   }
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   const googleLogin = async (e) => {
@@ -122,7 +93,7 @@ const SigninForm = () => {
           <p>To use Snapgram, please login!</p>
 
           <form onSubmit={handleLogin}>
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Enter you email</label>
             <input
               type="email"
               className=""
