@@ -64,15 +64,15 @@ const EditProfile = () => {
 
         const updatedUser = await api.getCurrentUser();
         if (updatedUser) {
-          setUserProfile({
+          setUserProfile((prev) => ({
+            ...prev,
             username: updatedUser.username,
             name: updatedUser.name,
             bio: updatedUser.bio,
             posts: updatedUser.posts,
             followers: updatedUser.followers || 0,
             following: updatedUser.following || 0,
-            avatar_url: updatedUser.avatar_url || "",
-          });
+          }));
         }
       } else {
         console.log("Error :: updating document");
@@ -98,10 +98,7 @@ const EditProfile = () => {
         <form onSubmit={handleEditProfile}>
           <div className="container-profile-photo">
             <div className="edit-profile-picture">
-              <img
-                src={userProfile?.avatar_url || defaultImage}
-                alt="Profile"
-              />
+              <img src={userProfile?.avatarUrl || defaultImage} alt="Profile" />
             </div>
 
             <div className="profile-info">

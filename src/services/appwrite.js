@@ -72,7 +72,7 @@ export class Services {
         "679a66480030b6502b44",
         ID.unique(),
         {
-          userId: userId, // stores Appwrite Auth ID as reference
+          userId: userId,
           username,
           name,
           email,
@@ -98,35 +98,6 @@ export class Services {
     }
   }
 
-  // async useUserProfile(userId) {
-  //   const [user, setUser] = useState(null);
-  //   const [loading, setLoading] = useState(true);
-
-  //   useEffect(() => {
-  //     if (!userId) return;
-
-  //     const fetchUser = async () => {
-  //       try {
-  //         const response = await this.databases.getDocument(
-  //           config.appwriteDatabaseID,
-  //           config.appwriteCollectionID,
-  //           userId
-  //         );
-  //         setUser(response);
-  //       } catch (error) {
-  //         console.error("Error fetching user profile:", error);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-
-  //     fetchUser();
-  //   }, [userId]);
-
-  //   return { user, loading };
-  // };
-
-  //======LOGGING IN WITH THE GOOGLE USING => GOOGLE OAUTH API=========
   async loginWithGoogle() {
     try {
       this.account.createOAuth2Session(
@@ -158,7 +129,7 @@ export class Services {
     return null;
   }
 
-  //=====CHECK IF THE USER ACCOUNT IS LISTED OR NOT=========
+  //=====CHECK FOR THE CURRENT USER ACCOUNT=========
   async getCurrentUser() {
     try {
       const currentAccount = await this.getAccount();
@@ -178,24 +149,6 @@ export class Services {
       return null;
     }
   }
-
-  //=======CHECK IF THE EMAIL IS CORRECT OR NOT=========
-  // async getUserByEmail(email) {
-  //   try {
-  //     const response = await this.databases.listDocuments(
-  //       config.appwriteDatabaseID,
-  //       config.appwriteCollectionID,
-  //       [Query.equal("email", email)]
-  //     );
-
-  //     return response.documents.length > 0 ? response.documents[0] : null;
-  //   } catch (error) {
-  //     console.error("Error fetching user:", error);
-  //     return null;
-  //   }
-  // }
-
-  //DATABASE CRUD OPERATIONS
 
   async getCurrentUserDocumentId() {
     try {
@@ -219,6 +172,41 @@ export class Services {
     }
   }
 
+  async getPosts() {
+    try {
+      const currentUser = await this.account.get();
+      const userId = currentUser.$id;
+
+      const response = await this.databases.listDocuments(
+        "6787eaef00269d8615ae",
+        "679a67910018bef5cd9e",
+        [Query.equal("userId", userId)]
+      );
+
+      if (response.documents.length === 0) {
+        throw new Error("No matching user posts found.");
+      }
+
+      return response.documents || [];
+    } catch (error) {
+      console.log("Error while getting document", error);
+      return [];
+    }
+  }
+
+  //==========UPLOAD THE AVATARIMAGE TO THE BUCKET===========
+  async uploadImage(file) {
+    try {
+      return await this.storage.createFile(
+        "678e84c3003d7bf76e6e",
+        ID.unique(),
+        file
+      );
+    } catch (error) {
+      console.error("Error:: uploading file:", error);
+    }
+  }
+
   //=========EDIT PROFILE==============
   async updateProfile({ documentId, name, username, bio }) {
     try {
@@ -238,35 +226,50 @@ export class Services {
     }
   }
 
-  //==========CREATING A NEW POST===================
-  async createPost({ title, location, caption }) {
+  //=============UPDATE POST COUNT==========================
+  async updatePostCount({ documentId, post }) {
     try {
-      const imageId = ID.unique();
-
-      const newPost = await this.databases.createDocument(
-        config.appwriteDatabaseID,
-        "679a67910018bef5cd9e",
-        ID.unique(),
+      const response = await this.databases.updateDocument(
+        "6787eaef00269d8615ae",
+        "679a66480030b6502b44",
+        documentId,
         {
-          imageId,
-          title,
-          caption,
-          location,
+          posts: post,
         }
       );
-
-      alert("Post created successfully:", newPost);
-      return newPost;
+      return response;
     } catch (error) {
-      alert(error);
+      console.log("Error updating post Count: ", error);
     }
   }
 
-  //==========UPLOAD THE IMAGE TO THE BUCKET===========
-  async uploadImage(file) {
+  //==========CREATING A NEW POST===================
+  async createPost({ userId, title, location, caption, fileUrl }) {
+    try {
+      const newPost = await this.databases.createDocument(
+        "6787eaef00269d8615ae",
+        "679a67910018bef5cd9e", //change the collectionId to posts not users in DB
+        ID.unique(),
+        {
+          userId,
+          title,
+          caption,
+          location,
+          fileUrl,
+          uploadedAt: new Date().toISOString(),
+        }
+      );
+      return newPost;
+    } catch (error) {
+      console.log("Error in createPost function! ", error);
+    }
+  }
+
+  //==========UPLOAD THE POSTIMAGE TO THE "POSTSMEDIA" BUCKET===========
+  async uploadPostImage(file) {
     try {
       return await this.storage.createFile(
-        "678e84c3003d7bf76e6e",
+        "678e84c3003d7bf76e6e", //change the bucket Id for posts
         ID.unique(),
         file
       );
@@ -277,7 +280,12 @@ export class Services {
 
   //========EXTRACT AND PROVIDE THE IMAGE URL FOR DISPLAYING ON THE WEBSITE=======
   async getFilePreview(fileId) {
-    return this.storage.getFilePreview("678e84c3003d7bf76e6e", fileId);
+    try {
+      return this.storage.getFileView("678e84c3003d7bf76e6e", fileId);
+    } catch (error) {
+      console.log("Error previewing", error);
+      return null;
+    }
   }
 
   //=======DELETE THE IMAGE FROM BUCKET============

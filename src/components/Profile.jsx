@@ -5,6 +5,8 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import api from "../services/appwrite";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Posts from "./Posts";
+import PostModal from "./PostModal";
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);
@@ -40,6 +42,16 @@ const Profile = () => {
     });
   };
 
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const openModal = (post) => {
+    setSelectedPost(post);
+  };
+
+  const closeModal = () => {
+    setSelectedPost(null);
+  };
+
   useEffect(() => {
     document.title = "Profile";
   }, []);
@@ -59,26 +71,30 @@ const Profile = () => {
       setLoading(true);
 
       const uploadedFile = await api.uploadImage(file);
-      if (uploadedFile) {
-        console.log("File uploaded successfully", uploadedFile);
+      console.log("Uploaded File Response:", uploadedFile);
+
+      if (!uploadedFile || !uploadedFile.$id) {
+        showToastAlert("File upload failed.");
+        return;
       }
 
       const fileUrl = await api.getFilePreview(uploadedFile.$id);
-      console.log(fileUrl)
       const documentId = await api.getCurrentUserDocumentId();
 
-      const updatedDoc = await api.updateProfile({
+      const updatedDoc = await api.updateAvatar({
         documentId,
-        avatar_url: fileUrl,
+        avatarUrl: fileUrl,
       });
 
       if (updatedDoc) {
         const freshProfile = await api.getCurrentUser();
         setUserProfile({
           ...userProfile,
-          avatar_url: freshProfile.avatar_url,
+          avatarUrl: freshProfile.avatarUrl,
         });
         showToastSuccess("Profile photo updated!");
+      } else {
+        showToastAlert("Failed to update profile photo.");
       }
     } catch (error) {
       console.error("Error updating profile photo:", error);
@@ -91,7 +107,7 @@ const Profile = () => {
   const defaultImage =
     "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
 
-  if (location.pathname === "/profile/edit-profile") {
+  if (location.pathname === "/Profile/edit-profile") {
     return <Outlet />;
   }
 
@@ -109,7 +125,7 @@ const Profile = () => {
         <div className="profile-header">
           <div className="profile-picture">
             <img
-              src={userProfile?.avatar_url || defaultImage}
+              src={userProfile?.avatarUrl || defaultImage}
               alt="Profile"
               onClick={handleImageClick}
               style={{ cursor: "pointer" }}
@@ -131,6 +147,7 @@ const Profile = () => {
 
             <div className="profile-description large">
               <p
+                style={{ whiteSpace: "pre-line" }}
                 dangerouslySetInnerHTML={{
                   __html: (userProfile?.bio || "").replace(/,/g, ",<br />"),
                 }}
@@ -150,6 +167,11 @@ const Profile = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="posts">
+        <Posts onPostClick={openModal} />
+        {selectedPost && <PostModal post={selectedPost} onClose={closeModal} />}
       </div>
     </>
   );

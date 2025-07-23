@@ -56,7 +56,7 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
                     }}
                   >
                     <img
-                      src={userProfile?.avatar_url || defaultImage}
+                      src={userProfile?.avatarUrl || defaultImage}
                       alt="Profile"
                       style={{
                         width: "30px",

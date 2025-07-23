@@ -8,8 +8,7 @@ import { useUserContext } from "../context/AuthContext";
 
 export default function RootLayout() {
   const [selectedCategory, setSelectedCategory] = useState("Home");
-
-  const { setUserProfile } = useUserContext();
+  const { setUserProfile, setUserPosts } = useUserContext();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -24,7 +23,7 @@ export default function RootLayout() {
             posts: userData.posts,
             followers: userData.followers || 0,
             following: userData.following || 0,
-            avatar_url: userData.avatar_url || "",
+            avatarUrl: userData.avatarUrl || "",
           });
         } else {
           console.error("User data not found!");
@@ -34,7 +33,17 @@ export default function RootLayout() {
       }
     };
 
+    const fetchUserPosts = async () => {
+      try {
+        const fetchedPosts = await api.getPosts();
+        setUserPosts(fetchedPosts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
     fetchUserProfile();
+    fetchUserPosts();
   }, []);
 
   return (

@@ -1,13 +1,3 @@
-
-export const users = [
-  {
-    id: "user1",
-    username: "Gaurav Chauhan",
-    imgProfileUrl: "",
-    userId: "@gaurav25",
-  },
-];
-
 export const stories = [
   {
     id: "story1",
@@ -219,8 +209,6 @@ export const posts = [
     ],
   },
 ];
-
-
 
 export const feeds = [
   {

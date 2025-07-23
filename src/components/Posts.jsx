@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useUserContext } from "../context/AuthContext";
+import api from "../services/appwrite";
 
-const Post = ({ posts, onPostClick }) => {
+const Post = ({ onPostClick }) => {
   const [isDisabled, setIsDisabled] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const { userProfile, userPosts } = useUserContext();
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,20 +26,20 @@ const Post = ({ posts, onPostClick }) => {
 
   return (
     <div className="post-grid">
-      {posts.map((post) => (
+      {userPosts.map((post) => (
         <div
           className={`post-card ${isDisabled ? "disabled" : ""}`}
-          key={post.id}
+          key={post.$id}
           onClick={() => !isDisabled && onPostClick(post)}
         >
           <div className="head">
             <div className="user">
               <div className="profile-photo">
-                <img src={post.imgProfileUrl} alt="" loading="lazy" />
+                <img src={post.imageUrl} alt="" loading="lazy" />
               </div>
               <div className="ingo">
-                <h3>{post.username}</h3>
-                <small>{post.location}</small>
+                <h3>{userProfile?.username}</h3>
+                <small>{post?.location}</small>
               </div>
             </div>
             <span className="edit">
@@ -46,14 +50,15 @@ const Post = ({ posts, onPostClick }) => {
           </div>
 
           <img
-            src={post.imageUrl}
-            alt={`Post ${post.id}`}
+            src={post?.fileUrl}
+            alt={`Post ${post?.$id}`}
             className="post-image"
           />
 
+          {/* 
           <div className="post-overlay">
             <span className="post-likes">❤️ {post.likeCount}</span>
-          </div>
+          </div> */}
 
           <div className="post-details">
             <div className="action-button">
@@ -117,7 +122,7 @@ const Post = ({ posts, onPostClick }) => {
               </div>
             </div>
 
-            <div className="liked-by">
+            {/* <div className="liked-by">
               <span>
                 <img src={post.likedBy1Profile} alt="" />
               </span>
@@ -131,17 +136,17 @@ const Post = ({ posts, onPostClick }) => {
                 Liked by <b> {post.likedBy} </b> and{" "}
                 <b>{post.likeCount} others</b>
               </p>
-            </div>
+            </div> */}
 
             <div className="caption">
               <p>
-                <b>{post.username} </b>
+                <b>{userProfile?.name} </b>
                 {post.caption}
-                <span className="harsh-tag">{post.hashtags.join("  ")}</span>
+                {/* <span className="harsh-tag">{post.hashtags.join("  ")}</span> */}
               </p>
             </div>
             <div className="comments text-muted">
-              <a href="#">View all {post.commentCount} comments</a>
+              {/* <a href="#">View all {post.commentCount} comments</a> */}
             </div>
           </div>
         </div>
