@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { categories } from "../sources/categories";
 import { useUserContext } from "../context/AuthContext";
 
@@ -33,11 +33,10 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
       <div className="sidebar">
         {filteredCategories.map((category) => (
           <div className="category">
-            <Link
+            <NavLink
               to={`/${category.name}`}
-              className={`menu-item ${
-                selectedCategory === category.name ? "active" : ""
-              }`}
+              className={`menu-item ${({ isActive }) =>
+                isActive ? "active" : ""}`}
               onClick={() => setSelectedCategory(category.name)}
               key={category.name}
             >
@@ -77,7 +76,7 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
               >
                 {category.name}
               </h3>
-            </Link>
+            </NavLink>
           </div>
         ))}
       </div>

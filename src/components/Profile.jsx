@@ -5,7 +5,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import api from "../services/appwrite";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Posts from "./Posts";
+import Post from "./Posts";
 import PostModal from "./PostModal";
 
 const Profile = () => {
@@ -14,7 +14,7 @@ const Profile = () => {
   const location = useLocation();
   const fileInputRef = useRef(null);
 
-  const { userProfile, setUserProfile } = useUserContext();
+  const { userProfile, setUserProfile, userPosts } = useUserContext();
 
   const showToastAlert = (text) => {
     toast.error(text, {
@@ -61,6 +61,8 @@ const Profile = () => {
   };
 
   const updateProfilePhoto = async (e) => {
+    e.preventDefault();
+
     const file = e.target.files?.[0];
     if (!file || !file.type.startsWith("image/")) {
       showToastAlert("Please select a valid image file.");
@@ -83,7 +85,7 @@ const Profile = () => {
 
       const updatedDoc = await api.updateAvatar({
         documentId,
-        avatarUrl: fileUrl,
+        fileUrl,
       });
 
       if (updatedDoc) {
@@ -115,6 +117,7 @@ const Profile = () => {
     <>
       <ToastContainer />
       <input
+        id="fileInput"
         type="file"
         accept="image/*"
         ref={fileInputRef}
@@ -169,8 +172,11 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="posts">
-        <Posts onPostClick={openModal} />
+      <div className="posts post-grid">
+        {userPosts.map((post) => (
+          <Post key={post.$id} post={post} onPostClick={openModal} />
+        ))}
+
         {selectedPost && <PostModal post={selectedPost} onClose={closeModal} />}
       </div>
     </>

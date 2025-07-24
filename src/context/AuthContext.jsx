@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userProfile, setUserProfile] = useState("");
   const [userPosts, setUserPosts] = useState([]);
+  const [allUsersPosts, setAllUsersPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,6 +46,8 @@ export const AuthProvider = ({ children }) => {
         setUserProfile,
         userPosts,
         setUserPosts,
+        allUsersPosts,
+        setAllUsersPosts,
       }}
     >
       {children}

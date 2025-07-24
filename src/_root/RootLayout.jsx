@@ -8,7 +8,7 @@ import { useUserContext } from "../context/AuthContext";
 
 export default function RootLayout() {
   const [selectedCategory, setSelectedCategory] = useState("Home");
-  const { setUserProfile, setUserPosts } = useUserContext();
+  const { setUserProfile, setUserPosts, setAllUsersPosts } = useUserContext();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -35,13 +35,23 @@ export default function RootLayout() {
 
     const fetchUserPosts = async () => {
       try {
-        const fetchedPosts = await api.getPosts();
+        const fetchedPosts = await api.getPostsOfUser();
         setUserPosts(fetchedPosts);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
     };
 
+    // const fetchAllUserPosts = async () => {
+    //   try {
+    //     const fetchedPosts = await api.getPostsOfAllUsers();
+    //     setAllUsersPosts(fetchedPosts);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
+    // fetchAllUserPosts();
     fetchUserProfile();
     fetchUserPosts();
   }, []);

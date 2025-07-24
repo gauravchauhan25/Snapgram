@@ -172,7 +172,7 @@ export class Services {
     }
   }
 
-  async getPosts() {
+  async getPostsOfUser() {
     try {
       const currentUser = await this.account.get();
       const userId = currentUser.$id;
@@ -180,11 +180,30 @@ export class Services {
       const response = await this.databases.listDocuments(
         "6787eaef00269d8615ae",
         "679a67910018bef5cd9e",
-        [Query.equal("userId", userId)]
+        [Query.equal("userId", userId), Query.orderDesc("$createdAt")]
       );
 
       if (response.documents.length === 0) {
         throw new Error("No matching user posts found.");
+      }
+
+      return response.documents || [];
+    } catch (error) {
+      console.log("Error while getting document", error);
+      return [];
+    }
+  }
+
+  async getPostsOfAllUsers() {
+    try {
+      const response = await this.databases.listDocuments(
+        "6787eaef00269d8615ae",
+        "679a67910018bef5cd9e",
+        [Query.orderDesc("$createdAt")]
+      );
+
+      if (response.documents.length === 0) {
+        throw new Error("No matching posts found.");
       }
 
       return response.documents || [];
@@ -204,6 +223,33 @@ export class Services {
       );
     } catch (error) {
       console.error("Error:: uploading file:", error);
+    }
+  }
+
+  //============UPDATE THE AVATAR URL IN THE DB=================
+  async updateAvatar({ documentId, fileUrl }) {
+    try {
+      if (!documentId || !fileUrl) {
+        console.error("Missing documentId or avatarURL", {
+          documentId,
+          fileUrl,
+        });
+        return null;
+      }
+
+      const response = await this.databases.updateDocument(
+        "6787eaef00269d8615ae",
+        "679a66480030b6502b44",
+        documentId,
+        {
+          avatarUrl: fileUrl,
+        }
+      );
+
+      return response;
+    } catch (error) {
+      console.error("Appwrite updateAvatar error:", error);
+      return null;
     }
   }
 

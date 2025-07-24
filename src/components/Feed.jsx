@@ -3,16 +3,16 @@ import { feeds } from "../sources/constants";
 import Spinner from "./Spinner";
 
 export default function Feed() {
-  const [isLiked, setIsLiked] = useState(false);
-  const [isBookmark, setIsBookmark] = useState(false);
+  // const [isLiked, setIsLiked] = useState(false);
+  // const [isBookmark, setIsBookmark] = useState(false);
 
-  const likedToggle = () => {
-    setIsLiked(!isLiked);
-  };
+  // const likedToggle = () => {
+  //   setIsLiked(!isLiked);
+  // };
 
-  const bookmarkToggle = () => {
-    setIsBookmark(!isBookmark);
-  };
+  // const bookmarkToggle = () => {
+  //   setIsBookmark(!isBookmark);
+  // };
 
   const [feedList, setFeedList] = useState([]);
   const [page, setPage] = useState(1);

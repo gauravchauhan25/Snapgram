@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { categories } from "../sources/categories";
 
 function Navbar() {
   const [isMobile, setIsMobile] = useState(window.innerWidth >= 768);
