@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { categories } from "../sources/categories";
+import { categories } from "../assets/categories";
 import { useUserContext } from "../context/AuthContext";
 
 export default function Sidebar({ selectedCategory, setSelectedCategory }) {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 650);
   const { userProfile } = useUserContext();
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 650);
     };
 
     window.addEventListener("resize", handleResize);
@@ -32,7 +32,7 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
     <>
       <div className="sidebar">
         {filteredCategories.map((category) => (
-          <div className="category">
+          <div className="">
             <NavLink
               to={`/${category.name}`}
               className={`menu-item ${({ isActive }) =>

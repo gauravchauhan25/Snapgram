@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import "../page-styles/Messages.css";
 
-const socket = io("http://localhost:3001");
+// const socket = io("http://localhost:3001");
 
 export default function Messages() {
   const [selectedChat, setSelectedChat] = useState(null);

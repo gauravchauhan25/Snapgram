@@ -3,8 +3,8 @@ import "../page-styles/CreatePost.css";
 import "../page-styles/EditProfile.css";
 import { useUserContext } from "../context/AuthContext";
 import api from "../services/appwrite";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { showToastAlert, showToastSuccess } from "./ReactToasts";
 
 const EditProfile = () => {
   const [loading, setLoading] = useState(false);
@@ -17,32 +17,6 @@ const EditProfile = () => {
   useEffect(() => {
     document.title = "Edit Profile";
   }, []);
-
-  const showToastAlert = (text) => {
-    toast.error(text, {
-      position: "top-right",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-
-  const showToastSuccess = (text) => {
-    toast.success(text, {
-      position: "top-right",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
 
   const handleEditProfile = async (e) => {
     e.preventDefault();

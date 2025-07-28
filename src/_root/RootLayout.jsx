@@ -79,12 +79,12 @@ export default function RootLayout() {
             <Outlet />
           </div>
 
-          <div className="right">
+          {/* <div className="right">
             <Routes>
               <Route path="/" element={<Right />}></Route>
               <Route path="/Home" element={<Right />}></Route>
             </Routes>
-          </div>
+          </div> */}
         </div>
       </main>
     </>

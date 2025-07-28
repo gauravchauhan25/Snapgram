@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { stories } from "../sources/constants";
+import { stories } from "../assets/constants";
 
 export default function Stories() {
   const storyContainerRef = useRef(null);

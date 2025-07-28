@@ -34,7 +34,7 @@ function Navbar() {
                     width="26"
                     height="26"
                     fill="currentColor"
-                    class="bi bi-bell"
+                    className="bi bi-bell"
                     viewBox="0 0 20 20"
                     style={{
                       fill: "var(--color-dark)",
@@ -52,7 +52,7 @@ function Navbar() {
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"
-                    class="bi bi-messenger"
+                    className="bi bi-messenger"
                     width="25"
                     height="30"
                     viewBox="0 0 20 20"

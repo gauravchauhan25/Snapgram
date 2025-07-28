@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { Route, Routes, Navigate, useNavigation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./_root/Home";
 import SigninForm from "./_auth/forms/SigninForm";
 import SignupForm from "./_auth/forms/SignupForm";
@@ -15,6 +15,7 @@ import api from "./services/appwrite";
 import CreatePost from "./components/CreatePost";
 import EditProfile from "./components/EditProfile";
 import Details from "./components/Details";
+import ProgressBar from './components/ProgressBar';
 import { useUserContext } from "./context/AuthContext";
 
 const ProtectedRoute = ({ element }) => {
@@ -33,6 +34,7 @@ export default function App() {
 
   return (
     <>
+    <ProgressBar />
       <Routes>
         {/* Authentication Routes */}
         <Route element={<AuthLayout />}>

@@ -256,10 +256,10 @@ main .container .left {
 }
 
 .category {
-  /* display: flex;
+  display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 0 0.5rem; */
+  /* margin: 0 0.5rem; */
 }
 
 .left .btn {
@@ -695,7 +695,7 @@ main .container .left {
   }
 
   .middle .feeds .feed {
-    width: 96vw;
+    width: 95vw;
   }
 
   .middle .stories .scroll-button {

@@ -5,7 +5,7 @@
 }
 
 .profile-header {
-  width: 45vw;
+  width: 50vw;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -55,18 +55,19 @@
 }
 
 .profile-info p {
+  width: 25vw;
+
   margin: 10px 0;
   font-size: 0.9rem;
 }
 
 .edit-profile-btn {
   display: inline-block;
-  padding: 0.6rem 1.7rem;
+  padding: 0.6rem 1.5rem;
   font-weight: 500;
-  border-radius: 10px;
+  border-radius: 8px;
   font-size: 0.85rem;
   margin-bottom: 1.8rem;
-  margin-top: 0.4rem;
   background-color: var(--color-white);
   color: var(--color-dark);
 }
@@ -130,10 +131,6 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.post-card .head {
-  display: none;
-}
-
 .post-details {
   display: none;
   width: 50%;
@@ -180,10 +177,10 @@
 
 .post-card:hover,
 .post-overlay {
-  transform: scale(1.03);
+  transform: scale(1.08);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  opacity: 0.6;
+  /* opacity: 0.8; */
 }
 
 .post-likes {
@@ -280,136 +277,62 @@
   z-index: 2000;
 }
 
-/* ====================COMMENT BOX CSS========================= */
-.comment-box {
-  width: 100%;
-  height: 80%;
-  max-width: 100%;
-  padding: 10px;
-}
-
-.comments-section {
-  overflow: auto;
-  width: 36vw;
-  max-height: 35vh;
-  margin: 1.2rem 0;
-}
-
-.user-comment {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  margin-bottom: 0.5rem;
-}
-
-@media (max-width: 1250px) {
-  .comments-section {
-    width: 35vw;
-    max-height: 20vh;
-  }
-}
-
-@media (max-width: 1050px) {
-  .comments-section {
-    width: 35vw;
-    max-height: 5vh;
-  }
-}
-
-.comment {
-  margin: 5px 0;
-  font-size: 0.9rem;
-  line-height: 1.2;
-}
-
-.no-comments {
-  color: var(--color-dark);
-  font-size: 0.85rem;
-}
-
-.add-comment-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  margin-top: 1rem;
-}
-
-.add-comment-section input {
-  width: 100%;
-  flex: 1;
-  padding: 10px;
-  border: 1px solid var(--color-primary-variant);
-  font-size: 0.9rem;
-  background-color: var(--color-white);
-  color: var(--color-dark);
-  border-radius: 20px;
-}
-
-.add-comment-section input:focus {
-  outline: none;
-  border: 1px solid var(--color-gray);
-}
-
-.add-comment-section button {
-  background: transparent;
-  color: var(--color-gray);
-  font-size: 0.9rem;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-}
-
-.add-comment-section button:disabled {
-  color: #b2dffc;
-  cursor: not-allowed;
-}
-
-@media (max-width: 800px) {
-  .modal-backdrop {
-    display: none;
-  }
-}
-
 @media (max-width: 1250px) {
   .modal-content {
     height: auto;
   }
 }
 
-@media (max-width: 768px) {
-  .profile-container {
-    width: 87vw;
-  }
-
-  .post-title {
+@media (max-width: 900px) {
+  .modal-backdrop {
     display: none;
   }
-
-  .post-grid {
-    grid-template-columns: 1fr;
-  }
-
   .post-card {
-    width: 83vw;
+    width: 30vw;
     flex-direction: column;
   }
+}
 
-  .post-image,
-  .post-details {
-    display: block;
-    width: 100%;
+@media (max-width: 768px) {
+  .profile-container {
+    width: 85vw;
   }
 
-  .post-card:hover .post-overlay {
+  .post-card:hover,
+  .post-overlay {
+    transform: none;
     cursor: pointer;
-    opacity: 0;
+  }
+
+  .edit-profile-btn {
+    padding: 0.5rem 1.2rem;
+    font-weight: 400;
+    border-radius: 7px;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-header {
+    width: 70vw;
+    gap: 2rem;
   }
 }
 
 @media screen and (max-width: 650px) {
-  .profile-description {
-    margin: 1rem auto;
+  .profile-container {
+    width: 100vw;
+    margin: 0 auto;
+  }
+
+  .profile-header {
+    width: 85vw;
+    gap: 0.1rem;
+  }
+  
+  .post-image,
+  .post-details {
+    display: block;
+    width: 100%;
   }
 
   .edit-profile h4 {
@@ -421,7 +344,7 @@
   }
 
   .profile-description.large {
-    display: none;
+    display: block;
   }
 
   .profile-picture {
@@ -429,12 +352,18 @@
   }
 
   .profile-picture img {
-    width: 6rem;
-    height: 6rem;
+    width: 8rem;
+    height: 8rem;
     align-items: start;
   }
 
   .post-card {
     width: 90vw;
+    margin: 0 auto;
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
   }
 }

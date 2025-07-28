@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { notifications } from "../sources/notification";
+import { notifications } from "../assets/notification";
 
 export default function Notification() {
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { feeds } from "../sources/constants";
+import { feeds } from "../assets/constants";
 import Spinner from "./Spinner";
 
 export default function Feed() {

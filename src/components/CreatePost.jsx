@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../page-styles/CreatePost.css";
-import { ToastContainer } from "react-toastify";
 import api from "../services/appwrite";
 import { useUserContext } from "../context/AuthContext";
+import { ToastContainer } from "react-toastify";
 import { showToastAlert, showToastSuccess } from "./ReactToasts";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
-  const [tags, setTags] = useState("");
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
@@ -61,14 +60,13 @@ const CreatePost = () => {
           posts: (prev.posts || 0) + 1,
         }));
         
+        showToastSuccess("Post Uploaded!");
         setTitle("");
         setCaption("");
-        setTags("");
         setLocation("");
         setFile(null);
         document.getElementById("fileInput").value = "";
 
-        showToastSuccess("Post Uploaded!");
       } else {
         console.log("Error :: creating post");
       }
@@ -149,20 +147,6 @@ const CreatePost = () => {
               rows="5"
               required
             ></textarea>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="location" className="label">
-              Tags
-            </label>
-            <input
-              type="text"
-              id="tags"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              className="input"
-              required
-            />
           </div>
 
           <div className="form-group">

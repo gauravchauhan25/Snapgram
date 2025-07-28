@@ -25,8 +25,8 @@ export class Services {
 
   constructor() {
     this.client
-      .setEndpoint("https://cloud.appwrite.io/v1")
-      .setProject("67864fab003947d4618c");
+      .setEndpoint(config.appwriteUrl)
+      .setProject(config.appwriteProjectID);
 
     this.account = new Account(this.client);
     this.databases = new Databases(this.client);
@@ -68,8 +68,8 @@ export class Services {
   async addUser(userId, name, email, username, phoneNumber) {
     try {
       const response = await this.databases.createDocument(
-        "6787eaef00269d8615ae",
-        "679a66480030b6502b44",
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
         ID.unique(),
         {
           userId: userId,
@@ -136,8 +136,8 @@ export class Services {
       if (!currentAccount) return null;
 
       const currentUser = await this.databases.listDocuments(
-        "6787eaef00269d8615ae",
-        "679a66480030b6502b44",
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
         [Query.equal("userId", currentAccount.$id)]
       );
 
@@ -156,8 +156,8 @@ export class Services {
       const userId = currentUser.$id;
 
       const response = await this.databases.listDocuments(
-        "6787eaef00269d8615ae",
-        "679a66480030b6502b44",
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
         [Query.equal("userId", userId)]
       );
 
@@ -178,8 +178,8 @@ export class Services {
       const userId = currentUser.$id;
 
       const response = await this.databases.listDocuments(
-        "6787eaef00269d8615ae",
-        "679a67910018bef5cd9e",
+        config.appwriteDatabaseID,
+        config.appwritePostsCollectionID,
         [Query.equal("userId", userId), Query.orderDesc("$createdAt")]
       );
 
@@ -197,9 +197,9 @@ export class Services {
   async getPostsOfAllUsers() {
     try {
       const response = await this.databases.listDocuments(
-        "6787eaef00269d8615ae",
-        "679a67910018bef5cd9e",
-        [Query.orderDesc("$createdAt")]
+        config.appwriteDatabaseID,
+        config.appwritePostsCollectionID,
+         [Query.orderDesc("$createdAt")]
       );
 
       if (response.documents.length === 0) {
@@ -217,7 +217,7 @@ export class Services {
   async uploadImage(file) {
     try {
       return await this.storage.createFile(
-        "678e84c3003d7bf76e6e",
+        config.appwriteBucketID,
         ID.unique(),
         file
       );
@@ -238,8 +238,8 @@ export class Services {
       }
 
       const response = await this.databases.updateDocument(
-        "6787eaef00269d8615ae",
-        "679a66480030b6502b44",
+       config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID, 
         documentId,
         {
           avatarUrl: fileUrl,
@@ -257,8 +257,8 @@ export class Services {
   async updateProfile({ documentId, name, username, bio }) {
     try {
       const response = await this.databases.updateDocument(
-        "6787eaef00269d8615ae",
-        "679a66480030b6502b44",
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
         documentId,
         {
           name: name,
@@ -276,8 +276,8 @@ export class Services {
   async updatePostCount({ documentId, post }) {
     try {
       const response = await this.databases.updateDocument(
-        "6787eaef00269d8615ae",
-        "679a66480030b6502b44",
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
         documentId,
         {
           posts: post,
@@ -293,8 +293,8 @@ export class Services {
   async createPost({ userId, title, location, caption, fileUrl }) {
     try {
       const newPost = await this.databases.createDocument(
-        "6787eaef00269d8615ae",
-        "679a67910018bef5cd9e", //change the collectionId to posts not users in DB
+        config.appwriteDatabaseID,  
+        config.appwritePostsCollectionID,
         ID.unique(),
         {
           userId,
@@ -311,11 +311,24 @@ export class Services {
     }
   }
 
+  async deletePost(postsDocId) {
+    try {
+      const newPost = await this.databases.deleteDocument(
+       config.appwriteDatabaseID,
+        config.appwritePostsCollectionID,
+        postsDocId
+      );
+      return newPost;
+    } catch (error) {
+      console.log("Error in createPost function! ", error);
+    }
+  }
+
   //==========UPLOAD THE POSTIMAGE TO THE "POSTSMEDIA" BUCKET===========
   async uploadPostImage(file) {
     try {
       return await this.storage.createFile(
-        "678e84c3003d7bf76e6e", //change the bucket Id for posts
+        config.appwriteBucketID,
         ID.unique(),
         file
       );
@@ -327,7 +340,7 @@ export class Services {
   //========EXTRACT AND PROVIDE THE IMAGE URL FOR DISPLAYING ON THE WEBSITE=======
   async getFilePreview(fileId) {
     try {
-      return this.storage.getFileView("678e84c3003d7bf76e6e", fileId);
+      return this.storage.getFileView(config.appwriteBucketID, fileId);
     } catch (error) {
       console.log("Error previewing", error);
       return null;
@@ -345,33 +358,6 @@ export class Services {
       return true;
     } catch (error) {
       console.error("Error:: uploading file:", error);
-    }
-  }
-
-  //=====CHECKING TOTAL NUMBER OF INPUTS IN THE COLLECTION(OR ATTRIBUTES)======
-  async getDocumentCount() {
-    try {
-      const response = await this.databases.listDocuments(
-        "679a67910018bef5cd9e"
-      );
-      const totalCount = response.total;
-      console.log(`Total number of documents: ${totalCount}`);
-    } catch (error) {
-      console.error("Error :: fetching document count:", error);
-    }
-  }
-
-  //======STORYING FILE RELATED INFO INTO DB========
-  async storeFileInfo(fileId) {
-    try {
-      const document = await database.createDocument("679a67910018bef5cd9e", {
-        fileId: fileId,
-        fileName: "image.jpg",
-        uploadedAt: new Date().toISOString(),
-      });
-      console.log("File metadata stored:", document);
-    } catch (error) {
-      console.error("Error :: storing file info:", error);
     }
   }
 }

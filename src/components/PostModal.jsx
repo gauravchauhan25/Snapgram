@@ -1,8 +1,11 @@
 import React from "react";
 import { useUserContext } from "../context/AuthContext";
+import api from "../services/appwrite";
+import { ToastContainer } from "react-toastify";
+import { showToastAlert, showToastSuccess } from "./ReactToasts";
 
 const PostModal = ({ post, onClose }) => {
-  const { userProfile } = useUserContext();
+  const { userProfile, setUserProfile } = useUserContext();
 
   const timeAgo = (timestamp) => {
     const now = new Date();
@@ -29,51 +32,90 @@ const PostModal = ({ post, onClose }) => {
     return "just now";
   };
 
+  const deletePost = async (postsDocId) => {
+    try {
+      const currentUser = await api.getCurrentUser();
+      const del = await api.deletePost(postsDocId);
+      const documentId = await api.getCurrentUserDocumentId();
+
+      if (del) {
+        await api.updatePostCount({
+          documentId,
+          post: (currentUser.posts || 0) - 1,
+        });
+
+        setUserProfile((prev) => ({
+          ...prev,
+          posts: (prev.posts || 0) - 1,
+        }));
+        showToastSuccess("Post Deleted");
+      } else {
+        showToastAlert("Error deleting Post!");
+      }
+      return;
+    } catch (error) {
+      console.log("Error");
+    }
+  };
+
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <img src={post?.fileUrl} alt="post" className="modal-image" />
+    <>
+      <ToastContainer />
+      <div className="modal-backdrop" onClick={onClose}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <img src={post?.fileUrl} alt="post" className="modal-image" />
 
-        <div className="modal-details">
-          <div className="head">
-            <div className="user">
-              <div className="profile-photo">
-                <img src={userProfile?.avatarUrl} alt="avatar" loading="lazy" />
+          <div className="modal-details">
+            <div className="head">
+              <div className="user">
+                <div className="profile-photo">
+                  <img
+                    src={userProfile?.avatarUrl}
+                    alt="avatar"
+                    loading="lazy"
+                  />
+                </div>
+
+                <div className="ingo">
+                  <h3>{userProfile?.username}</h3>
+                  <small>{post?.location}</small>
+                </div>
               </div>
 
-              <div className="ingo">
-                <h3>{userProfile?.username}</h3>
-                <small>{post?.location}</small>
+              <div className="timeAgo">
+                <small>{timeAgo(post?.uploadedAt)}</small>
               </div>
-            </div>
 
-            <div className="timeAgo">
-              <small>{timeAgo(post?.uploadedAt)}</small>
-            </div>
-
-            <span className="edit">
-              <i>
-                <span className="material-symbols-outlined">more_vert</span>
-              </i>
-            </span>
-          </div>
-
-          <div className="caption">
-            <p>
-              <b>{userProfile?.username} </b>
-              {post?.caption}
-              <span className="harsh-tag">
-                {(post?.hashtags || []).join("  ")}
+              <span className="edit">
+                <i>
+                  <span
+                    className="material-symbols-outlined"
+                    onClick={() => deletePost(post.$id)}
+                  >
+                    more_vert
+                  </span>
+                </i>
               </span>
-            </p>
+            </div>
+
+            <div className="caption">
+              <br />
+              <p>
+                <b>{userProfile?.username} </b>
+                {post?.caption}
+                <span className="harsh-tag">
+                  {(post?.hashtags || []).join("  ")}
+                </span>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <button className="close-button" onClick={onClose}>
-        <span class="material-symbols-outlined">close</span>
-      </button>
-    </div>
+        <button className="close-button" onClick={onClose}>
+          <span className="material-symbols-outlined">close</span>
+        </button>
+      </div>
+    </>
   );
 };
 
