@@ -118,7 +118,7 @@ const Profile = () => {
               <img
                 src={userProfile?.avatarUrl || defaultImage}
                 alt="Profile"
-                onClick={handleProfileClick}
+                onClick={handleImageClick}
                 style={{ cursor: "pointer" }}
               />
             </div>
