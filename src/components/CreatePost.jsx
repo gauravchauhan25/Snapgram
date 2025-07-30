@@ -21,13 +21,13 @@ const CreatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(location.length > 30) {
+    if (location.length > 30) {
       showToastAlert("Location must be less than 30 characters.");
       return;
-    } 
-    if(!file) {
+    }
+    if (!file) {
       showToastAlert("Please select an image to upload.");
-      return;   
+      return;
     }
 
     try {
@@ -68,14 +68,13 @@ const CreatePost = () => {
           ...prev,
           posts: (prev.posts || 0) + 1,
         }));
-        
+
         showToastSuccess("Post Uploaded!");
         setTitle("");
         setCaption("");
         setLocation("");
         setFile(null);
         document.getElementById("fileInput").value = "";
-
       } else {
         console.log("Error :: creating post");
       }
@@ -169,7 +168,7 @@ const CreatePost = () => {
             >
               {file ? (
                 <>
-                  <div className="flex flex-1 justify-center w-full p-5 lg:p-10">
+                  <div className="drag-drop-container">
                     <img
                       src={URL.createObjectURL(file)}
                       alt="image"
@@ -179,15 +178,17 @@ const CreatePost = () => {
                 </>
               ) : (
                 <div className="form-group">
-                  <h3 className="mb-2 mt-6">Drag photo here</h3>
-                  <p className="mb-6">SVG, PNG, JPG</p>
-                  <button
-                    type="button"
-                    className="create-post-btn"
-                    onClick={() => document.getElementById("fileInput").click()}
-                  >
-                    Select from computer
-                  </button>
+                  <h4 className="drag-drop-text">
+                    Drag photo here to add! or{" "}
+                    <span
+                      className="choose-file"
+                      onClick={() =>
+                        document.getElementById("fileInput").click()
+                      }
+                    >
+                      choose your file
+                    </span>
+                  </h4>
                 </div>
               )}
             </div>

@@ -14,7 +14,6 @@ const UserNotFound = () => {
       <div className="user-not-found-card">
         <h2>Sorry, this page isn't available!</h2>
         <p>The link you followed may be broken, or the page may have been removed. <span className="go-to-snapgram" onClick={() => navigate("/")}>Go back to Snapgram.</span></p>
-        {/* <button onClick={() => navigate("/")}>Redirect to Home Page</button> */}
       </div>
     </div>
   );

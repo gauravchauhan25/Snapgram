@@ -8,7 +8,7 @@
 }
 
 .title {
-  font-size: 1.7rem;
+  font-size: 1.3rem;
   font-weight: bold;
   margin-bottom: 1rem;
   color: var(--color-dark);
@@ -97,6 +97,26 @@
   display: none;
 }
 
+.drag-drop-text {
+  font-size: 1rem;
+  color: var(--color-dark);
+  margin: 0.5rem 0;
+}
+
+.drag-drop-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  width: 100%;
+  padding: 1.25rem;
+}
+
+.choose-file {
+  color: var(--color-primary);
+  font-weight: bold;
+  cursor: pointer;
+}
+
 /* Dropzone styles */
 .dropzone {
   width: 100%;
@@ -132,5 +152,9 @@
 @media screen and (max-width: 768px) {
   .edit-container {
     width: 90vw;
+  }
+
+  .title {
+    font-size: 1.1rem;
   }
 }
