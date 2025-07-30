@@ -34,6 +34,12 @@
   display: none;
 }
 
+.profile-description p {
+  font-size: 0.9rem;
+  line-height: 1.4rem;
+  color: var(--color-dark);
+}
+
 .edit-profile {
   width: 100%;
   margin: 0 20px;
@@ -106,7 +112,6 @@
   }
 } */
 
-
 /* User not found */
 .user-not-found-container {
   display: flex;
@@ -132,7 +137,8 @@
   color: var(--color-primary);
   cursor: pointer;
   text-decoration: underline;
-} 
+}
+
 /* Profile photo styling */
 .profile-photo {
   position: relative;
@@ -158,7 +164,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(5px); 
+  backdrop-filter: blur(5px);
   z-index: 1000;
 }
 
@@ -465,9 +471,15 @@
     display: none;
   }
 
+  .profile-description p {
+    font-size: 0.85rem;
+    line-height: 1.4rem;
+    color: var(--color-dark);
+  }
+
   .profile-picture img {
-    width: 7rem;
-    height: 7rem;
+    width: 6.5rem;
+    height: 6.5rem;
   }
 
   .post-card {
