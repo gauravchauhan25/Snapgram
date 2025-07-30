@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./_root/Home";
 import SigninForm from "./_auth/forms/SigninForm";
@@ -14,9 +14,13 @@ import Reels from "./components/Reels";
 import api from "./services/appwrite";
 import CreatePost from "./components/CreatePost";
 import EditProfile from "./components/EditProfile";
-import Details from "./components/Details";
-import ProgressBar from './components/ProgressBar';
+import ProgressBar from "./components/ProgressBar";
+import ChangePassword from "./components/ChangePassword";
+import "nprogress/nprogress.css";
 import { useUserContext } from "./context/AuthContext";
+import "./App.css";
+import UsersProfile from "./components/UsersProfile";
+import UserNotFound from "./components/UserNotFound";
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated } = useUserContext();
@@ -34,7 +38,7 @@ export default function App() {
 
   return (
     <>
-    <ProgressBar />
+      <ProgressBar />
       <Routes>
         {/* Authentication Routes */}
         <Route element={<AuthLayout />}>
@@ -55,7 +59,9 @@ export default function App() {
         {/* Protected Routes */}
         <Route element={<RootLayout />}>
           <Route index element={<ProtectedRoute element={<Home />} />} />
+
           <Route path="/Home" element={<ProtectedRoute element={<Home />} />} />
+
           <Route
             path="/Search"
             element={<ProtectedRoute element={<Search />} />}
@@ -63,6 +69,10 @@ export default function App() {
           <Route
             path="/Notification"
             element={<ProtectedRoute element={<Notification />} />}
+          />
+          <Route
+            path="/Create"
+            element={<ProtectedRoute element={<CreatePost />} />}
           />
           <Route
             path="/Messages"
@@ -73,6 +83,7 @@ export default function App() {
             element={<ProtectedRoute element={<Settings />} />}
           >
             <Route path="edit-profile" element={<EditProfile />} />
+            <Route path="change-password" element={<ChangePassword />} />
           </Route>
 
           <Route
@@ -87,12 +98,12 @@ export default function App() {
           </Route>
 
           <Route
-            path="/Create"
-            element={<ProtectedRoute element={<CreatePost />} />}
+            path="/:username"
+            element={<ProtectedRoute element={<UsersProfile />} />}
           />
           <Route
-            path="/enter-details"
-            element={<ProtectedRoute element={<Details />} />}
+            path="/user-not-found"
+            element={<ProtectedRoute element={<UserNotFound />} />}
           />
         </Route>
       </Routes>

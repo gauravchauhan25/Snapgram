@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import "../page-styles/Settings.css";
 import api from "../services/appwrite";
+import { useThemeContext } from "../context/ThemeContext";
 
 export default function Settings() {
   const [isPrivate, setIsPrivate] = useState(false);
@@ -10,13 +11,13 @@ export default function Settings() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const {isLightTheme, setIsLightTheme , handleThemeToggle} = useThemeContext();
 
-  const handleThemeToggle = () => {
-    setIsLightTheme(!isLightTheme);
-    document.body.classList.toggle("light-theme-variables");
-    document.body.style.transition = "all 500ms ease";
-  };
+  // const handleThemeToggle = () => {
+  //   setIsLightTheme(!isLightTheme);
+  //   document.body.classList.toggle("light-theme-variables");
+  //   document.body.style.transition = "all 500ms ease";
+  // };
 
   useEffect(() => {
     document.title = "Settings";
@@ -46,7 +47,7 @@ export default function Settings() {
     alert("Settings saved successfully!");
   };
 
-  if (location.pathname === "/Settings/edit-profile") {
+  if (location.pathname === "/Settings/edit-profile" || location.pathname === "/Settings/change-password") {
     return <Outlet />;
   }
 
@@ -59,7 +60,7 @@ export default function Settings() {
         <h2>Account</h2>
         <ul>
           <li onClick={() => navigate("edit-profile")}>Edit Profile</li>
-          <li>Change Password</li>
+          <li onClick={() => navigate("change-password")}>Change Password</li>
         </ul>
       </div>
 

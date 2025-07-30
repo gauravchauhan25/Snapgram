@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import NProgress from "nprogress";
-import "nprogress/nprogress.css";
+import "nprogress/nprogress.css"; // Load default first
 
 NProgress.configure({ showSpinner: false });
 
@@ -18,4 +18,5 @@ export default function ProgressBar() {
   }, [location.pathname]);
 
   return null;
+
 }

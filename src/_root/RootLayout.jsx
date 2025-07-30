@@ -11,13 +11,14 @@ export default function RootLayout() {
   const { setUserProfile, setUserPosts, setAllUsersPosts } = useUserContext();
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const fetchMyProfile = async () => {
       try {
         const userData = await api.getCurrentUser();
 
         if (userData) {
           setUserProfile({
             username: userData.username,
+            email: userData.email,
             name: userData.name,
             bio: userData.bio,
             posts: userData.posts,
@@ -33,7 +34,7 @@ export default function RootLayout() {
       }
     };
 
-    const fetchUserPosts = async () => {
+    const fetchMyPosts = async () => {
       try {
         const fetchedPosts = await api.getPostsOfUser();
         setUserPosts(fetchedPosts);
@@ -52,8 +53,8 @@ export default function RootLayout() {
     // };
 
     // fetchAllUserPosts();
-    fetchUserProfile();
-    fetchUserPosts();
+    fetchMyProfile();
+    fetchMyPosts();
   }, []);
 
   return (

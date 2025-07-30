@@ -21,6 +21,15 @@ const CreatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if(location.length > 30) {
+      showToastAlert("Location must be less than 30 characters.");
+      return;
+    } 
+    if(!file) {
+      showToastAlert("Please select an image to upload.");
+      return;   
+    }
+
     try {
       setLoading(true);
 
@@ -30,7 +39,7 @@ const CreatePost = () => {
       if (uploadedFile) {
         console.log("File uploaded successfully", uploadedFile);
       } else {
-        console.log("Error while uploading!");
+        showToastAlert("File Not Supported!");
         return;
       }
 
@@ -103,7 +112,7 @@ const CreatePost = () => {
   return (
     <>
       <ToastContainer />
-      <div className="create-post-container">
+      <div className="edit-container">
         <h1 className="title">Create a New Post</h1>
 
         <form onSubmit={handleSubmit}>

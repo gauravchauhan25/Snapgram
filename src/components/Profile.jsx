@@ -18,6 +18,16 @@ const Profile = () => {
   const { userProfile, setUserProfile, userPosts } = useUserContext();
   const [selectedPost, setSelectedPost] = useState(null);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleProfileClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const openModal = (post) => {
     setSelectedPost(post);
   };
@@ -27,8 +37,10 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    document.title = "Profile";
-  }, []);
+     if (userProfile?.username) {
+      document.title = `${userProfile.name} • Snapgram`;
+    }
+  }, [userProfile]);
 
   const handleImageClick = () => {
     fileInputRef.current.click();
@@ -90,69 +102,95 @@ const Profile = () => {
   return (
     <>
       <ToastContainer />
-      <input
-        id="fileInput"
-        type="file"
-        accept="image/*"
-        ref={fileInputRef}
-        style={{ display: "none" }}
-        onChange={updateProfilePhoto}
-      />
-      <div className="center profile-container">
-        <div className="profile-header">
-          <div className="profile-picture">
-            <img
-              src={userProfile?.avatarUrl || defaultImage}
-              alt="Profile"
-              onClick={handleImageClick}
-              style={{ cursor: "pointer" }}
-            />
-          </div>
-          <div className="profile-info">
-            <div className="edit-profile">
-              <div className="user-info">
-                <h4>{userProfile?.name}</h4>
-                <h5>@{userProfile?.username}</h5>
-              </div>
+      <div className="fade-in">
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={updateProfilePhoto}
+        />
 
-              <button
-                className="edit-profile-btn"
-                onClick={() => navigate("edit-profile")}
-              >
-                Edit Profile
-              </button>
+        <div className="profile-container">
+          <div className="profile-header">
+            <div className="profile-picture">
+              <img
+                src={userProfile?.avatarUrl || defaultImage}
+                alt="Profile"
+                onClick={handleProfileClick}
+                style={{ cursor: "pointer" }}
+              />
             </div>
+            <div className="profile-info">
+              <div className="edit-profile">
+                <div className="user-info">
+                  <h4>{userProfile?.name}</h4>
+                  <h5>@{userProfile?.username}</h5>
+                </div>
 
-            <div className="profile-description large">
-              <p
-                style={{ whiteSpace: "pre-line" }}
-                dangerouslySetInnerHTML={{
-                  __html: (userProfile?.bio || "").replace(/,/g, ",<br />"),
-                }}
-              ></p>
-
-              <div className="follower-info">
-                <span>
-                  <strong>{userProfile?.posts}</strong> Posts
-                </span>
-                <span>
-                  <strong>{userProfile?.followers}</strong> Followers
-                </span>
-                <span>
-                  <strong>{userProfile?.following}</strong> Following
-                </span>
+                <button
+                  className="edit-profile-btn"
+                  onClick={() => navigate("edit-profile")}
+                >
+                  Edit Profile
+                </button>
               </div>
+
+              <div className="profile-description large-device">
+                <p
+                  style={{ whiteSpace: "pre-line" }}
+                  dangerouslySetInnerHTML={{
+                    __html: (userProfile?.bio || "").replace(/,/g, ",<br />"),
+                  }}
+                ></p>
+
+                <div className="follower-info">
+                  <span>
+                    <strong>{userProfile?.posts}</strong> Posts
+                  </span>
+                  <span>
+                    <strong>{userProfile?.followers}</strong> Followers
+                  </span>
+                  <span>
+                    <strong>{userProfile?.following}</strong> Following
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="profile-description small-device">
+            <p
+              style={{ whiteSpace: "pre-line" }}
+              dangerouslySetInnerHTML={{
+                __html: (userProfile?.bio || "").replace(/,/g, ",<br />"),
+              }}
+            ></p>
+
+            <div className="follower-info">
+              <span>
+                <strong>{userProfile?.posts}</strong> Posts
+              </span>
+              <span>
+                <strong>{userProfile?.followers}</strong> Followers
+              </span>
+              <span>
+                <strong>{userProfile?.following}</strong> Following
+              </span>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="posts post-grid">
-        {userPosts.map((post) => (
-          <Post key={post.$id} post={post} onPostClick={openModal} />
-        ))}
+        <div className="posts post-grid">
+          {userPosts.map((post) => (
+            <Post key={post.$id} post={post} onPostClick={openModal} />
+          ))}
 
-        {selectedPost && <PostModal post={selectedPost} onClose={closeModal} />}
+          {selectedPost && (
+            <PostModal post={selectedPost} onClose={closeModal} />
+          )}
+        </div>
       </div>
     </>
   );

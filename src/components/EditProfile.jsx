@@ -66,7 +66,7 @@ const EditProfile = () => {
   return (
     <>
       <ToastContainer />
-      <div className="create-post-container">
+      <div className="edit-container">
         <h1 className="title">Edit Profile</h1>
 
         <form onSubmit={handleEditProfile}>

@@ -19,7 +19,6 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
   const filteredCategories = isMobile
     ? categories.filter(
         (category) =>
-          category.name !== "Messages" &&
           category.name !== "Notification" &&
           category.name !== "Settings"
       )
@@ -32,13 +31,13 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
     <>
       <div className="sidebar">
         {filteredCategories.map((category) => (
-          <div className="">
+          <div className="" key={category.name}>
             <NavLink
               to={`/${category.name}`}
               className={`menu-item ${({ isActive }) =>
                 isActive ? "active" : ""}`}
               onClick={() => setSelectedCategory(category.name)}
-              key={category.name}
+              // key={category.name}
             >
               <span>
                 {category.name === "Profile" ? (

@@ -1,4 +1,4 @@
-.container-profile-photo{
+.container-profile-photo {
   display: flex;
   align-items: center;
   width: 100%;
@@ -15,11 +15,11 @@
 }
 
 .edit-profile-picture img {
-    width: 4.5rem;
-    height: 4.5rem;
-    align-self: start;
-    border-radius: 50%;
-    object-fit: cover;
+  width: 4.5rem;
+  height: 4.5rem;
+  align-self: start;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .edit-profile-picture img:hover {
@@ -44,5 +44,10 @@
 .edit-btn:hover {
   opacity: 0.7;
   transition: all 0.3s ease;
+}
 
+.error-message {
+  font-size: 0.9rem;
+  color: red;
+  margin: 0.2rem 0;
 }

@@ -1,8 +1,8 @@
-import React from "react";
 import { useUserContext } from "../context/AuthContext";
 import api from "../services/appwrite";
 import { ToastContainer } from "react-toastify";
 import { showToastAlert, showToastSuccess } from "./ReactToasts";
+import EditPost from "./EditPost";
 
 const PostModal = ({ post, onClose }) => {
   const { userProfile, setUserProfile } = useUserContext();
@@ -90,7 +90,7 @@ const PostModal = ({ post, onClose }) => {
                 <i>
                   <span
                     className="material-symbols-outlined"
-                    onClick={() => deletePost(post.$id)}
+                    // onClick={() => <EditPost />}
                   >
                     more_vert
                   </span>
@@ -101,8 +101,13 @@ const PostModal = ({ post, onClose }) => {
             <div className="caption">
               <br />
               <p>
-                <b>{userProfile?.username} </b>
-                {post?.caption}
+                {/* <b>{userProfile?.username} </b> */}
+                <p
+                  style={{ whiteSpace: "pre-line" }}
+                  dangerouslySetInnerHTML={{
+                    __html: (post?.caption || "").replace(/,/g, ",<br />"),
+                  }}
+                ></p>
                 <span className="harsh-tag">
                   {(post?.hashtags || []).join("  ")}
                 </span>

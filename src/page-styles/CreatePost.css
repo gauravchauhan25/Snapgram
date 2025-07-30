@@ -1,5 +1,5 @@
 /* CreatePost.css */
-.create-post-container {
+.edit-container {
   width: 60vw;
   height: auto;
   margin: 1rem 0;
@@ -130,7 +130,7 @@
 }
 
 @media screen and (max-width: 768px) {
-  .create-post-container {
+  .edit-container {
     width: 90vw;
   }
 }

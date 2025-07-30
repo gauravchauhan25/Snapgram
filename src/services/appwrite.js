@@ -44,11 +44,12 @@ export class Services {
         name
       );
 
-      if (!newAccount) throw new Error("Account creation failed");
+      if (!newAccount) {
+        return null;
+      }
 
       // Use the Appwrite Auth user ID
       const userId = newAccount.$id;
-
       const newUser = await this.addUser(
         userId,
         name,
@@ -59,8 +60,8 @@ export class Services {
 
       return newUser;
     } catch (error) {
-      console.log(error);
-      return error;
+      console.log("Account creation failed: ", error);
+      return null;
     }
   }
 
@@ -84,8 +85,8 @@ export class Services {
       console.log("Added to DB successfully!");
       return response;
     } catch (error) {
-      console.error("Error :: adding to DB!", JSON.stringify(error, null, 2));
-      throw error;
+      console.error("Error :: adding user: !", JSON.stringify(error, null, 2));
+      return null;
     }
   }
 
@@ -106,7 +107,7 @@ export class Services {
         "https://77q2rz-3000.csb.app/sign-in"
       );
     } catch (error) {
-      console.error("Google Login Error:", error);
+      console.error("Error :: Google Login:", error);
     }
   }
 
@@ -115,7 +116,7 @@ export class Services {
     try {
       return await this.account.deleteSessions("current");
     } catch (error) {
-      console.log(error);
+      console.log("Error :: logout", error);
     }
   }
 
@@ -199,7 +200,7 @@ export class Services {
       const response = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwritePostsCollectionID,
-         [Query.orderDesc("$createdAt")]
+        [Query.orderDesc("$createdAt")]
       );
 
       if (response.documents.length === 0) {
@@ -238,8 +239,8 @@ export class Services {
       }
 
       const response = await this.databases.updateDocument(
-       config.appwriteDatabaseID,
-        config.appwriteUsersCollectionID, 
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
         documentId,
         {
           avatarUrl: fileUrl,
@@ -293,7 +294,7 @@ export class Services {
   async createPost({ userId, title, location, caption, fileUrl }) {
     try {
       const newPost = await this.databases.createDocument(
-        config.appwriteDatabaseID,  
+        config.appwriteDatabaseID,
         config.appwritePostsCollectionID,
         ID.unique(),
         {
@@ -314,7 +315,7 @@ export class Services {
   async deletePost(postsDocId) {
     try {
       const newPost = await this.databases.deleteDocument(
-       config.appwriteDatabaseID,
+        config.appwriteDatabaseID,
         config.appwritePostsCollectionID,
         postsDocId
       );
@@ -358,6 +359,49 @@ export class Services {
       return true;
     } catch (error) {
       console.error("Error:: uploading file:", error);
+    }
+  }
+
+  //CHANGES THE PASSWORD
+  async changePassword({ email, currPassword, newPassword }) {
+    try {
+      const response = await this.account.updatePassword(
+        newPassword,
+        currPassword
+      );
+      if (!response) {
+        return null;
+      }
+
+      return response;
+    } catch (error) {
+      console.log("Error updating password::", error);
+    }
+  }
+
+  async getPostsByUserId(userId) {
+    try {
+      return await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwritePostsCollectionID,
+        [Query.equal("userId", userId), Query.orderDesc("$createdAt")]
+      );
+    } catch (error) {
+      console.error("Error fetching posts by user ID:", error);
+      return [];  
+    }
+  }
+
+  async getUserProfileByUsername(username) {
+    try {
+      return await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
+        [Query.equal("username", username)]
+      );
+0    } catch (error) {
+      console.error("Error fetching user profile by username:", error);
+      return null;  
     }
   }
 }
