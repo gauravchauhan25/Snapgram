@@ -45,6 +45,14 @@
   text-decoration: none;
   list-style: none;
   border: none;
+  -webkit-tap-highlight-color: transparent; 
+  -webkit-touch-callout: none;             
+}
+
+html, body, *, *::before, *::after {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body {
