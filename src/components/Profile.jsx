@@ -10,7 +10,7 @@ import Post from "./Posts";
 import PostModal from "./PostModal";
 
 const Profile = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const fileInputRef = useRef(null);
@@ -56,7 +56,7 @@ const Profile = () => {
     }
 
     try {
-      setLoading(true);
+      // setLoading(true);
 
       const uploadedFile = await api.uploadImage(file);
       console.log("Uploaded File Response:", uploadedFile);

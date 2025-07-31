@@ -28,7 +28,11 @@ const Post = ({ post, onPostClick }) => {
           <div className="head">
             <div className="user">
               <div className="profile-photo">
-                <img src={userProfile?.avatarUrl || defaultImage} alt="" loading="lazy" />
+                <img
+                  src={userProfile?.avatarUrl || defaultImage}
+                  alt=""
+                  loading="lazy"
+                />
               </div>
               <div className="ingo">
                 <h3>{userProfile?.username}</h3>
@@ -47,15 +51,7 @@ const Post = ({ post, onPostClick }) => {
             <p>
               <b>{userProfile?.name} </b>
               {post.caption}
-              {/* <span className="harsh-tag">
-              {(post.hashtags || []).join("  ")}
-            </span> */}
             </p>
-          </div>
-
-          {/* Comments placeholder */}
-          <div className="comments text-muted">
-            {/* <a href="#">View all {post.commentCount} comments</a> */}
           </div>
         </div>
         <img

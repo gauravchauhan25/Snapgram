@@ -1,105 +1,90 @@
-import React, { useState, useEffect } from "react";
-import { feeds } from "../assets/constants";
-import Spinner from "./Spinner";
+import { useNavigate } from "react-router-dom";
 
-export default function Feed() {
-  // const [isLiked, setIsLiked] = useState(false);
-  // const [isBookmark, setIsBookmark] = useState(false);
+export default function Feed({ feedData, loading }) {
+  const navigate = useNavigate();
 
-  // const likedToggle = () => {
-  //   setIsLiked(!isLiked);
-  // };
+  const timeAgo = (timestamp) => {
+    const now = new Date();
+    const uploadedDate = new Date(timestamp);
+    const secondsAgo = Math.floor((now - uploadedDate) / 1000);
 
-  // const bookmarkToggle = () => {
-  //   setIsBookmark(!isBookmark);
-  // };
+    const intervals = [
+      { label: "year", seconds: 31536000 },
+      { label: "month", seconds: 2592000 },
+      { label: "week", seconds: 604800 },
+      { label: "day", seconds: 86400 },
+      { label: "hour", seconds: 3600 },
+      { label: "minute", seconds: 60 },
+      { label: "second", seconds: 1 },
+    ];
 
-  const [feedList, setFeedList] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-
-  const feedsPerPage = 4;
-
-  // Load the initial feeds
-  useEffect(() => {
-    loadMoreFeeds();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Load more feeds
-  useEffect(() => {
-    if (page > 1) loadMoreFeeds();
-  }, [page]);
-
-  // Function to load more feeds
-  const loadMoreFeeds = () => {
-    setLoading(true);
-
-    setTimeout(() => {
-      const newFeeds = feeds.slice(
-        (page - 1) * feedsPerPage,
-        page * feedsPerPage
-      );
-      setFeedList((prevFeeds) => [...prevFeeds, ...newFeeds]);
-      setLoading(false);
-    }, 500);
-  };
-
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight
-    ) {
-      if (!loading) {
-        setPage((prevPage) => prevPage + 1);
+    for (const interval of intervals) {
+      const count = Math.floor(secondsAgo / interval.seconds);
+      if (count >= 1) {
+        return `${count} ${interval.label}${count > 1 ? "s" : ""} ago`;
       }
     }
+
+    return "just now";
   };
+
+  if (loading) {
+    return (
+      <div className="spinner">
+        <img
+          src="https://media.tenor.com/hQz0Kl373E8AAAAi/loading-waiting.gif"
+          alt="Loading..."
+        />
+      </div>
+    );
+  }
 
   return (
     <div>
-      <div className="feeds">
-        {feedList.map((feed) => (
-          <div className="feed" key={feed.id}>
-            <div className="head">
-              <div className="user">
-                <div className="profile-photo">
-                  <img src={feed.imgProfileUrl} alt="" loading="lazy" />
-                </div>
-                <div className="ingo">
-                  <h3>{feed.username}</h3>
-                  <small>{feed.location}</small>
-                </div>
+      <div className="fade-in">
+        <div className="feed">
+          <div className="head">
+            <div className="user">
+              <div className="profile-photo">
+                <img src={feedData.user.avatarUrl} alt="" loading="lazy" />
               </div>
-              <span className="edit">
-                <i>
-                  <span className="material-symbols-outlined">more_vert</span>
-                </i>
-              </span>
+
+              <div className="info">
+                <h3 onClick={() => navigate(`/${feedData.user.username}`)}>
+                  {feedData.user.name}
+                </h3>
+                <small>{feedData.location}</small>
+              </div>
             </div>
 
-            <div className="caption">
-              <p>
-                <b>{feed.username} </b>
-                {feed.caption}
-                <span className="harsh-tag">{feed.hashtags.join("  ")}</span>
-              </p>
+            <div style={{ position: "relative", right: "1px"}}>
+              <small>{timeAgo(feedData?.uploadedAt)}</small>
             </div>
-
-            <div className="photo">
-              <img src={feed.imageUrl} alt="" />
-            </div>
-
-            <div className="action-button">
-              <div className="interaction-buttons"></div>
-            </div>
+            <span className="edit">
+              <i>
+                <span className="material-symbols-outlined">more_vert</span>
+              </i>
+            </span>
           </div>
-        ))}
-      </div>
 
-      {/* Spinner */}
-      <Spinner loading={loading} />
+          <div className="caption">
+            <p>
+              <b onClick={() => navigate(`/${feedData.user.username}`)}>
+                {feedData.user.username}{" "}
+              </b>
+              {feedData.caption}
+            </p>
+          </div>
+
+          <div className="photo">
+            <img src={feedData.fileUrl} alt="" />
+          </div>
+
+          <div className="action-button">
+            <div className="interaction-buttons"></div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

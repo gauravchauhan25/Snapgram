@@ -394,13 +394,16 @@ main .container .left {
 .head {
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
 }
 
 .user {
   display: flex;
   gap: 1rem;
   margin-bottom: 0.5rem;
+}
+
+.head .user .info h3, span {
+  cursor: pointer;
 }
 
 .head .ingo h3 {

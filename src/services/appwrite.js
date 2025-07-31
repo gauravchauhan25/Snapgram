@@ -9,13 +9,6 @@ import {
 } from "appwrite";
 import config from "./config.js";
 
-// const appwriteConfig = {
-//   url: "https://cloud.appwrite.io/v1",
-//   projectId: "67864fab003947d4618c",
-//   userCollectionId: "679a66480030b6502b44",
-//   databaseID: "6787eaef00269d8615ae",
-// };
-
 export class Services {
   client = new Client();
   account;
@@ -34,7 +27,7 @@ export class Services {
     this.avatars = new Avatars(this.client);
   }
 
-  //=======CREATE AN ACCOUNT============
+  //================CREATES A ACCOUNT FOR USER=================
   async createAccount({ email, password, name, username, phoneNumber }) {
     try {
       const newAccount = await this.account.create(
@@ -47,8 +40,6 @@ export class Services {
       if (!newAccount) {
         return null;
       }
-
-      // Use the Appwrite Auth user ID
       const userId = newAccount.$id;
       const newUser = await this.addUser(
         userId,
@@ -90,7 +81,7 @@ export class Services {
     }
   }
 
-  //========LOGIN FOR USER==========
+  //============LOGIN FOR USER===================
   async login({ email, password }) {
     try {
       return await this.account.createEmailPasswordSession(email, password);
@@ -99,6 +90,7 @@ export class Services {
     }
   }
 
+  //=============FOR GOOGLE OAUTH LOGIN====================
   async loginWithGoogle() {
     try {
       this.account.createOAuth2Session(
@@ -111,7 +103,7 @@ export class Services {
     }
   }
 
-  //===========LOGOUT THE USER===============
+  //===========LOGOUTS THE USER===============
   async logout() {
     try {
       return await this.account.deleteSessions("current");
@@ -120,7 +112,7 @@ export class Services {
     }
   }
 
-  //=====CHECK CURRENT ACCOUNT SESSION PRESENT OR NOT=======
+  //=======GETS THE CURRENT ACCOUNT SESSION IF PRESENT==========
   async getAccount() {
     try {
       return await this.account.get();
@@ -130,7 +122,7 @@ export class Services {
     return null;
   }
 
-  //=====CHECK FOR THE CURRENT USER ACCOUNT=========
+  //=============GET THE DATA OF THE CURRENT USER ACCOUNT=====================
   async getCurrentUser() {
     try {
       const currentAccount = await this.getAccount();
@@ -151,6 +143,24 @@ export class Services {
     }
   }
 
+  //==============CHANGES THE PASSWORD FOR CURRENT USER==================
+  async changePassword({ email, currPassword, newPassword }) {
+    try {
+      const response = await this.account.updatePassword(
+        newPassword,
+        currPassword
+      );
+      if (!response) {
+        return null;
+      }
+
+      return response;
+    } catch (error) {
+      console.log("Error updating password::", error);
+    }
+  }
+
+  //==========GET THE DOCUMENT COUNT OF CURRENT USER===============
   async getCurrentUserDocumentId() {
     try {
       const currentUser = await this.account.get();
@@ -173,6 +183,43 @@ export class Services {
     }
   }
 
+  //==============EDIT CURRENT USER PROFILE=================
+  async updateProfile({ documentId, name, username, bio }) {
+    try {
+      const response = await this.databases.updateDocument(
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
+        documentId,
+        {
+          name: name,
+          username: username,
+          bio: bio,
+        }
+      );
+      return response;
+    } catch (error) {
+      console.log("Error updating document: ", error);
+    }
+  }
+
+  //=============UPDATE POST COUNT==========================
+  async updatePostCount({ documentId, post }) {
+    try {
+      const response = await this.databases.updateDocument(
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
+        documentId,
+        {
+          posts: post,
+        }
+      );
+      return response;
+    } catch (error) {
+      console.log("Error updating post Count: ", error);
+    }
+  }
+
+  //================GETS ALL THE POSTS OF CURRENT LOGGED IN USER===========
   async getPostsOfUser() {
     try {
       const currentUser = await this.account.get();
@@ -195,6 +242,7 @@ export class Services {
     }
   }
 
+  //=======GET THE POSTS OF ALL THE USERS IN THE DB AND SHOW THEM IN THE FEED=====
   async getPostsOfAllUsers() {
     try {
       const response = await this.databases.listDocuments(
@@ -214,7 +262,63 @@ export class Services {
     }
   }
 
-  //==========UPLOAD THE AVATARIMAGE TO THE BUCKET===========
+  async getUserById(userId) {
+  try {
+    const response = await this.databases.listDocuments(
+      config.appwriteDatabaseID,
+      config.appwriteUsersCollectionID,
+      [Query.equal('userId', userId)]
+    );
+
+    if (response.documents.length > 0) {
+      return response.documents[0];  
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    return null;
+  }
+}
+
+
+  //==========CREATING A NEW POST===================
+  async createPost({ userId, title, location, caption, fileUrl }) {
+    try {
+      const newPost = await this.databases.createDocument(
+        config.appwriteDatabaseID,
+        config.appwritePostsCollectionID,
+        ID.unique(),
+        {
+          userId,
+          title,
+          caption,
+          location,
+          fileUrl,
+          uploadedAt: new Date().toISOString(),
+        }
+      );
+      return newPost;
+    } catch (error) {
+      console.log("Error in createPost function! ", error);
+    }
+  }
+
+  //=================DELETE SELECTED POST FROM DB===============
+  async deletePost(postsDocId) {
+    try {
+      const newPost = await this.databases.deleteDocument(
+        config.appwriteDatabaseID,
+        config.appwritePostsCollectionID,
+        postsDocId
+      );
+      return newPost;
+    } catch (error) {
+      console.log("Error in createPost function! ", error);
+    }
+  }
+
+  //==========UPLOAD THE AVATARIMAGE TO THE STORAGE===========
   async uploadImage(file) {
     try {
       return await this.storage.createFile(
@@ -254,78 +358,7 @@ export class Services {
     }
   }
 
-  //=========EDIT PROFILE==============
-  async updateProfile({ documentId, name, username, bio }) {
-    try {
-      const response = await this.databases.updateDocument(
-        config.appwriteDatabaseID,
-        config.appwriteUsersCollectionID,
-        documentId,
-        {
-          name: name,
-          username: username,
-          bio: bio,
-        }
-      );
-      return response;
-    } catch (error) {
-      console.log("Error updating document: ", error);
-    }
-  }
-
-  //=============UPDATE POST COUNT==========================
-  async updatePostCount({ documentId, post }) {
-    try {
-      const response = await this.databases.updateDocument(
-        config.appwriteDatabaseID,
-        config.appwriteUsersCollectionID,
-        documentId,
-        {
-          posts: post,
-        }
-      );
-      return response;
-    } catch (error) {
-      console.log("Error updating post Count: ", error);
-    }
-  }
-
-  //==========CREATING A NEW POST===================
-  async createPost({ userId, title, location, caption, fileUrl }) {
-    try {
-      const newPost = await this.databases.createDocument(
-        config.appwriteDatabaseID,
-        config.appwritePostsCollectionID,
-        ID.unique(),
-        {
-          userId,
-          title,
-          caption,
-          location,
-          fileUrl,
-          uploadedAt: new Date().toISOString(),
-        }
-      );
-      return newPost;
-    } catch (error) {
-      console.log("Error in createPost function! ", error);
-    }
-  }
-
-  async deletePost(postsDocId) {
-    try {
-      const newPost = await this.databases.deleteDocument(
-        config.appwriteDatabaseID,
-        config.appwritePostsCollectionID,
-        postsDocId
-      );
-      return newPost;
-    } catch (error) {
-      console.log("Error in createPost function! ", error);
-    }
-  }
-
-  //==========UPLOAD THE POSTIMAGE TO THE "POSTSMEDIA" BUCKET===========
+  //==========UPLOAD THE POST FILE TO THE "MEDIA" BUCKET===========
   async uploadPostImage(file) {
     try {
       return await this.storage.createFile(
@@ -348,7 +381,7 @@ export class Services {
     }
   }
 
-  //=======DELETE THE IMAGE FROM BUCKET============
+  //===========DELETE THE IMAGE FROM BUCKET===============
   async deleteImage(fileId) {
     try {
       await this.storage.deleteFile(
@@ -362,23 +395,7 @@ export class Services {
     }
   }
 
-  //CHANGES THE PASSWORD
-  async changePassword({ email, currPassword, newPassword }) {
-    try {
-      const response = await this.account.updatePassword(
-        newPassword,
-        currPassword
-      );
-      if (!response) {
-        return null;
-      }
-
-      return response;
-    } catch (error) {
-      console.log("Error updating password::", error);
-    }
-  }
-
+  //===========GETS THE POSTS OF USER BY USERID(FOR CREATING MULTIUSERS)===========
   async getPostsByUserId(userId) {
     try {
       return await this.databases.listDocuments(
@@ -388,10 +405,11 @@ export class Services {
       );
     } catch (error) {
       console.error("Error fetching posts by user ID:", error);
-      return [];  
+      return [];
     }
   }
 
+  //===========GETS THE DATA OF USER BY USERNAME(FOR CREATING MULTIUSERS)===========
   async getUserProfileByUsername(username) {
     try {
       return await this.databases.listDocuments(
@@ -399,9 +417,10 @@ export class Services {
         config.appwriteUsersCollectionID,
         [Query.equal("username", username)]
       );
-0    } catch (error) {
+      0;
+    } catch (error) {
       console.error("Error fetching user profile by username:", error);
-      return null;  
+      return null;
     }
   }
 }

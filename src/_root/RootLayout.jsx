@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Outlet, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import Right from "../components/Right";
 import api from "../services/appwrite";
 import { useUserContext } from "../context/AuthContext";
 
@@ -43,16 +42,6 @@ export default function RootLayout() {
       }
     };
 
-    // const fetchAllUserPosts = async () => {
-    //   try {
-    //     const fetchedPosts = await api.getPostsOfAllUsers();
-    //     setAllUsersPosts(fetchedPosts);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-
-    // fetchAllUserPosts();
     fetchMyProfile();
     fetchMyPosts();
   }, []);
