@@ -95,8 +95,8 @@ export class Services {
     try {
       this.account.createOAuth2Session(
         "google",
-        "https://77q2rz-3000.csb.app/Home",
-        "https://77q2rz-3000.csb.app/sign-in"
+        "https://snapgram-private.vercel.app/Home",
+        "https://snapgram-private.vercel.app/sign-in"
       );
     } catch (error) {
       console.error("Error :: Google Login:", error);
