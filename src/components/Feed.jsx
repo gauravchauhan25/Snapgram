@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useUsersContext } from "../context/UsersContext";
 
 export default function Feed({ feedData }) {
   const navigate = useNavigate();
@@ -28,7 +27,6 @@ export default function Feed({ feedData }) {
 
     return "just now";
   };
-
 
   return (
     <div>

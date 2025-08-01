@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../page-styles/CreatePost.css";
 import "../page-styles/EditProfile.css";
-import { useAuthContext } from "../context/AuthContext";
 import api from "../services/appwrite";
 import { ToastContainer } from "react-toastify";
 import { showToastAlert, showToastSuccess } from "./ReactToasts";
+import { useProfileContext } from "../context/ProfileContext";
 
 const EditProfile = () => {
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ const EditProfile = () => {
   const [username, setUsername] = useState();
   const [bio, setBio] = useState();
 
-  const { userProfile, setUserProfile } = useAuthContext();
+  const { userProfile, setUserProfile } = useProfileContext();
 
   useEffect(() => {
     document.title = "Edit Profile";
