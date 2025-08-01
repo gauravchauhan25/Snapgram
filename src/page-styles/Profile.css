@@ -27,10 +27,9 @@
 
 .profile-description {
   margin: 1rem;
-  /* width: 100%; */
 }
 
-.profile-description.small-device {
+.small-device {
   display: none;
 }
 
@@ -96,21 +95,6 @@
   gap: 10px;
   margin-top: 20px;
 }
-/* 
-.profile-fade-in {
-  animation: fadeInProfile 0.5s ease-in-out;
-}
-
-@keyframes fadeInProfile {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0px);
-  }
-} */
 
 /* User not found */
 .user-not-found-container {
@@ -427,11 +411,6 @@
   }
 
   .edit-profile-btn {
-    /* padding: 0.3rem 1rem;
-    font-weight: 300;
-    border-radius: 7px;
-    font-size: 0.75rem; */
-    /* margin-bottom: 1.5rem; */
     display: none;
   }
 
@@ -443,14 +422,14 @@
 
 @media screen and (max-width: 650px) {
   .profile-container {
-    width: 98vw;
+    width: 90vw;
     margin: 1rem auto;
   }
 
   .profile-header {
-    width: 100vw;
+    width: 95vw;
     gap: 0.1rem;
-    align-items: normal;
+    /* align-items: center; */
   }
 
   .post-image,
@@ -459,16 +438,24 @@
     width: 100%;
   }
 
+  .edit-profile {
+    margin: 0;
+  }
+
   .edit-profile h4 {
     font-size: 1.1rem;
   }
 
-  .profile-description.small-device {
+  .small-device {
     display: block;
   }
 
-  .profile-description.large-device {
+  .large-device {
     display: none;
+  }
+
+  .profile-description {
+    padding: 0 0.4rem;
   }
 
   .profile-description p {
@@ -478,8 +465,12 @@
   }
 
   .profile-picture img {
-    width: 6.5rem;
-    height: 6.5rem;
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+
+  .posts {
+    margin-top: 0;
   }
 
   .post-card {
