@@ -56,15 +56,12 @@ export default function Feed({ feedData, loading }) {
                 <small>{feedData.location}</small>
               </div>
             </div>
-
-            <div style={{ position: "relative", right: "1px"}}>
-              <small>{timeAgo(feedData?.uploadedAt)}</small>
+            
+            <div>
+              <div style={{ position: "relative", right: "1rem" }}>
+                <small>{timeAgo(feedData?.uploadedAt)}</small>
+              </div>
             </div>
-            <span className="edit">
-              <i>
-                <span className="material-symbols-outlined">more_vert</span>
-              </i>
-            </span>
           </div>
 
           <div className="caption">
