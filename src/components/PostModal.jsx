@@ -1,11 +1,11 @@
-import { useAuthContext } from "../context/AuthContext";
 import api from "../services/appwrite";
 import { ToastContainer } from "react-toastify";
 import { showToastAlert, showToastSuccess } from "./ReactToasts";
 import EditPost from "./EditPost";
+import { useProfileContext } from "../context/ProfileContext";
 
 const PostModal = ({ post, onClose }) => {
-  const { userProfile, setUserProfile } = useAuthContext();
+  const { userProfile, setUserProfile } = useProfileContext();
 
   const timeAgo = (timestamp) => {
     const now = new Date();
