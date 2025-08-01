@@ -95,8 +95,10 @@ export class Services {
     try {
       this.account.createOAuth2Session(
         "google",
-        "https://snapgram-private.vercel.app/Home",
-        "https://snapgram-private.vercel.app/sign-in"
+        // "https://snapgram-private.vercel.app/Home",
+        // "https://snapgram-private.vercel.app/sign-in"
+        "http://localhost:5173/Home",
+        "http://localhost:5173/sign-in"
       );
     } catch (error) {
       console.error("Error :: Google Login:", error);
@@ -263,24 +265,23 @@ export class Services {
   }
 
   async getUserById(userId) {
-  try {
-    const response = await this.databases.listDocuments(
-      config.appwriteDatabaseID,
-      config.appwriteUsersCollectionID,
-      [Query.equal('userId', userId)]
-    );
+    try {
+      const response = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
+        [Query.equal("userId", userId)]
+      );
 
-    if (response.documents.length > 0) {
-      return response.documents[0];  
-    } else {
+      if (response.documents.length > 0) {
+        return response.documents[0];
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching user by ID:", error);
       return null;
     }
-  } catch (error) {
-    console.error("Error fetching user by ID:", error);
-    return null;
   }
-}
-
 
   //==========CREATING A NEW POST===================
   async createPost({ userId, title, location, caption, fileUrl }) {
