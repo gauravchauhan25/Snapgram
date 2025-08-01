@@ -4,7 +4,7 @@ import "./signup.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../../services/appwrite";
-import { useUserContext } from "../../context/AuthContext";
+import { useAuthContext } from "../../context/AuthContext";
 import bgImage from "./social-media-bg.webp";
 import { showToastAlert } from "../../components/ReactToasts";
 
@@ -12,7 +12,7 @@ const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { checkAuthUser } = useUserContext();
+  const { checkAuthUser } = useAuthContext();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {

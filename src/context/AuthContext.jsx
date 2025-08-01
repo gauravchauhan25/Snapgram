@@ -1,20 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import api from "../services/appwrite";
 import LoadingScreen from "../components/LoadingScreen";
+import { UsersProvider } from "./UsersContext"; 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userProfile, setUserProfile] = useState("");
-  const [userPosts, setUserPosts] = useState([]);
-  const [allUsersPosts, setAllUsersPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const session = await api.getAccount();
+        const session = await api.getAccount();  
         setIsAuthenticated(session);
       } catch (error) {
         console.error("Error checking authentication:", error);
@@ -27,24 +25,20 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  if (loading) return <LoadingScreen />
+  if (loading) return <LoadingScreen />;
 
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
         setIsAuthenticated,
-        userProfile,
-        setUserProfile,
-        userPosts,
-        setUserPosts,
-        allUsersPosts,
-        setAllUsersPosts,
       }}
     >
-      {children}
+      <UsersProvider>
+        {children}
+      </UsersProvider>
     </AuthContext.Provider>
   );
 };
 
-export const useUserContext = () => useContext(AuthContext);
+export const useAuthContext = () => useContext(AuthContext);

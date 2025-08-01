@@ -17,20 +17,19 @@ import EditProfile from "./components/EditProfile";
 import ProgressBar from "./components/ProgressBar";
 import ChangePassword from "./components/ChangePassword";
 import "nprogress/nprogress.css";
-import { useUserContext } from "./context/AuthContext";
+import { useAuthContext } from "./context/AuthContext";
 import "./App.css";
 import UsersProfile from "./components/UsersProfile";
 import UserNotFound from "./components/UserNotFound";
 
 const ProtectedRoute = ({ element }) => {
-  const { isAuthenticated } = useUserContext();
+  const { isAuthenticated } = useAuthContext();
   return isAuthenticated ? element : <Navigate to="/sign-in" replace />;
 };
 
 export default function App() {
-  const { isAuthenticated } = useUserContext();
+  const { isAuthenticated } = useAuthContext();
   const [user, setUser] = useState(null);
-  const [data, setData] = useState([]);
 
   useEffect(() => {
     api.getAccount().then(setUser);

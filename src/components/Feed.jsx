@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { useUsersContext } from "../context/UsersContext";
 
-export default function Feed({ feedData, loading }) {
+export default function Feed({ feedData }) {
   const navigate = useNavigate();
 
   const timeAgo = (timestamp) => {
@@ -28,16 +29,6 @@ export default function Feed({ feedData, loading }) {
     return "just now";
   };
 
-  if (loading) {
-    return (
-      <div className="spinner">
-        <img
-          src="https://media.tenor.com/hQz0Kl373E8AAAAi/loading-waiting.gif"
-          alt="Loading..."
-        />
-      </div>
-    );
-  }
 
   return (
     <div>

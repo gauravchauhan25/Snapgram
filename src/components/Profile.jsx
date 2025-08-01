@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../page-styles/Profile.css";
-import { useUserContext } from "../context/AuthContext";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import api from "../services/appwrite";
 import { ToastContainer } from "react-toastify";
@@ -8,14 +7,16 @@ import { showToastAlert, showToastSuccess } from "./ReactToasts";
 
 import Post from "./Posts";
 import PostModal from "./PostModal";
+import { useProfileContext } from "../context/ProfileContext";
 
 const Profile = () => {
+  const { userProfile, setUserProfile, userPosts } = useProfileContext();
+  
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const fileInputRef = useRef(null);
 
-  const { userProfile, setUserProfile, userPosts } = useUserContext();
   const [selectedPost, setSelectedPost] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);

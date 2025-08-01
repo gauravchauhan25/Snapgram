@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showToastAlert, showToastSuccess } from "../../components/ReactToasts";
 import api from "../../services/appwrite";
-import { useUserContext } from "../../context/AuthContext";
+import { useAuthContext } from "../../context/AuthContext";
 
 const SignupForm = () => {
   const [name, setName] = useState("");
@@ -17,7 +17,7 @@ const SignupForm = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { checkAuthUser } = useUserContext();
+  const { checkAuthUser } = useAuthContext();
 
   const handleSignIn = async (e) => {
     e.preventDefault();

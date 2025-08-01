@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import { ToastContainer } from "react-toastify";
 import { showToastAlert, showToastSuccess } from "./ReactToasts";
-import { useUserContext } from "../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import api from "../services/appwrite";
 
 const ProfilePhotoModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
-  const { userProfile, setUserProfile, userPosts } = useUserContext();
+  const { userProfile, setUserProfile, userPosts } = useAuthContext();
 
   if (!isOpen) return null;
   const fileInputRef = useRef(null);

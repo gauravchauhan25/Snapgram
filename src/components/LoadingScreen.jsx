@@ -1,5 +1,3 @@
-import React from 'react'
-
 //Main loading screen
 export default function LoadingScreen() {
   return (

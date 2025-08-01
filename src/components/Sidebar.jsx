@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { categories } from "../assets/categories";
-import { useUserContext } from "../context/AuthContext";
+import { useProfileContext } from "../context/ProfileContext";
 
 export default function Sidebar({ selectedCategory, setSelectedCategory }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 650);
-  const { userProfile } = useUserContext();
+  const { userProfile } = useProfileContext();
 
   useEffect(() => {
     const handleResize = () => {

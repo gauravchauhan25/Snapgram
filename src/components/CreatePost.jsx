@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../page-styles/CreatePost.css";
 import api from "../services/appwrite";
-import { useUserContext } from "../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import { showToastAlert, showToastSuccess } from "./ReactToasts";
 
@@ -12,7 +12,7 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
 
-  const { setUserProfile } = useUserContext();
+  const { setUserProfile } = useAuthContext();
 
   useEffect(() => {
     document.title = "Create Post";

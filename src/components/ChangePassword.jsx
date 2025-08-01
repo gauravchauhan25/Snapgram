@@ -3,7 +3,7 @@ import "../page-styles/EditProfile.css";
 import { useEffect, useState } from "react";
 import { showToastAlert, showToastSuccess } from "./ReactToasts";
 import api from "../services/appwrite";
-import { useUserContext } from "../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 
 const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ const ChangePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
 
-  const { userProfile } = useUserContext();
+  const { userProfile } = useAuthContext();
 
   useEffect(() => {
     document.title = "Change Password";
