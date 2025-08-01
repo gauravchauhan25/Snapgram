@@ -1,9 +1,9 @@
 import { ToastContainer } from "react-toastify";
 import "../page-styles/EditProfile.css";
 import { useEffect, useState } from "react";
-import { showToastAlert, showToastSuccess } from "./ReactToasts";
 import api from "../services/appwrite";
 import { useProfileContext } from "../context/ProfileContext";
+import { showToastAlert, showToastSuccess } from "../popup/react-toats";
 
 const ChangePassword = () => {
   const [loading, setLoading] = useState(false);

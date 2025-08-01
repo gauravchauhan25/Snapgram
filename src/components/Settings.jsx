@@ -5,19 +5,13 @@ import api from "../services/appwrite";
 import { useThemeContext } from "../context/ThemeContext";
 
 export default function Settings() {
+  const {isLightTheme, setIsLightTheme , handleThemeToggle} = useThemeContext();
   const [isPrivate, setIsPrivate] = useState(false);
   const [language, setLanguage] = useState("English");
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const {isLightTheme, setIsLightTheme , handleThemeToggle} = useThemeContext();
-
-  // const handleThemeToggle = () => {
-  //   setIsLightTheme(!isLightTheme);
-  //   document.body.classList.toggle("light-theme-variables");
-  //   document.body.style.transition = "all 500ms ease";
-  // };
 
   useEffect(() => {
     document.title = "Settings";

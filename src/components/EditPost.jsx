@@ -1,7 +1,5 @@
 import { useAuthContext } from "../context/AuthContext";
-import api from "../services/appwrite";
 import { ToastContainer } from "react-toastify";
-import { showToastAlert, showToastSuccess } from "./ReactToasts";
 
 const EditPost = ({ post, onClose }) => {
   const { userProfile, setUserProfile } = useAuthContext();

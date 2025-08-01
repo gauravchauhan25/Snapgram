@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import "../page-styles/CreatePost.css";
 import api from "../services/appwrite";
 import { ToastContainer } from "react-toastify";
-import { showToastAlert, showToastSuccess } from "./ReactToasts";
 import { useProfileContext } from "../context/ProfileContext";
+import { showToastAlert, showToastSuccess } from "../popup/react-toats";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");

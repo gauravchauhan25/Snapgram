@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { stories } from "../assets/constants";
+import { useProfileContext } from "../context/ProfileContext";
 
 export default function Stories() {
   const storyContainerRef = useRef(null);
@@ -40,6 +41,8 @@ export default function Stories() {
     });
   };
 
+  const { userProfile} = useProfileContext();
+
   return (
     <>
       <div
@@ -58,14 +61,12 @@ export default function Stories() {
         )}
 
         {/* Loop for creating multiple stories */}
-        {stories.map((story) => (
-          <div className="story" key={story.id}>
+          <div className="story">
             <div className="profile-photo">
-              <img src={story.imageUrl} alt="storyImg" loading="lazy" />
+              <img src={userProfile?.avatarUrl} alt="storyImg" loading="lazy" />
             </div>
-            <p className="name">{story.name}</p>
+            <p className="story-name">Your Story</p>
           </div>
-        ))}
 
         {canScrollRight && (
           <button

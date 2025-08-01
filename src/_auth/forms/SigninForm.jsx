@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./signup.css";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import api from "../../services/appwrite";
 import { useAuthContext } from "../../context/AuthContext";
 import bgImage from "./social-media-bg.webp";
-import { showToastAlert } from "../../components/ReactToasts";
+import { showToastAlert } from "../../popup/react-toats";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");

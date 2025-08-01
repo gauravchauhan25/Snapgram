@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "../page-styles/Profile.css";
-import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import api from "../services/appwrite";
-import { ToastContainer } from "react-toastify";
 
 import Post from "./Posts";
 import PostModal from "./PostModal";
-import Spinner from "./Spinner";
 
 const UsersProfile = () => {
   const [loading, setLoading] = useState(false);

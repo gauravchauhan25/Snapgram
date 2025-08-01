@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { ToastContainer } from "react-toastify";
-import { showToastAlert, showToastSuccess } from "./ReactToasts";
 import api from "../services/appwrite";
 import { useProfileContext } from "../context/ProfileContext";
+import { showToastAlert, showToastSuccess } from "../popup/react-toats";
 
 const ProfilePhotoModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);

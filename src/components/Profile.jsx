@@ -3,11 +3,11 @@ import "../page-styles/Profile.css";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import api from "../services/appwrite";
 import { ToastContainer } from "react-toastify";
-import { showToastAlert, showToastSuccess } from "./ReactToasts";
 
 import Post from "./Posts";
 import PostModal from "./PostModal";
 import { useProfileContext } from "../context/ProfileContext";
+import { showToastAlert, showToastSuccess } from "../popup/react-toats";
 
 const Profile = () => {
   const { userProfile, setUserProfile, userPosts } = useProfileContext();

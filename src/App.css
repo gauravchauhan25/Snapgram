@@ -302,7 +302,7 @@ main .container .left {
 
 .middle .stories {
   display: flex;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   height: 6rem;
   width: 43vw;
   gap: 1rem;
@@ -333,10 +333,10 @@ main .container .left {
   bottom: 0;
 }
 
-.middle .stories .story .name {
-  width: 2rem;
-  font-size: 0.6rem;
-  margin: 3px 7px;
+.middle .stories .story .story-name {
+  /* width: 2rem; */
+  font-size: 0.7rem;
+  margin: 0 7px;
   text-align: center;
 }
 
