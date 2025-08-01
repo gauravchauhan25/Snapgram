@@ -5,14 +5,11 @@ A modern **Instagram-inspired** social media platform built with **React.js**, p
 ## 🚀 Features
 - 🔐 **Google OAuth Authentication** – Secure sign-in and sign-out powered by Appwrite’s integrated OAuth support.
 
--👤 **User Profiles** - Each user has a profile displaying:
-Username, Name, Bio
-
-Total Posts
-
-Followers and Following counts
-
-Avatar image
+- 👤 **User Profiles** - Each user has a profile displaying:
+    - Username, Name, Bio
+    - Total Posts
+    - Followers and Following counts
+    - Avatar image
 
 - 🏠 **Home Feed** - View all posts from all users in real-time.
 
