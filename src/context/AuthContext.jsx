@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import api from "../services/appwrite";
 import LoadingScreen from "../components/LoadingScreen";
 import { UsersProvider } from "./UsersContext"; 

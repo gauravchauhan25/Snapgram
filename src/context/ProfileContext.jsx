@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../services/appwrite";
-import LoadingScreen from "../components/LoadingScreen";
 
 const ProfileContext = createContext();
 
@@ -8,7 +7,7 @@ export const ProfileProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(true); 
-  
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {

@@ -1,20 +1,41 @@
-# Snapgram 🗣️🌍
+# 📸 Snapgram – Connect. Share. Inspire. 🌍
 
-A modern **social media platform** built with **React.js**, featuring a secure **Authentication System** with **Google OAuth** and powered by **Appwrite** as the **Backend-as-a-Service (BaaS)**.
+A modern **Instagram-inspired** social media platform built with **React.js**, powered by **Appwrite** as the **Backend-as-a-Service (BaaS)**, and secured with **Google OAuth** authentication. **Snapgram** is designed for creators and users who want a **seamless**, **fast**, and **responsive photo-sharing experience**.
 
 ## 🚀 Features
+- 🔐 **Google OAuth Authentication** – Secure sign-in and sign-out powered by Appwrite’s integrated OAuth support.
 
-- 🔐 **Google OAuth Authentication** – Secure login & logout system.
-- 📂 **Appwrite Backend** – Handles user authentication & database storage.
+-👤 **User Profiles** - Each user has a profile displaying:
+Username, Name, Bio
+
+Total Posts
+
+Followers and Following counts
+
+Avatar image
+
+- 🏠 **Home Feed** - View all posts from all users in real-time.
+
+- 📝 **Create Post** - Upload a new post! - Auto-generated Post ID and Creation Timestamp\
+
 - 💬 **Social Media Functionality** – Users can interact, post, and engage.
-- 🎨 **Fully Responsive UI** – Smooth experience on all devices.
+- 📱 **Fully Responsive UI** – Smooth experience on all devices.
 - ⚡ **Fast & Scalable** – Optimized for performance.
+- ⚙️ **Settings Panel** - Customize your profile, change name, username and change bio.
+- ⚡ **Optimized Performance** - Clean state management and API integration ensure fast rendering and smooth transitions.
 
----
+
+- 🔎 **Search** (Planned) - A search feature to discover people and posts by tags or usernames.
+- 🎞️ **Reels** (Planned) - A separate section to scroll short video-based content.
+- 💬 **Messages** (Planned) - A direct messaging system between users (under development).
+- 👥 **Followers / Following System** (Planned) - Follow or unfollow users and see who follows you.
+
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React.js, React Router
+- **Frontend:** React.js, React Router DOM
 - **Authentication:** Google OAuth via Appwrite
-- **Backend:** Appwrite (BaaS)
+- **Backend:** Appwrite (Database, Auth, Storage)
 - **Hosting:** - Vercel
+- **State Management** - React Context API
+	
