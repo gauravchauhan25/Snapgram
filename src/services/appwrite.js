@@ -95,10 +95,10 @@ export class Services {
     try {
       this.account.createOAuth2Session(
         "google",
-        // "https://snapgram-private.vercel.app/Home",
-        // "https://snapgram-private.vercel.app/sign-in"
-        "http://localhost:5173/Home",
-        "http://localhost:5173/sign-in"
+        "https://snapgram-private.vercel.app/Home",
+        "https://snapgram-private.vercel.app/sign-in"
+        // "http://localhost:5173/Home",
+        // "http://localhost:5173/sign-in"
       );
     } catch (error) {
       console.error("Error :: Google Login:", error);
