@@ -22,6 +22,7 @@ A modern **Instagram-inspired** social media platform built with **React.js**, p
 - ⚡ **Optimized Performance** - Clean state management and API integration ensure fast rendering and smooth transitions.
 
 
+## 🧠 Planned Features
 - 🔎 **Search** (Planned) - A search feature to discover people and posts by tags or usernames.
 - 🎞️ **Reels** (Planned) - A separate section to scroll short video-based content.
 - 💬 **Messages** (Planned) - A direct messaging system between users (under development).
@@ -36,3 +37,13 @@ A modern **Instagram-inspired** social media platform built with **React.js**, p
 - **Hosting:** - Vercel
 - **State Management** - React Context API
 	
+
+## ✅ Upcoming Features
+- 🔍 - **Enhanced Search Functionality**
+- 📹 - **Reels Section with Video Support**
+- 📬 - **Direct Messaging**
+- 🌐 - **Multi-language Support**
+- 🛡️ - **Improved Security & Rate Limiting**
+
+## 🚧 Current Status
+- Snapgram is actively being developed. Contributions, feature ideas, and feedback are welcome! ⭐
