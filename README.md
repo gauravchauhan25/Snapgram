@@ -21,14 +21,6 @@ A modern **Instagram-inspired** social media platform built with **React.js**, p
 - ⚙️ **Settings Panel** - Customize your profile, change name, username and change bio.
 - ⚡ **Optimized Performance** - Clean state management and API integration ensure fast rendering and smooth transitions.
 
-
-## 🧠 Planned Features
-- 🔎 **Search** (Planned) - A search feature to discover people and posts by tags or usernames.
-- 🎞️ **Reels** (Planned) - A separate section to scroll short video-based content.
-- 💬 **Messages** (Planned) - A direct messaging system between users (under development).
-- 👥 **Followers / Following System** (Planned) - Follow or unfollow users and see who follows you.
-
-
 ## 🛠️ Tech Stack
 
 - **Frontend:** React.js, React Router DOM
@@ -37,6 +29,13 @@ A modern **Instagram-inspired** social media platform built with **React.js**, p
 - **Hosting:** - Vercel
 - **State Management** - React Context API
 	
+
+## 🧠 Planned Features
+- 🔎 **Search** (Planned) - A search feature to discover people and posts by tags or usernames.
+- 🎞️ **Reels** (Planned) - A separate section to scroll short video-based content.
+- 💬 **Messages** (Planned) - A direct messaging system between users (under development).
+- 👥 **Followers / Following System** (Planned) - Follow or unfollow users and see who follows you.
+
 
 ## ✅ Upcoming Features
 - 🔍 - **Enhanced Search Functionality**
