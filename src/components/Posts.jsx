@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useAuthContext } from "../context/AuthContext";
+import { useProfileContext } from "../context/ProfileContext";
 
 const Post = ({ post, onPostClick }) => {
   const [isDisabled, setIsDisabled] = useState(false);
-  const { userProfile } = useAuthContext();
+  const { userProfile } = useProfileContext();
 
   useEffect(() => {
     const handleResize = () => {
