@@ -28,24 +28,6 @@
   transition: all 400ms ease;
 }
 
-.edit-btn {
-  display: inline-block;
-  background-color: var(--color-primary);
-  color: #fff;
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.edit-btn:hover {
-  opacity: 0.7;
-  transition: all 0.3s ease;
-}
-
 .error-message {
   font-size: 0.9rem;
   color: red;

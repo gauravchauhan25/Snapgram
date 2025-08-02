@@ -93,7 +93,11 @@ body {
 }
 
 .signup-container form .btn-google {
-  padding: 0.6rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.4rem 3rem;
   border-radius: 0.4rem;
   border: none;
   outline: none;

@@ -28,7 +28,8 @@
   --color-background: #f0eded;
 
   --color-white: rgb(247, 247, 247);
-  --color-light: hsl(0, 0%, 93%);
+  --color-light: hsl(0, 0%, 87%);
+  --color-gray:hsl(251, 41%, 18%);
   --color-secondary: hsl(252, 100%, 90%);
   --color-dark: hsl(252, 38%, 21%);
   --color-btn-edit: #28233d;

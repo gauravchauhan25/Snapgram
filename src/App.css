@@ -118,6 +118,7 @@ nav .container {
 }
 
 .search-bar {
+  display: flex;
   background: var(--color-light);
   border-radius: var(--border-radius);
   padding: var(--search-padding);

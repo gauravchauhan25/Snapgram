@@ -1,8 +1,8 @@
-import api from "../services/appwrite";
 import { ToastContainer } from "react-toastify";
+import { showToastAlert, showToastSuccess } from "../popup/react-toats";
 import EditPost from "./EditPost";
 import { useProfileContext } from "../context/ProfileContext";
-import { showToastAlert, showToastSuccess } from "../popup/react-toats";
+import api from "../services/appwrite";
 
 const PostModal = ({ post, onClose }) => {
   const { userProfile, setUserProfile } = useProfileContext();

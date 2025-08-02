@@ -6,6 +6,7 @@ import api from "../../services/appwrite";
 import { useAuthContext } from "../../context/AuthContext";
 import bgImage from "./social-media-bg.webp";
 import { showToastAlert } from "../../popup/react-toats";
+import { googleIcon } from "../../assets/categories";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
@@ -107,8 +108,7 @@ const SigninForm = () => {
                 type="button"
                 className="btn-google"
                 onClick={googleLogin}
-              >
-                Sign In with Google!
+              >{googleIcon.icon} Sign In with Google!
               </button>
 
               <p>

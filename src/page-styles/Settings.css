@@ -4,19 +4,12 @@
   padding: 1.3rem;
 }
 
-.settings-title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1.7rem;
-  color: var(--color-dark);
-}
-
 .settings-section {
   margin-bottom: 1.5rem;
 }
 
 .settings-section h2 {
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   color: var(--color-dark);
   margin-bottom: 1rem;
   border-bottom: 2px solid var(--color-primary);

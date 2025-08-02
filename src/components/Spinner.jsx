@@ -3,7 +3,7 @@ export default function Spinner({ loading }) {
     loading && (
       <div className="spinner">
         <img
-          src="https://media.tenor.com/hQz0Kl373E8AAAAi/loading-waiting.gif"
+          src="/icons/loader.svg"
           alt="Loading..."
         />
       </div>
