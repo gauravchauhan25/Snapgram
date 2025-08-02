@@ -3,13 +3,15 @@
   align-items: center;
   width: 100%;
   height: auto;
-  padding: 1rem;
-  gap: 2rem;
+  padding: 0.7rem;
+  gap: 1rem;
   background-color: var(--color-light);
   border-radius: var(--card-border-radius);
   margin: 1rem 0;
 }
-
+.container-profile-photo h3 {
+  font-size: 1rem;
+}
 .profile-info h3 {
   color: var(--color-gray);
 }

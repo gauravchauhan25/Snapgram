@@ -5,8 +5,8 @@ export const categories = [
       <i>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="21"
-          height="21"
+          width="24"
+          height="24"
           fill="currentColor"
           className="bi bi-house-fill"
           viewBox="0 0 16 16"
@@ -23,8 +23,8 @@ export const categories = [
       <i>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           fill="currentColor"
           className="bi bi-search"
           viewBox="0 0 16 16"
@@ -40,8 +40,8 @@ export const categories = [
       <i>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="26"
-          height="26"
+          width="24"
+          height="24"
           fill="currentColor"
           className="bi bi-bell"
           viewBox="0 0 20 20"
@@ -89,8 +89,8 @@ export const categories = [
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
           className="bi bi-messenger"
-          width="25"
-          height="30"
+          width="24"
+          height="24"
           viewBox="0 0 20 20"
           style={{
             fill: "var(--color-dark)",
@@ -107,8 +107,8 @@ export const categories = [
       <i>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="25"
-          height="30"
+          width="24"
+          height="24"
           viewBox="0 0 50 50"
           style={{
             fill: "var(--color-dark)",
@@ -125,8 +125,8 @@ export const categories = [
       <i>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           fill="currentColor"
           className="bi bi-gear"
           viewBox="0 0 16 16"

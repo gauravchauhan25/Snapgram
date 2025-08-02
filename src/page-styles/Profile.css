@@ -26,7 +26,12 @@
 }
 
 .profile-description {
+  padding: 0 0.3rem;
   margin: 1rem;
+}
+
+.large-device {
+  display: block;
 }
 
 .small-device {
@@ -429,7 +434,6 @@
   .profile-header {
     width: 95vw;
     gap: 0.1rem;
-    /* align-items: center; */
   }
 
   .post-image,
@@ -455,7 +459,8 @@
   }
 
   .profile-description {
-    padding: 0 0.4rem;
+    padding: 0;
+    margin: 0.6rem 0.4rem;
   }
 
   .profile-description p {

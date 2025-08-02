@@ -2,12 +2,15 @@
 .edit-container {
   width: 60vw;
   height: auto;
-  margin: 1rem 0;
-  padding: 0.4rem;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+  padding: 0.3rem;
   margin-bottom: 3rem;
 }
 
 .title {
+  display: flex;
+  gap: 0.5rem;
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;

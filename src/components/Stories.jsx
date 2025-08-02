@@ -63,7 +63,7 @@ export default function Stories() {
         {/* Loop for creating multiple stories */}
           <div className="story">
             <div className="profile-photo">
-              <img src={userProfile?.avatarUrl} alt="storyImg" loading="lazy" />
+              <img src={userProfile?.avatarUrl} alt="" loading="lazy" />
             </div>
             <p className="story-name">Your Story</p>
           </div>
