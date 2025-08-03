@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { likedIcon, likeIcon, saveIcon } from "../assets/categories";
 
 export default function Feed({ feedData }) {
   const navigate = useNavigate();
@@ -35,7 +36,12 @@ export default function Feed({ feedData }) {
           <div className="head">
             <div className="user">
               <div className="profile-photo">
-                <img src={feedData.user.avatarUrl} alt="" loading="lazy" />
+                <img
+                  src={feedData.user.avatarUrl}
+                  alt=""
+                  loading="lazy"
+                  onClick={() => navigate(`/${feedData.user.username}`)}
+                />
               </div>
 
               <div className="info">
@@ -45,7 +51,7 @@ export default function Feed({ feedData }) {
                 <small>{feedData.location}</small>
               </div>
             </div>
-            
+
             <div>
               <div style={{ position: "relative", right: "1rem" }}>
                 <small>{timeAgo(feedData?.uploadedAt)}</small>
@@ -64,6 +70,11 @@ export default function Feed({ feedData }) {
 
           <div className="photo">
             <img src={feedData.fileUrl} alt="" />
+
+            <div className="interaction-icons">
+              {likeIcon.icon}
+              {saveIcon.icon}
+            </div>
           </div>
 
           <div className="action-button">

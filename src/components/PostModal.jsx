@@ -3,9 +3,11 @@ import { showToastAlert, showToastSuccess } from "../popup/react-toats";
 import EditPost from "./EditPost";
 import { useProfileContext } from "../context/ProfileContext";
 import api from "../services/appwrite";
+import { useNavigate } from "react-router-dom";
 
 const PostModal = ({ post, onClose }) => {
   const { userProfile, setUserProfile } = useProfileContext();
+  const navigate = useNavigate();
 
   const timeAgo = (timestamp) => {
     const now = new Date();
@@ -73,11 +75,14 @@ const PostModal = ({ post, onClose }) => {
                     src={userProfile?.avatarUrl}
                     alt="avatar"
                     loading="lazy"
+                    onClick={() => navigate(`/$(userProfile?.username)`)}
                   />
                 </div>
 
                 <div className="ingo">
-                  <h3>{userProfile?.username}</h3>
+                  <h3 onClick={() => navigate(`/$(userProfile?.username)`)}>
+                    {userProfile?.username}
+                  </h3>
                   <small>{post?.location}</small>
                 </div>
               </div>

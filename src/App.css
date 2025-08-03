@@ -105,6 +105,7 @@ img {
 nav {
   width: 100%;
   /* background: var(--color-background); */
+  color: var(--color-dark);
   padding: 0.7rem 0;
   position: fixed;
   top: 0;
@@ -115,25 +116,6 @@ nav .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.search-bar {
-  display: flex;
-  background: var(--color-light);
-  border-radius: var(--border-radius);
-  padding: var(--search-padding);
-  width: 45vw;
-}
-
-.search-bar input[type="search"] {
-  background: transparent;
-  margin-left: 1rem;
-  font-size: 0.8rem;
-  color: var(--color-dark);
-}
-
-.search-bar input[type="search"]::placeholder {
-  color: var(--color-gray);
 }
 
 .theme-toggler {
@@ -389,7 +371,7 @@ main .container .left {
 
 .feed {
   padding: var(--card-padding);
-  /* margin: 1rem 0; */
+  margin: 1rem 0;
   margin-right: 0.5rem;
   font-size: 0.85rem;
   line-height: 1.5rem;
@@ -422,10 +404,19 @@ main .container .left {
   color: var(--color-gray);
 }
 
+.interaction-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  top: 0.8rem;
+  margin: 0 1rem;
+}
+
 .middle .feed .photo {
   border-radius: var(--card-border-radius);
-  overflow: hidden;
-  cursor: pointer;
+  /* overflow: hidden; */
+  /* cursor: pointer; */
 }
 
 .action-button {
@@ -591,7 +582,7 @@ main .container .left {
     padding: 0.8rem 0;
     position: relative;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
   }
 
   .logo {
@@ -602,10 +593,6 @@ main .container .left {
 
   .logo h2 {
     font-size: 1.2rem;
-  }
-
-  .search-bar {
-    width: 85vw;
   }
 
   .profile {
@@ -627,6 +614,7 @@ main .container .left {
     justify-content: space-evenly;
     align-items: center;
     background-color: var(--color-background);
+    color: var(--color-dark);
     box-shadow: var(--box-shadow);
   }
 

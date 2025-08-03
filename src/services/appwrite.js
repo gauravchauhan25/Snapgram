@@ -142,7 +142,18 @@ export class Services {
       return null;
     }
   }
-
+  async searchUsersByUsername(username) {
+    try {
+      return await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
+        [Query.startsWith("username", username)]
+      );
+    } catch (error) {
+      console.log("Error searching users by username:", error);
+      return { documents: [] }; // Return an empty array if there's an error
+    }
+  }
   //==============CHANGES THE PASSWORD FOR CURRENT USER==================
   async changePassword({ email, currPassword, newPassword }) {
     try {
