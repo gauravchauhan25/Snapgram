@@ -48,6 +48,8 @@ const CreatePost = () => {
       console.log(fileUrl);
 
       const userId = currentUser.userId;
+      const username = currentUser.username || "Anonymous";
+      const avatarUrl = currentUser.avatarUrl || "";
 
       const response = await api.createPost({
         userId,
@@ -55,6 +57,8 @@ const CreatePost = () => {
         location,
         caption,
         fileUrl,
+        username,
+        avatarUrl
       });
 
       if (response) {

@@ -29,13 +29,13 @@ const Post = ({ post, onPostClick }) => {
             <div className="user">
               <div className="profile-photo">
                 <img
-                  src={userProfile?.avatarUrl || defaultImage}
+                  src={post?.avatarUrl || defaultImage}
                   alt=""
                   loading="lazy"
                 />
               </div>
               <div className="ingo">
-                <h3>{userProfile?.username}</h3>
+                <h3>{post?.username}</h3>
                 <small>{post?.location}</small>
               </div>
             </div>
@@ -49,7 +49,7 @@ const Post = ({ post, onPostClick }) => {
 
           <div className="caption">
             <p>
-              <b>{userProfile?.name} </b>
+              <b>{post?.username} </b>
               {post.caption}
             </p>
           </div>

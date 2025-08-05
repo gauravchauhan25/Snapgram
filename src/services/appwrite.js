@@ -293,7 +293,7 @@ export class Services {
   }
 
   //==========CREATING A NEW POST===================
-  async createPost({ userId, title, location, caption, fileUrl }) {
+  async createPost({ userId, title, location, caption, fileUrl, username, avatarUrl }) {
     try {
       const newPost = await this.databases.createDocument(
         config.appwriteDatabaseID,
@@ -305,6 +305,8 @@ export class Services {
           caption,
           location,
           fileUrl,
+          username,
+          avatarUrl,
           uploadedAt: new Date().toISOString(),
         }
       );

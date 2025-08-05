@@ -60,6 +60,9 @@ const PostModal = ({ post, onClose }) => {
     }
   };
 
+    const defaultImage =
+    "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
+
   return (
     <>
       <ToastContainer />
@@ -72,7 +75,7 @@ const PostModal = ({ post, onClose }) => {
               <div className="user">
                 <div className="profile-photo">
                   <img
-                    src={userProfile?.avatarUrl}
+                    src={post?.avatarUrl || defaultImage}
                     alt="avatar"
                     loading="lazy"
                     onClick={() => navigate(`/$(userProfile?.username)`)}
@@ -81,7 +84,7 @@ const PostModal = ({ post, onClose }) => {
 
                 <div className="ingo">
                   <h3 onClick={() => navigate(`/$(userProfile?.username)`)}>
-                    {userProfile?.username}
+                    {post?.username}
                   </h3>
                   <small>{post?.location}</small>
                 </div>
@@ -105,7 +108,6 @@ const PostModal = ({ post, onClose }) => {
 
             <div className="caption">
               <br />
-              <p>
                 {/* <b>{userProfile?.username} </b> */}
                 <p
                   style={{ whiteSpace: "pre-line" }}
@@ -116,7 +118,6 @@ const PostModal = ({ post, onClose }) => {
                 <span className="harsh-tag">
                   {(post?.hashtags || []).join("  ")}
                 </span>
-              </p>
             </div>
           </div>
         </div>
