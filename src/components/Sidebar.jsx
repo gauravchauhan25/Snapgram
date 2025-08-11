@@ -19,8 +19,7 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
   const filteredCategories = isMobile
     ? categories.filter(
         (category) =>
-          category.name !== "Notification" &&
-          category.name !== "Settings"
+          category.name !== "Notification" && category.name !== "Settings"
       )
     : categories;
 
@@ -37,31 +36,22 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
               className={`menu-item ${({ isActive }) =>
                 isActive ? "active" : ""}`}
               onClick={() => setSelectedCategory(category.name)}
-              // key={category.name}
             >
               <span>
                 {category.name === "Profile" ? (
                   <div
+                    className="h-auto items-center justify-center px-10 py-3 rounded-full object-cover"
                     style={{
-                      width: "1.7rem",
-                      height: "auto",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                      alignItems: "center",
-                      justifyContent: "center",
                       marginLeft: "1rem",
-                      marginBottom: "0.4rem",
                     }}
                   >
-                    <img
-                      src={userProfile?.avatarUrl || defaultImage}
-                      alt="Profile"
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50%",
-                      }}
-                    />
+                    <div className="w-9 h-9 rounded-full overflow-hidden">
+                      <img
+                        src={userProfile?.avatarUrl || defaultImage}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
                 ) : (
                   category.icon

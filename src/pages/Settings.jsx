@@ -95,7 +95,7 @@ export default function Settings() {
           }`}</li>
           <li>Help Center</li>
           <li>About</li>
-          <li onClick={handleLogout}>{logoutIcon.icon} Logout</li>
+          <li onClick={handleLogout} className="flex items-center gap-2">{logoutIcon.icon} Logout</li>
         </ul>
       </div>
     </div>

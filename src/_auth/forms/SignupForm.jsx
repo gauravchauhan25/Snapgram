@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import bgImage from "./social-media-bg.webp";
 import "./signup.css";
-import { ToastContainer } from "react-toastify";
 import api from "../../services/appwrite";
 import { useAuthContext } from "../../context/AuthContext";
-import { showToastAlert, showToastSuccess } from "../../popup/react-toats";
+import toast, { Toaster } from "react-hot-toast";
 
 const SignupForm = () => {
   const [name, setName] = useState("");
@@ -16,17 +15,27 @@ const SignupForm = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { checkAuthUser } = useAuthContext();
+  // const { checkAuthUser } = useAuthContext();
+
+  useEffect(() => {
+    document.title = "Sign Up - Snapgram";
+  }, []);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
 
     if (password.length < 8) {
-      showToastAlert("Password must be at least 8 characters!");
+      toast.error("Password must be at least 8 characters!");
       return;
     }
 
     try {
+      const userNameExists = await api.checkUsername(username);
+
+      if (userNameExists) {
+        toast.error("Username already exists! Try with a new one");
+      }
+
       setLoading(true);
       const newUser = await api.createAccount({
         email,
@@ -37,25 +46,39 @@ const SignupForm = () => {
       });
 
       if (newUser) {
-        showToastSuccess("Account created!");
+        toast.success("Account created!");
         navigate("/sign-in");
         return;
       }
     } catch (error) {
-      showToastAlert("Error creating account! ");
+      toast.error("Error creating account! ");
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    document.title = "Sign Up - Snapgram";
-  }, []);
-
   return (
     <>
-      <ToastContainer />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          success: {
+            style: {
+              background: "#4CAF50",
+            },
+          },
+          error: {
+            style: {
+              background: "#f44336",
+            },
+          },
+        }}
+      />
+      
       <div className="fade-in">
         <div className="signup-main">
           <div className="signup-container">
@@ -123,9 +146,8 @@ const SignupForm = () => {
               />
 
               <button type="submit" className="btn-signup" disabled={loading}>
-                {loading ? "Signing Up..." : "Sign Up"}
+                {loading ? "Creating..." : "Create Account"}
               </button>
-              {/* <p>OR</p> */}
 
               <p>
                 Already have an account?{" "}
@@ -136,11 +158,7 @@ const SignupForm = () => {
             </form>
           </div>
           <div className="back-image">
-            <img
-              src={bgImage}
-              // src="https://img.freepik.com/free-photo/customer-experience-creative-collage_23-2149371194.jpg?semt=ais_hybrid"
-              alt="background"
-            />
+            <img src={bgImage} alt="background" />
           </div>
         </div>
       </div>

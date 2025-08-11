@@ -1,4 +1,4 @@
-//Main loading screen
+//===================Main loading screen====================
 export default function LoadingScreen() {
   return (
     <div className="center-container">

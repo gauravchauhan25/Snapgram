@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import "../page-styles/Profile.css";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/appwrite";
-
 import Post from "../components/Posts";
 import PostModal from "../components/PostModal";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 
 const UsersProfile = () => {
   const [loading, setLoading] = useState(false);
@@ -54,13 +53,12 @@ const UsersProfile = () => {
         console.error("Error fetching user:", error);
       } finally {
         setLoading(false);
-      } 
+      }
     };
 
     fetchUserProfile();
   }, [username]);
 
-  
   useEffect(() => {
     if (profileData?.username) {
       document.title = `${profileData.name} • Snapgram`;
@@ -72,17 +70,32 @@ const UsersProfile = () => {
 
   if (loading) {
     return (
-    <div className="spinner">
-        <img
-          src="/icons/loader.svg"
-          alt="Loading..."
-        />
-      </div>);
+      <div className="spinner">
+        <img src="/icons/loader.svg" alt="Loading..." />
+      </div>
+    );
   }
 
   return (
     <>
-      <ToastContainer />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          success: {
+            style: {
+              background: "#4CAF50",
+            },
+          },
+          error: {
+            style: {
+              background: "#f44336",
+            },
+          },
+        }}
+      />
       <div className="profile-fade-in">
         <div className="profile-container">
           <div className="profile-header">

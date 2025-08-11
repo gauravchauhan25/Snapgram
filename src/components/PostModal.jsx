@@ -1,9 +1,8 @@
-import { ToastContainer } from "react-toastify";
-import { showToastAlert, showToastSuccess } from "../popup/react-toats";
-import EditPost from "./EditPost";
-import { useProfileContext } from "../context/ProfileContext";
-import api from "../services/appwrite";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import { useProfileContext } from "../context/ProfileContext";
+import EditPost from "./EditPost";
+import api from "../services/appwrite";
 
 const PostModal = ({ post, onClose }) => {
   const { userProfile, setUserProfile } = useProfileContext();
@@ -50,9 +49,9 @@ const PostModal = ({ post, onClose }) => {
           ...prev,
           posts: (prev.posts || 0) - 1,
         }));
-        showToastSuccess("Post Deleted");
+        toast.success("Post Deleted");
       } else {
-        showToastAlert("Error deleting Post!");
+        toast.error("Error deleting Post!");
       }
       return;
     } catch (error) {
@@ -60,12 +59,30 @@ const PostModal = ({ post, onClose }) => {
     }
   };
 
-    const defaultImage =
+  const defaultImage =
     "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
 
   return (
     <>
-      <ToastContainer />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          success: {
+            style: {
+              background: "#4CAF50",
+            },
+          },
+          error: {
+            style: {
+              background: "#f44336",
+            },
+          },
+        }}
+      />
+
       <div className="modal-backdrop" onClick={onClose}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <img src={post?.fileUrl} alt="post" className="modal-image" />
@@ -73,14 +90,16 @@ const PostModal = ({ post, onClose }) => {
           <div className="modal-details">
             <div className="head">
               <div className="user">
-                <div className="profile-photo">
+                <div className="w-10 h-10 rounded-full overflow-hidden">
                   <img
                     src={post?.avatarUrl || defaultImage}
                     alt="avatar"
                     loading="lazy"
                     onClick={() => navigate(`/$(userProfile?.username)`)}
+                  className="w-full h-full object-cover"
                   />
                 </div>
+
 
                 <div className="ingo">
                   <h3 onClick={() => navigate(`/$(userProfile?.username)`)}>
@@ -108,16 +127,16 @@ const PostModal = ({ post, onClose }) => {
 
             <div className="caption">
               <br />
-                {/* <b>{userProfile?.username} </b> */}
-                <p
-                  style={{ whiteSpace: "pre-line" }}
-                  dangerouslySetInnerHTML={{
-                    __html: (post?.caption || "").replace(/,/g, ",<br />"),
-                  }}
-                ></p>
-                <span className="harsh-tag">
-                  {(post?.hashtags || []).join("  ")}
-                </span>
+              {/* <b>{userProfile?.username} </b> */}
+              <p
+                style={{ whiteSpace: "pre-line" }}
+                dangerouslySetInnerHTML={{
+                  __html: (post?.caption || "").replace(/,/g, ",<br />"),
+                }}
+              ></p>
+              <span className="harsh-tag">
+                {(post?.hashtags || []).join("  ")}
+              </span>
             </div>
           </div>
         </div>

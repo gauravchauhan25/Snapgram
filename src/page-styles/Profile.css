@@ -159,9 +159,10 @@
 
 /* Modal content styling */
 .profile-modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
+  background-color: var(--color-white);
+  color: var(--color-dark);
+  padding: 1rem;
+  border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   width: 300px;
   text-align: center;

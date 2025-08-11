@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import "../page-styles/CreatePost.css";
 import "../page-styles/EditProfile.css";
 import api from "../services/appwrite";
-import { ToastContainer } from "react-toastify";
 import { useProfileContext } from "../context/ProfileContext";
-import { showToastAlert, showToastSuccess } from "../popup/react-toats";
 import { editIcon } from "../assets/categories";
+import toast, { Toaster } from "react-hot-toast";
 
 const EditProfile = () => {
   const [loading, setLoading] = useState(false);
@@ -35,7 +34,7 @@ const EditProfile = () => {
 
       if (response) {
         console.log("Updated Successfully!", response);
-        showToastSuccess("Updated Successfully!");
+        toast.success("Updated Successfully!");
 
         const updatedUser = await api.getCurrentUser();
         if (updatedUser) {
@@ -51,11 +50,11 @@ const EditProfile = () => {
         }
       } else {
         console.log("Error :: updating document");
-        showToastAlert("Error updating");
+        toast.error("Error updating");
       }
     } catch (error) {
       console.log("Error updating document!", error);
-      showToastAlert("Error updating document!");
+      toast.error("Error updating document!");
     } finally {
       setLoading(false);
     }
@@ -66,9 +65,26 @@ const EditProfile = () => {
 
   return (
     <>
-      <ToastContainer />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          success: {
+            style: {
+              background: "#4CAF50",
+            },
+          },
+          error: {
+            style: {
+              background: "#f44336",
+            },
+          },
+        }}
+      />
       <div className="edit-container">
-        <h1 className="title">{editIcon.icon} Edit Profile</h1>
+        <h1 className="title items-center">{editIcon.icon} Edit Profile</h1>
 
         <form onSubmit={handleEditProfile}>
           <div className="container-profile-photo">
@@ -99,7 +115,7 @@ const EditProfile = () => {
             <label htmlFor="username" className="label">
               Username
             </label>
-            
+
             <input
               type="text"
               id="username"

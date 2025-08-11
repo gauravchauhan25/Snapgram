@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import "../page-styles/CreatePost.css";
 import api from "../services/appwrite";
-import { ToastContainer } from "react-toastify";
 import { useProfileContext } from "../context/ProfileContext";
-import { showToastAlert, showToastSuccess } from "../popup/react-toats";
 import { createIcon } from "../assets/categories";
+import toast, { Toaster } from "react-hot-toast";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -23,11 +22,11 @@ const CreatePost = () => {
     e.preventDefault();
 
     if (location.length > 30) {
-      showToastAlert("Location must be less than 30 characters.");
+      toast.error("Location must be less than 30 characters.");
       return;
     }
     if (!file) {
-      showToastAlert("Please select an image to upload.");
+      toast.error("Please select an image to upload.");
       return;
     }
 
@@ -40,7 +39,7 @@ const CreatePost = () => {
       if (uploadedFile) {
         console.log("File uploaded successfully", uploadedFile);
       } else {
-        showToastAlert("File Not Supported!");
+        toast.error("File Not Supported!");
         return;
       }
 
@@ -58,7 +57,7 @@ const CreatePost = () => {
         caption,
         fileUrl,
         username,
-        avatarUrl
+        avatarUrl,
       });
 
       if (response) {
@@ -74,7 +73,7 @@ const CreatePost = () => {
           posts: (prev.posts || 0) + 1,
         }));
 
-        showToastSuccess("Post Uploaded!");
+        toast.success("Post Uploaded!");
         setTitle("");
         setCaption("");
         setLocation("");
@@ -85,7 +84,7 @@ const CreatePost = () => {
       }
     } catch (error) {
       console.log("Error creating post:", error);
-      showToastAlert("Error creating post:", error);
+      toast.error("Error creating post:", error);
     } finally {
       setLoading(false);
     }
@@ -115,9 +114,28 @@ const CreatePost = () => {
 
   return (
     <>
-      <ToastContainer />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          success: {
+            style: {
+              background: "#4CAF50",
+            },
+          },
+          error: {
+            style: {
+              background: "#f44336",
+            },
+          },
+        }}
+      />
       <div className="edit-container">
-        <h1 className="title">{createIcon.icon} Create a New Post</h1>
+        <h1 className="title items-center">
+          {createIcon.icon} Create a New Post
+        </h1>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -207,7 +225,6 @@ const CreatePost = () => {
                   <h3 className="drag-drop-text">
                     Drag photo here
                     <p>SVG, PNG, JPG</p>
-
                     <span
                       className="choose-file"
                       onClick={() =>

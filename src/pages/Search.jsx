@@ -3,6 +3,7 @@ import SearchCard from "../components/SearchCard";
 import api from "../services/appwrite";
 import "../page-styles/Search.css";
 import { loaderIcon } from "../assets/categories";
+import { AiOutlineFrown } from "react-icons/ai";
 
 export default function Search() {
   const [query, setQuery] = useState("");
@@ -24,7 +25,7 @@ export default function Search() {
 
     setLoading(true);
     try {
-      const res = await api.searchUsersByUsername(value);
+      const res = await api.searchUsers(value);
       setResults(res.documents || []);
     } catch (error) {
       console.log("Search error:", error);
@@ -58,7 +59,7 @@ export default function Search() {
         </div> */}
 
         <div className="search-loader">{loading && loaderIcon.icon}</div>
-        {!loading && results.length === 0 && query && <p>No user found.</p>}
+        {!loading && results.length === 0 && query && <p className="flex justify-center items-center text-center text-sm md:text-lg">🙁Sorry! No user found.</p>}
 
         {results.map((user) => (
           <SearchCard key={user.$id} user={user} />

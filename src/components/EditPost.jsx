@@ -1,12 +1,10 @@
 import { useAuthContext } from "../context/AuthContext";
-import { ToastContainer } from "react-toastify";
 
 const EditPost = ({ post, onClose }) => {
   const { userProfile, setUserProfile } = useAuthContext();
 
   return (
     <>
-      <ToastContainer />
       <div className="modal-backdrop" onClick={onClose}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <p>Hello world</p>

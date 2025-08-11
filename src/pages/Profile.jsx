@@ -2,16 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import "../page-styles/Profile.css";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import api from "../services/appwrite";
-import { ToastContainer } from "react-toastify";
-
+import toast, { Toaster } from "react-hot-toast";
 import Post from "../components/Posts";
 import PostModal from "../components/PostModal";
 import { useProfileContext } from "../context/ProfileContext";
-import { showToastAlert, showToastSuccess } from "../popup/react-toats";
 
 const Profile = () => {
-  const { userProfile, setUserProfile, userPosts } = useProfileContext();
-  
+  const { userProfile, setUserProfile, userPosts, setUserPosts } =
+    useProfileContext();
+
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,7 +37,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-     if (userProfile?.username) {
+    if (userProfile?.username) {
       document.title = `${userProfile.name} • Snapgram`;
     }
   }, [userProfile]);
@@ -52,42 +51,49 @@ const Profile = () => {
 
     const file = e.target.files?.[0];
     if (!file || !file.type.startsWith("image/")) {
-      showToastAlert("Please select a valid image file.");
+      toast.error("Please select a valid image file.");
       return;
     }
 
     try {
-      // setLoading(true);
-
       const uploadedFile = await api.uploadImage(file);
       console.log("Uploaded File Response:", uploadedFile);
 
       if (!uploadedFile || !uploadedFile.$id) {
-        showToastAlert("File upload failed.");
+        toast.error("File upload failed.");
         return;
       }
 
       const fileUrl = await api.getFilePreview(uploadedFile.$id);
       const documentId = await api.getCurrentUserDocumentId();
 
-      const updatedDoc = await api.updateAvatar({
+      const updatedInUsers = await api.updateAvatar({
         documentId,
         fileUrl,
       });
 
-      if (updatedDoc) {
+      const updatedInPosts = await api.updateAvatarInPosts(fileUrl);
+
+      if (!updatedInUsers && !updatedInPosts) {
+        toast.error("Failed to update profile photo.");
+      } else {
+        toast.success("Profile photo updated!");
         const freshProfile = await api.getCurrentUser();
         setUserProfile({
           ...userProfile,
           avatarUrl: freshProfile.avatarUrl,
         });
-        showToastSuccess("Profile photo updated!");
-      } else {
-        showToastAlert("Failed to update profile photo.");
+        
+        setUserPosts((prevPosts) =>
+          prevPosts.map((post) => ({
+            ...post,
+            avatarUrl: fileUrl,
+          }))
+        );
       }
     } catch (error) {
       console.error("Error updating profile photo:", error);
-      showToastAlert("Failed to update profile photo.");
+      toast.error("Failed to update profile photo.");
     } finally {
       setLoading(false);
     }
@@ -102,7 +108,7 @@ const Profile = () => {
 
   return (
     <>
-      <ToastContainer />
+      <Toaster />
       <div className="fade-in">
         <input
           id="fileInput"

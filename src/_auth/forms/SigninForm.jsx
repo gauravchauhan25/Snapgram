@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./signup.css";
-import { ToastContainer } from "react-toastify";
 import api from "../../services/appwrite";
 import { useAuthContext } from "../../context/AuthContext";
 import bgImage from "./social-media-bg.webp";
-import { showToastAlert } from "../../popup/react-toats";
 import { googleIcon } from "../../assets/categories";
+import toast, { Toaster } from "react-hot-toast";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +18,7 @@ const SigninForm = () => {
     e.preventDefault();
 
     if (password.length < 8 || password.length > 255) {
-      showToastAlert("Password must be between 8 and 255 characters.");
+      toast.error("Invalid Password");
       return;
     }
 
@@ -40,7 +39,7 @@ const SigninForm = () => {
         navigate("/sign-in");
       }
     } catch (error) {
-      showToastAlert("Invalid email or password!");
+      toast.error("Incorrect email or password!");
     } finally {
       setLoading(false);
     }
@@ -52,7 +51,7 @@ const SigninForm = () => {
     try {
       await api.loginWithGoogle();
     } catch (error) {
-      showToastAlert("Error logging in with Google!");
+      toast.error("Error logging in with Google!");
     }
   };
 
@@ -62,7 +61,24 @@ const SigninForm = () => {
 
   return (
     <>
-      <ToastContainer />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          success: {
+            style: {
+              background: "#4CAF50",
+            },
+          },
+          error: {
+            style: {
+              background: "#f44336",
+            },
+          },
+        }}
+      />
       <div className="fade-in">
         <div className="signup-main">
           <div className="signup-container">
@@ -79,7 +95,7 @@ const SigninForm = () => {
             <p>To use Snapgram, please login!</p>
 
             <form onSubmit={handleLogin}>
-              <label htmlFor="email">Enter you email</label>
+              <label htmlFor="email">Email</label>
               <input
                 type="email"
                 className=""
@@ -108,7 +124,8 @@ const SigninForm = () => {
                 type="button"
                 className="btn-google"
                 onClick={googleLogin}
-              >{googleIcon.icon} Sign In with Google!
+              >
+                {googleIcon.icon} Sign In with Google!
               </button>
 
               <p>
@@ -121,11 +138,7 @@ const SigninForm = () => {
           </div>
 
           <div className="back-image">
-            <img
-              src={bgImage}
-              // src="https://img.freepik.com/free-photo/customer-experience-creative-collage_23-2149371194.jpg?semt=ais_hybrid"
-              alt="background"
-            />
+            <img src={bgImage} alt="background" />
           </div>
         </div>
       </div>

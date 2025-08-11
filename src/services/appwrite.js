@@ -81,6 +81,24 @@ export class Services {
     }
   }
 
+  //=============CHECKS FOR THE AVAILABILITY OF USERNAME====================
+  async checkUsername(username) {
+    try {
+      const response = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
+        [Query.equal("username", username)]
+      );
+
+      if (response.documents.length === 0) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.log("Error in checkUsername function: ", error);
+    }
+  }
+
   //============LOGIN FOR USER===================
   async login({ email, password }) {
     try {
@@ -142,18 +160,35 @@ export class Services {
       return null;
     }
   }
-  async searchUsersByUsername(username) {
+
+  async searchUsers(value) {
     try {
-      return await this.databases.listDocuments(
+      const usernameResults = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteUsersCollectionID,
-        [Query.startsWith("username", username)]
+        [Query.startsWith("username", value)]
       );
+
+      const nameResults = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
+        [Query.startsWith("name", value)]
+      );
+
+      const merged = [
+        ...usernameResults.documents,
+        ...nameResults.documents.filter(
+          (doc) => !usernameResults.documents.some((u) => u.$id === doc.$id)
+        ),
+      ];
+
+      return { documents: merged };
     } catch (error) {
       console.log("Error searching users by username:", error);
       return { documents: [] }; // Return an empty array if there's an error
     }
   }
+
   //==============CHANGES THE PASSWORD FOR CURRENT USER==================
   async changePassword({ email, currPassword, newPassword }) {
     try {
@@ -293,7 +328,15 @@ export class Services {
   }
 
   //==========CREATING A NEW POST===================
-  async createPost({ userId, title, location, caption, fileUrl, username, avatarUrl }) {
+  async createPost({
+    userId,
+    title,
+    location,
+    caption,
+    fileUrl,
+    username,
+    avatarUrl,
+  }) {
     try {
       const newPost = await this.databases.createDocument(
         config.appwriteDatabaseID,
@@ -343,7 +386,7 @@ export class Services {
     }
   }
 
-  //============UPDATE THE AVATAR URL IN THE DB=================
+  //============UPDATE THE AVATAR URL IN THE USERS COLLECTION=================
   async updateAvatar({ documentId, fileUrl }) {
     try {
       if (!documentId || !fileUrl) {
@@ -367,6 +410,32 @@ export class Services {
     } catch (error) {
       console.error("Appwrite updateAvatar error:", error);
       return null;
+    }
+  }
+
+  //============UPDATE THE AVATAR URL IN THE POSTS COLLECTION=====================
+  async updateAvatarInPosts(fileUrl) {
+    try {
+      const currentUser = await this.getAccount();
+
+      const posts = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwritePostsCollectionID,
+        [Query.equal("userId", currentUser.$id)]
+      );
+
+      for (const post of posts.documents) {
+        await this.databases.updateDocument(
+          config.appwriteDatabaseID,
+          config.appwritePostsCollectionID,
+          post.$id,
+          {
+            avatarUrl: fileUrl,
+          }
+        );
+      }
+    } catch (error) {
+      console.log("Error updating avatar in Posts collection", error);
     }
   }
 

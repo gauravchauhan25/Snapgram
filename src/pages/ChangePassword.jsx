@@ -4,7 +4,7 @@ import "../page-styles/CreatePost.css";
 import { useEffect, useState } from "react";
 import api from "../services/appwrite";
 import { useProfileContext } from "../context/ProfileContext";
-import { showToastAlert, showToastSuccess } from "../popup/react-toats";
+import toast, { Toaster } from "react-hot-toast";
 
 const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
@@ -31,12 +31,12 @@ const ChangePassword = () => {
         return;
       }
 
-      if(newPassword.length < 8) {
-        showToastAlert("Password must be at least 8 characters long!");   
+      if (newPassword.length < 8) {
+        toast.error("Password must be at least 8 characters long!");
         setLoading(false);
-        return; 
+        return;
       }
-      
+
       const email = userProfile.email;
 
       const update = await api.changePassword({
@@ -46,15 +46,13 @@ const ChangePassword = () => {
       });
 
       if (!update) {
-        showToastAlert("Current password is not correct!");
+        toast.error("Current password is not correct!");
       } else {
-        showToastSuccess("Password Changed!");
+        toast.success("Password Changed!");
         setCurrPassword("");
         setNewPassword("");
         setConfirmPassword("");
       }
-
-      
     } catch (error) {
       console.log("Error changing Password :: ", error);
     } finally {
@@ -64,7 +62,24 @@ const ChangePassword = () => {
 
   return (
     <>
-      <ToastContainer />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          success: {
+            style: {
+              background: "#4CAF50",
+            },
+          },
+          error: {
+            style: {
+              background: "#f44336",
+            },
+          },
+        }}
+      />
       <div className="edit-container">
         <h1 className="title">Change Password</h1>
 
@@ -109,7 +124,7 @@ const ChangePassword = () => {
             />
           </div>
 
-          <p className="error-message">{error ? "Do not match!" : "" }</p>
+          <p className="error-message">{error ? "Do not match!" : ""}</p>
 
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? "Changing..." : "Change Password"}
