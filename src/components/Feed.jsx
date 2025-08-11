@@ -68,13 +68,11 @@ export default function Feed({ feedData }) {
             </p>
           </div>
 
-          <div className="photo">
-            <img src={feedData.fileUrl} alt="" />
+          <img src={feedData.fileUrl} alt="feed" className="photo" />
 
-            <div className="interaction-icons">
-              {likeIcon.icon}
-              {saveIcon.icon}
-            </div>
+          <div className="interaction-icons">
+            {likeIcon.icon}
+            {saveIcon.icon}
           </div>
 
           <div className="action-button">

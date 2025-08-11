@@ -54,6 +54,7 @@ const Post = ({ post, onPostClick }) => {
             </p>
           </div>
         </div>
+        
         <img
           src={post?.fileUrl}
           alt={`Post ${post?.$id}`}
