@@ -65,24 +65,7 @@ const EditProfile = () => {
 
   return (
     <>
-      <Toaster
-        toastOptions={{
-          style: {
-            background: "#333",
-            color: "#fff",
-          },
-          success: {
-            style: {
-              background: "#4CAF50",
-            },
-          },
-          error: {
-            style: {
-              background: "#f44336",
-            },
-          },
-        }}
-      />
+      <Toaster />
       <div className="edit-container">
         <h1 className="title items-center">{editIcon.icon} Edit Profile</h1>
 
@@ -104,7 +87,7 @@ const EditProfile = () => {
             <input
               type="text"
               id="name"
-              // value={userProfile?.name}
+              value={userProfile?.name || ""}
               className="input"
               placeholder={userProfile?.name}
               onChange={(e) => setName(e.target.value)}
@@ -119,7 +102,7 @@ const EditProfile = () => {
             <input
               type="text"
               id="username"
-              // value={userProfile?.username}
+              value={userProfile?.username || ""}
               className="input"
               placeholder={userProfile?.username}
               onChange={(e) => setUsername(e.target.value)}
@@ -133,6 +116,7 @@ const EditProfile = () => {
 
             <textarea
               id="bio"
+              value={userProfile?.bio || ""}
               placeholder={
                 userProfile?.bio || "Tell us a little about yourself..."
               }

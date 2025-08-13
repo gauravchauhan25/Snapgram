@@ -83,7 +83,7 @@ const Profile = () => {
           ...userProfile,
           avatarUrl: freshProfile.avatarUrl,
         });
-        
+
         setUserPosts((prevPosts) =>
           prevPosts.map((post) => ({
             ...post,
@@ -126,7 +126,7 @@ const Profile = () => {
                 src={userProfile?.avatarUrl || defaultImage}
                 alt="Profile"
                 onClick={handleImageClick}
-                style={{ cursor: "pointer" }}
+                className="transition transform active:scale-90 hover:scale-105 cursor-pointer"
               />
             </div>
             <div className="profile-info">
@@ -137,7 +137,7 @@ const Profile = () => {
                 </div>
 
                 <button
-                  className="edit-profile-btn"
+                  className="edit-profile-btn transition transform active:scale-90 hover:scale-105"
                   onClick={() => navigate("edit-profile")}
                 >
                   Edit Profile
@@ -195,7 +195,7 @@ const Profile = () => {
           ))}
 
           {selectedPost && (
-            <PostModal post={selectedPost} onClose={closeModal} />
+            <PostModal post={selectedPost}  onClose={closeModal} />
           )}
         </div>
       </div>

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useProfileContext } from "../context/ProfileContext";
+import EditPost from "./EditPost";
 
-const Post = ({ post, onPostClick }) => {
+const Post = ({ post, postId, onPostClick }) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const { userProfile } = useProfileContext();
+  const [showEdit, setShowEdit] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,23 +29,36 @@ const Post = ({ post, onPostClick }) => {
         <div className="post-details">
           <div className="head">
             <div className="user">
-              <div className="profile-photo">
-                <img
-                  src={post?.avatarUrl || defaultImage}
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
+              {/* <div className="profile-photo">
+                {post?.fileUrl &&
+                  (post?.fileType?.startsWith("video/") ? (
+                    <video
+                      controls
+                      className="post-video"
+                      style={{ maxWidth: "100%", borderRadius: "10px" }}
+                    >
+                      <source src={post?.fileUrl} type={post.fileType} />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <img
+                      src={post.fileUrl}
+                      alt={`Post ${post?.$id}`}
+                      className="post-image"
+                    />
+                  ))}
+              </div> */}
               <div className="ingo">
                 <h3>{post?.username}</h3>
                 <small>{post?.location}</small>
               </div>
             </div>
 
-            <span className="edit">
-              <i>
-                <span className="material-symbols-outlined">more_vert</span>
-              </i>
+            <span
+              className="material-symbols-outlined transition transform active:scale-80 hover:scale-110"
+              onClick={() => setShowEdit(true)}
+            >
+              more_vert
             </span>
           </div>
 
@@ -61,6 +76,8 @@ const Post = ({ post, onPostClick }) => {
           className="post-image"
         />
       </div>
+
+      {showEdit && <EditPost post={post} onClose={() => setShowEdit(false)} />}
     </div>
   );
 };

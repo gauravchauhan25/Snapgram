@@ -12,7 +12,7 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
 
-  const { setUserProfile } = useProfileContext();
+  const { setUserProfile, setUserPosts } = useProfileContext();
 
   useEffect(() => {
     document.title = "Create Post";
@@ -25,6 +25,7 @@ const CreatePost = () => {
       toast.error("Location must be less than 30 characters.");
       return;
     }
+    
     if (!file) {
       toast.error("Please select an image to upload.");
       return;
@@ -34,7 +35,7 @@ const CreatePost = () => {
       setLoading(true);
 
       const currentUser = await api.getCurrentUser();
-      const uploadedFile = await api.uploadPostImage(file);
+      const uploadedFile = await api.uploadFile(file);
 
       if (uploadedFile) {
         console.log("File uploaded successfully", uploadedFile);
@@ -58,6 +59,7 @@ const CreatePost = () => {
         fileUrl,
         username,
         avatarUrl,
+        fileId: uploadedFile.$id,
       });
 
       if (response) {
@@ -79,6 +81,8 @@ const CreatePost = () => {
         setLocation("");
         setFile(null);
         document.getElementById("fileInput").value = "";
+        
+        setUserPosts((prev) => [response, ...prev]);
       } else {
         console.log("Error :: creating post");
       }
@@ -114,24 +118,8 @@ const CreatePost = () => {
 
   return (
     <>
-      <Toaster
-        toastOptions={{
-          style: {
-            background: "#333",
-            color: "#fff",
-          },
-          success: {
-            style: {
-              background: "#4CAF50",
-            },
-          },
-          error: {
-            style: {
-              background: "#f44336",
-            },
-          },
-        }}
-      />
+      <Toaster />
+
       <div className="edit-container">
         <h1 className="title items-center">
           {createIcon.icon} Create a New Post
@@ -242,7 +230,7 @@ const CreatePost = () => {
           <input
             type="file"
             id="fileInput"
-            accept="image/*"
+            accept="image/*,video/*"
             onChange={handleFileSelect}
             style={{ display: "none" }}
           />

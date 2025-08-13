@@ -70,9 +70,14 @@ export default function Feed({ feedData }) {
 
           <img src={feedData.fileUrl} alt="feed" className="photo" />
 
-          <div className="interaction-icons">
-            {likeIcon.icon}
-            {saveIcon.icon}
+          <div className="interaction-icons ">
+            <div className="transition transform active:scale-80 hover:scale-110 cursor-pointer">
+              {likeIcon.icon}
+            </div>
+
+            <div className="transition transform active:scale-80 hover:scale-110 cursor-pointer">
+              {saveIcon.icon}
+            </div>
           </div>
 
           <div className="action-button">

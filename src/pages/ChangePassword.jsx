@@ -62,24 +62,7 @@ const ChangePassword = () => {
 
   return (
     <>
-      <Toaster
-        toastOptions={{
-          style: {
-            background: "#333",
-            color: "#fff",
-          },
-          success: {
-            style: {
-              background: "#4CAF50",
-            },
-          },
-          error: {
-            style: {
-              background: "#f44336",
-            },
-          },
-        }}
-      />
+      <Toaster />
       <div className="edit-container">
         <h1 className="title">Change Password</h1>
 

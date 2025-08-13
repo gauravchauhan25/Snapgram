@@ -7,7 +7,7 @@ export default function SearchCard({ user }) {
   const navigate = useNavigate();
 
   return (
-    <div className="search-card">
+    <div className="search-card transition transform active:scale-98 hover:scale-102">
       <img
         src={user.avatarUrl || defaultImage}
         alt="avatar"

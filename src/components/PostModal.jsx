@@ -3,9 +3,11 @@ import toast, { Toaster } from "react-hot-toast";
 import { useProfileContext } from "../context/ProfileContext";
 import EditPost from "./EditPost";
 import api from "../services/appwrite";
+import { useState } from "react";
 
 const PostModal = ({ post, onClose }) => {
-  const { userProfile, setUserProfile } = useProfileContext();
+  const [showEdit, setShowEdit] = useState(false);
+  const { userProfile, setUserProfile, userPosts } = useProfileContext();
   const navigate = useNavigate();
 
   const timeAgo = (timestamp) => {
@@ -33,55 +35,13 @@ const PostModal = ({ post, onClose }) => {
     return "just now";
   };
 
-  const deletePost = async (postsDocId) => {
-    try {
-      const currentUser = await api.getCurrentUser();
-      const del = await api.deletePost(postsDocId);
-      const documentId = await api.getCurrentUserDocumentId();
-
-      if (del) {
-        await api.updatePostCount({
-          documentId,
-          post: (currentUser.posts || 0) - 1,
-        });
-
-        setUserProfile((prev) => ({
-          ...prev,
-          posts: (prev.posts || 0) - 1,
-        }));
-        toast.success("Post Deleted");
-      } else {
-        toast.error("Error deleting Post!");
-      }
-      return;
-    } catch (error) {
-      console.log("Error");
-    }
-  };
 
   const defaultImage =
     "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
 
   return (
     <>
-      <Toaster
-        toastOptions={{
-          style: {
-            background: "#333",
-            color: "#fff",
-          },
-          success: {
-            style: {
-              background: "#4CAF50",
-            },
-          },
-          error: {
-            style: {
-              background: "#f44336",
-            },
-          },
-        }}
-      />
+      <Toaster />
 
       <div className="modal-backdrop" onClick={onClose}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -96,10 +56,9 @@ const PostModal = ({ post, onClose }) => {
                     alt="avatar"
                     loading="lazy"
                     onClick={() => navigate(`/$(userProfile?.username)`)}
-                  className="w-full h-full object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
-
 
                 <div className="ingo">
                   <h3 onClick={() => navigate(`/$(userProfile?.username)`)}>
@@ -113,16 +72,18 @@ const PostModal = ({ post, onClose }) => {
                 <small>{timeAgo(post?.uploadedAt)}</small>
               </div>
 
-              <span className="edit">
-                <i>
-                  <span
-                    className="material-symbols-outlined"
-                    // onClick={() => <EditPost />}
-                  >
-                    more_vert
-                  </span>
-                </i>
-              </span>
+              {userProfile.userId === post.userId && (
+                <span className="edit transition transform active:scale-80 hover:scale-120">
+                  <i>
+                    <span
+                      className="material-symbols-outlined"
+                      onClick={() => setShowEdit(true)}
+                    >
+                      more_vert
+                    </span>
+                  </i>
+                </span>
+              )}
             </div>
 
             <div className="caption">
@@ -141,9 +102,16 @@ const PostModal = ({ post, onClose }) => {
           </div>
         </div>
 
-        <button className="close-button" onClick={onClose}>
+        <button
+          className="close-button transition transform active:scale-80 hover:scale-110"
+          onClick={onClose}
+        >
           <span className="material-symbols-outlined">close</span>
         </button>
+
+        {showEdit && (
+          <EditPost post={post} onClose={() => setShowEdit(false)} />
+        )}
       </div>
     </>
   );

@@ -6,7 +6,7 @@ const ProfileContext = createContext();
 export const ProfileProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -16,6 +16,7 @@ export const ProfileProvider = ({ children }) => {
         if (userData) {
           setUserProfile({
             username: userData.username,
+            userId: userData.userId,
             email: userData.email,
             name: userData.name,
             bio: userData.bio,

@@ -34,7 +34,7 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
             <NavLink
               to={`/${category.name}`}
               className={`menu-item ${({ isActive }) =>
-                isActive ? "active" : ""}`}
+                isActive ? "active transition transform active:scale-90 hover:scale-110" : ""}`}
               onClick={() => setSelectedCategory(category.name)}
             >
               <span>

@@ -278,7 +278,7 @@ export class Services {
       );
 
       if (response.documents.length === 0) {
-        throw new Error("No matching user posts found.");
+        console.log("No matching user posts found.");
       }
 
       return response.documents || [];
@@ -336,6 +336,7 @@ export class Services {
     fileUrl,
     username,
     avatarUrl,
+    fileId
   }) {
     try {
       const newPost = await this.databases.createDocument(
@@ -350,6 +351,7 @@ export class Services {
           fileUrl,
           username,
           avatarUrl,
+          fileId,
           uploadedAt: new Date().toISOString(),
         }
       );
@@ -372,6 +374,25 @@ export class Services {
       console.log("Error in createPost function! ", error);
     }
   }
+
+  // =================EDIT THE POST IN THE DB=========================
+  async editPost(documentId, location, caption) {
+    try {
+      const response = await this.databases.updateDocument(
+        config.appwriteDatabaseID,
+        config.appwritePostsCollectionID,
+        documentId,
+        {
+          location: location,
+          caption: caption,
+        }
+      )
+      return response;
+    } catch (error) {
+      console.log("Error editpost: ", error)
+    }
+  }
+
 
   //==========UPLOAD THE AVATARIMAGE TO THE STORAGE===========
   async uploadImage(file) {
@@ -413,7 +434,7 @@ export class Services {
     }
   }
 
-  //============UPDATE THE AVATAR URL IN THE POSTS COLLECTION=====================
+  //============UPDATE THE AVATAR URL IN THE POSTS COLLECTION==================
   async updateAvatarInPosts(fileUrl) {
     try {
       const currentUser = await this.getAccount();
@@ -439,8 +460,8 @@ export class Services {
     }
   }
 
-  //==========UPLOAD THE POST FILE TO THE "MEDIA" BUCKET===========
-  async uploadPostImage(file) {
+  //==========UPLOAD THE FILE TO THE "MEDIA" BUCKET===========
+  async uploadFile(file) {
     try {
       return await this.storage.createFile(
         config.appwriteBucketID,
@@ -462,19 +483,18 @@ export class Services {
     }
   }
 
-  //===========DELETE THE IMAGE FROM BUCKET===============
-  async deleteImage(fileId) {
-    try {
-      await this.storage.deleteFile(
-        config.appwriteBucketID,
-        ID.unique(),
-        fileId
-      );
-      return true;
-    } catch (error) {
-      console.error("Error:: uploading file:", error);
-    }
+  //===========DELETE THE FILE FROM BUCKET===============
+ async deleteFile(fileId) {
+  try {
+    if (!fileId) throw new Error("deleteFile: fileId is missing/undefined");
+    await this.storage.deleteFile(config.appwriteBucketID, fileId);
+    return true;
+  } catch (err) {
+    console.error("Error:: deleting file:", err);
+    return false; // return a boolean so callers can handle UI state
   }
+}
+
 
   //===========GETS THE POSTS OF USER BY USERID(FOR CREATING MULTIUSERS)===========
   async getPostsByUserId(userId) {
@@ -502,6 +522,51 @@ export class Services {
     } catch (error) {
       console.error("Error fetching user profile by username:", error);
       return null;
+    }
+  }
+
+  //===========ADDS A NEW STORY TO DB===============
+  async addStory(fileUrl) {
+    try {
+      const response = await this.databases.createDocument(
+        config.appwriteDatabaseID,
+        config.appwriteStoryCollectionID,
+        ID.unique(),
+        {
+          storyUrl: fileUrl,
+        }
+      );
+      return response;
+    } catch (error) {
+      console.log("Error adding Story: ", error)
+    }
+  }
+
+  //================DELETES THE STORY FROM DB====================
+  async deleteStory(documentId) {
+    try {
+      const response = await this.databases.deleteDocument(
+        config.appwriteDatabaseID,
+        config.appwriteStoryCollectionID,
+        documentId,
+      );
+      return response;
+    } catch (error) {
+      console.log("Error deleting story: ", error)
+    }
+  }
+
+  //===========FETCH ALL THE DOCUMENTS OR STORIES FORM DB==============
+  async fetchUserStory() {
+    try {
+      const response = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteStoryCollectionID
+      );
+      return response.documents;
+    } catch (error) {
+      console.log("Error fetching story: ", error);
+      return [];
     }
   }
 }

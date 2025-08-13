@@ -36,9 +36,10 @@ export default function RootLayout() {
             } else {
               console.log(" User data failed to save.");
             }
-          } else {
-            console.log("User already exists.");
-          }
+          } 
+          // else {
+          //   console.log("User already exists.");
+          // }
         }
       } catch (error) {
         console.log("Error fetching user session. Logging out...", error);
