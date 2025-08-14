@@ -79,7 +79,7 @@ const EditPost = ({ post, onClose, onSubmit }) => {
       <div className="editpost-backdrop" onClick={onClose}>
         <div className="editpost-content" onClick={(e) => e.stopPropagation()}>
           <button
-            className="editpost-close-button transition transform active:scale-80 hover:scale-110"
+            className="editpost-close-button transition transform active:scale-80 hover:scale-120"
             onClick={() => deletePost(post.$id)}
           >
             {deleteIcon.icon}
@@ -100,6 +100,7 @@ const EditPost = ({ post, onClose, onSubmit }) => {
               onChange={(e) => setNewLocation(e.target.value)}
               placeholder="Enter new location"
               className="input"
+              required
             />
 
             <label htmlFor="caption" className="text-sm">
@@ -112,6 +113,7 @@ const EditPost = ({ post, onClose, onSubmit }) => {
               onChange={(e) => setNewCaption(e.target.value)}
               className="input"
               placeholder="Enter new caption"
+              required
             ></textarea>
 
             {/* Buttons */}

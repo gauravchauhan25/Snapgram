@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
-import "nprogress/nprogress.css";
 import Home from "./_root/Home";
 import SigninForm from "./_auth/forms/SigninForm";
 import SignupForm from "./_auth/forms/SignupForm";

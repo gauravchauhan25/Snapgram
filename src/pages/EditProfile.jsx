@@ -7,12 +7,12 @@ import { editIcon } from "../assets/categories";
 import toast, { Toaster } from "react-hot-toast";
 
 const EditProfile = () => {
-  const [loading, setLoading] = useState(false);
-  const [name, setName] = useState();
-  const [username, setUsername] = useState();
-  const [bio, setBio] = useState();
-
   const { userProfile, setUserProfile } = useProfileContext();
+
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState(userProfile?.name || "");
+  const [username, setUsername] = useState(userProfile?.username || "");
+  const [bio, setBio] = useState(userProfile?.bio || "");
 
   useEffect(() => {
     document.title = "Edit Profile";
@@ -87,10 +87,11 @@ const EditProfile = () => {
             <input
               type="text"
               id="name"
-              value={userProfile?.name || ""}
+              value={name}
               className="input"
-              placeholder={userProfile?.name}
+              placeholder="Your name"
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </div>
 
@@ -102,10 +103,11 @@ const EditProfile = () => {
             <input
               type="text"
               id="username"
-              value={userProfile?.username || ""}
+              value={username}
               className="input"
-              placeholder={userProfile?.username}
+              placeholder="Change username"
               onChange={(e) => setUsername(e.target.value)}
+              required
             />
           </div>
 
@@ -116,11 +118,10 @@ const EditProfile = () => {
 
             <textarea
               id="bio"
-              value={userProfile?.bio || ""}
-              placeholder={
-                userProfile?.bio || "Tell us a little about yourself..."
-              }
+              value={bio}
+              placeholder="Tell us a little about yourself..."
               onChange={(e) => setBio(e.target.value)}
+              required
             />
           </div>
 

@@ -7,17 +7,16 @@ export default function SearchCard({ user }) {
   const navigate = useNavigate();
 
   return (
-    <div className="search-card transition transform active:scale-98 hover:scale-102">
+    <div className="search-card" onClick={() => navigate(`/${user.username}`)}>
       <img
         src={user.avatarUrl || defaultImage}
         alt="avatar"
         className="profile-photo"
-        onClick={() => navigate(`/${user.username}`)}
       />
-      
+
       <div className="user-info">
         <h3>{user.name}</h3>
-        <p onClick={() => navigate(`/${user.username}`)}>@{user.username}</p>
+        <p>@{user.username}</p>
       </div>
     </div>
   );

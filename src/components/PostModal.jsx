@@ -73,7 +73,7 @@ const PostModal = ({ post, onClose }) => {
               </div>
 
               {userProfile.userId === post.userId && (
-                <span className="edit transition transform active:scale-80 hover:scale-120">
+                <span className="edit transition transform active:scale-80 hover:scale-130">
                   <i>
                     <span
                       className="material-symbols-outlined"
@@ -103,7 +103,7 @@ const PostModal = ({ post, onClose }) => {
         </div>
 
         <button
-          className="close-button transition transform active:scale-80 hover:scale-110"
+          className="close-button transition transform active:scale-80 hover:scale-120"
           onClick={onClose}
         >
           <span className="material-symbols-outlined">close</span>
