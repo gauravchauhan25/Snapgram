@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../page-styles/CreatePost.css";
 import api from "../services/appwrite";
 import { useProfileContext } from "../context/ProfileContext";
@@ -13,6 +13,8 @@ const CreatePost = () => {
   const [file, setFile] = useState(null);
 
   const { setUserProfile, setUserPosts } = useProfileContext();
+  const isVideo = !!file && file.type?.startsWith("video");
+  const isImage = !!file && file.type?.startsWith("image");
 
   useEffect(() => {
     document.title = "Create Post";
@@ -31,7 +33,7 @@ const CreatePost = () => {
       return;
     }
     const mimeType = file?.type;
-    
+
     try {
       setLoading(true);
 
@@ -54,7 +56,6 @@ const CreatePost = () => {
 
       const response = await api.createPost({
         userId,
-        title,
         location,
         caption,
         fileUrl,
@@ -95,28 +96,23 @@ const CreatePost = () => {
       setLoading(false);
     }
   };
-
   const handleDrop = (e) => {
     e.preventDefault();
-
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      setFile(droppedFile);
-      console.log("Dropped file:", droppedFile);
-    }
+    const droppedFile = e.dataTransfer.files?.[0];
+    if (droppedFile) setFile(droppedFile);
   };
+
+  const handleDragOver = (e) => e.preventDefault();
 
   const handleFileSelect = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      console.log("Selected file:", selectedFile);
-    }
+    const f = e.target.files?.[0];
+    if (f) setFile(f);
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
+  const previewUrl = useMemo(
+    () => (file ? URL.createObjectURL(file) : null),
+    [file]
+  );
 
   return (
     <>
@@ -129,48 +125,6 @@ const CreatePost = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="title" className="label">
-              Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="input"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="location" className="label">
-              Location
-            </label>
-            <input
-              type="text"
-              id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="input"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="caption" className="label">
-              Caption
-            </label>
-            <textarea
-              id="caption"
-              value={caption}
-              onChange={(e) => setCaption(e.target.value)}
-              className="textarea"
-              rows="5"
-              required
-            ></textarea>
-          </div>
-
-          <div className="form-group">
             <label htmlFor="caption" className="label">
               Upload Image
             </label>
@@ -179,16 +133,22 @@ const CreatePost = () => {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
             >
-              {file ? (
-                <>
-                  <div className="drag-drop-container">
-                    <img
-                      src={URL.createObjectURL(file)}
-                      alt="image"
-                      className="file_uploader-img"
-                    />
-                  </div>
-                </>
+              {previewUrl ? (
+                isVideo ? (
+                  <video
+                    src={previewUrl}
+                    className="max-h-full max-w-full object-contain"
+                    playsInline
+                    autoPlay
+                    loop
+                  />
+                ) : (
+                  <img
+                    src={previewUrl}
+                    alt="preview"
+                    className="max-h-full max-w-full object-contain"
+                  />
+                )
               ) : (
                 <div className="file_uploader-box">
                   <svg
@@ -227,6 +187,48 @@ const CreatePost = () => {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* <div className="form-group">
+            <label htmlFor="title" className="label">
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="input"
+              required
+            />
+          </div> */}
+
+          <div className="form-group">
+            <label htmlFor="location" className="label">
+              Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="input"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="caption" className="label">
+              Caption
+            </label>
+            <textarea
+              id="caption"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              className="textarea"
+              rows="5"
+              required
+            ></textarea>
           </div>
 
           <input

@@ -15,7 +15,7 @@ import api from "../services/appwrite";
 import toast, { Toaster } from "react-hot-toast";
 import { useProfileContext } from "../context/ProfileContext";
 
-export default function AddStoryModal({ isOpen, onClose }) {
+export default function AddStoryModal({ isOpen, onClose, story }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const { userProfile } = useProfileContext?.() || { userProfile: null };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useProfileContext } from "../context/ProfileContext";
 import EditPost from "./EditPost";
 
@@ -6,8 +6,10 @@ const Post = ({ post, postId, onPostClick }) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const { userProfile } = useProfileContext();
   const [showEdit, setShowEdit] = useState(false);
+  const vidRef = useRef(null);
+  const [muted, setMuted] = useState(true);
 
-    const isVideo = post.mimeType?.startsWith("video/");
+  const isVideo = post.mimeType?.startsWith("video/");
   const isImage = post.mimeType?.startsWith("image/");
 
   useEffect(() => {
@@ -32,25 +34,13 @@ const Post = ({ post, postId, onPostClick }) => {
         <div className="post-details">
           <div className="head">
             <div className="user">
-              {/* <div className="profile-photo">
-                {post?.fileUrl &&
-                  (post?.fileType?.startsWith("video/") ? (
-                    <video
-                      controls
-                      className="post-video"
-                      style={{ maxWidth: "100%", borderRadius: "10px" }}
-                    >
-                      <source src={post?.fileUrl} type={post.fileType} />
-                      Your browser does not support the video tag.
-                    </video>
-                  ) : (
-                    <img
-                      src={post.fileUrl}
-                      alt={`Post ${post?.$id}`}
-                      className="post-image"
-                    />
-                  ))}
-              </div> */}
+              <div className="profile-photo">
+                <img
+                  src={userProfile.avatarUrl}
+                  alt={`Post ${post?.$id}`}
+                  className="post-image"
+                />
+              </div>
               <div className="ingo">
                 <h3>{post?.username}</h3>
                 <small>{post?.location}</small>
@@ -73,23 +63,57 @@ const Post = ({ post, postId, onPostClick }) => {
           </div>
         </div>
 
-       {isVideo ? (
-  <video
-    src={post?.fileUrl}
-    className="post-image"   // keep styling identical
-    playsInline
-    preload="metadata"       // shows first frame; stays paused
-    // no autoplay, no loop, no controls -> stays still
-  />
-) : (
-  <img
-    src={post?.fileUrl}
-    alt={`Post ${post?.$id}`}
-    className="post-image"
-    loading="lazy"
-  />
-)}
-
+        {isVideo ? (
+          <div className="relative inline-block">
+            <video
+              src={post.fileUrl}
+              ref={vidRef}
+              muted={muted}
+              className="photo"
+              autoPlay
+              loop
+              playsInline
+            />
+            <button
+              type="button"
+              onClick={() => {
+                const next = !muted;
+                setMuted(next);
+                if (vidRef.current) {
+                  vidRef.current.muted = next;
+                  if (!next) vidRef.current.volume = 1;
+                }
+              }}
+              className="post-muted-btn absolute bottom-4 right-3 z-20 rounded-full bg-black text-[#fff] text-lg p-2 hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/40"
+              aria-label={muted ? "Unmute video" : "Mute video"}
+              aria-pressed={!muted}
+            >
+              {muted ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 10v4h4l5 4V6L7 10H3z" fill="currentColor" />
+                  <path
+                    d="M16 9l5 5m0-5l-5 5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 10v4h4l5 4V6L7 10H3z" fill="currentColor" />
+                  <path
+                    d="M16 8c1.657 1.343 1.657 6.657 0 8M19 5c3 3 3 11 0 14"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
+        ) : isImage ? (
+          <img src={post.fileUrl} alt="feed" className="photo" loading="lazy" />
+        ) : null}
       </div>
 
       {showEdit && <EditPost post={post} onClose={() => setShowEdit(false)} />}

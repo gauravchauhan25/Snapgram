@@ -151,8 +151,8 @@ textarea {
 /* Dropzone styles */
 .dropzone {
   width: 100%;
-  height: auto;
-  padding: 20px;
+  height: 500px;
+  padding: 5px;
   border-radius: 8px;
   display: flex;
   align-items: center;

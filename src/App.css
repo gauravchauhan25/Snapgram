@@ -535,7 +535,12 @@ span {
   padding: 9px 20px;
 }
 
-.muted-btn{
+.post-muted-btn {
+  padding: 5px;
+  display: none;
+}
+
+.muted-btn { 
   padding: 5px;
 }
 
@@ -623,6 +628,10 @@ span {
   .btn {
     padding: 0.8rem;
     font-size: 0.8rem;
+  }
+
+  .post-muted-btn {
+    display: block;
   }
 
   nav {

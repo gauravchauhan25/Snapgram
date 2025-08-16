@@ -4,6 +4,7 @@ import { useProfileContext } from "../context/ProfileContext";
 import { useStoryContext } from "../context/StoryContext";
 import AddStory from "../pages/AddStory";
 import AddStoryModal from "./AddStoryModal";
+import { motion } from "framer-motion"
 
 export default function Stories() {
   const storyContainerRef = useRef(null);
@@ -108,7 +109,7 @@ export default function Stories() {
       )}
 
       {isModalOpen && (
-        <AddStoryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        <AddStoryModal isOpen={isModalOpen} story={story} onClose={() => setIsModalOpen(false)} />
       )}
     </>
   );

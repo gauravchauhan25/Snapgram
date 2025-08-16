@@ -95,8 +95,6 @@ export default function Feed({ feedData }) {
 
           {isVideo ? (
             <div className="relative inline-block">
-              {" "}
-              {/* <-- add relative */}
               <video
                 src={feedData.fileUrl}
                 ref={vidRef}
@@ -105,7 +103,6 @@ export default function Feed({ feedData }) {
                 autoPlay
                 loop
                 playsInline
-                // controls not included -> hidden
               />
               <button
                 type="button"
@@ -117,12 +114,12 @@ export default function Feed({ feedData }) {
                     if (!next) vidRef.current.volume = 1;
                   }
                 }}
-                className="muted-btn absolute bottom-5 right-5 z-20 rounded-full bg-black text-[#fff] text-lg p-2 hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/40"
+                className="muted-btn absolute bottom-4 right-3 z-20 rounded-full bg-black text-[#fff] text-lg p-2 hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/40"
                 aria-label={muted ? "Unmute video" : "Mute video"}
                 aria-pressed={!muted}
               >
                 {muted ? (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M3 10v4h4l5 4V6L7 10H3z" fill="currentColor" />
                     <path
                       d="M16 9l5 5m0-5l-5 5"
@@ -132,7 +129,7 @@ export default function Feed({ feedData }) {
                     />
                   </svg>
                 ) : (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M3 10v4h4l5 4V6L7 10H3z" fill="currentColor" />
                     <path
                       d="M16 8c1.657 1.343 1.657 6.657 0 8M19 5c3 3 3 11 0 14"

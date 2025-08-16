@@ -330,14 +330,13 @@ export class Services {
   //==========CREATING A NEW POST===================
   async createPost({
     userId,
-    title,
     location,
     caption,
     fileUrl,
     username,
     avatarUrl,
     fileId,
-    mimeType
+    mimeType,
   }) {
     try {
       const newPost = await this.databases.createDocument(
@@ -346,7 +345,6 @@ export class Services {
         ID.unique(),
         {
           userId,
-          title,
           caption,
           location,
           fileUrl,
@@ -388,13 +386,12 @@ export class Services {
           location: location,
           caption: caption,
         }
-      )
+      );
       return response;
     } catch (error) {
-      console.log("Error editpost: ", error)
+      console.log("Error editpost: ", error);
     }
   }
-
 
   //==========UPLOAD THE AVATARIMAGE TO THE STORAGE===========
   async uploadImage(file) {
@@ -486,17 +483,16 @@ export class Services {
   }
 
   //===========DELETE THE FILE FROM BUCKET===============
- async deleteFile(fileId) {
-  try {
-    if (!fileId) throw new Error("deleteFile: fileId is missing/undefined");
-    await this.storage.deleteFile(config.appwriteBucketID, fileId);
-    return true;
-  } catch (err) {
-    console.error("Error:: deleting file:", err);
-    return false; // return a boolean so callers can handle UI state
+  async deleteFile(fileId) {
+    try {
+      if (!fileId) throw new Error("deleteFile: fileId is missing/undefined");
+      await this.storage.deleteFile(config.appwriteBucketID, fileId);
+      return true;
+    } catch (err) {
+      console.error("Error:: deleting file:", err);
+      return false; // return a boolean so callers can handle UI state
+    }
   }
-}
-
 
   //===========GETS THE POSTS OF USER BY USERID(FOR CREATING MULTIUSERS)===========
   async getPostsByUserId(userId) {
@@ -546,7 +542,7 @@ export class Services {
       );
       return response;
     } catch (error) {
-      console.log("Error adding Story: ", error)
+      console.log("Error adding Story: ", error);
     }
   }
 
@@ -556,11 +552,11 @@ export class Services {
       const response = await this.databases.deleteDocument(
         config.appwriteDatabaseID,
         config.appwriteStoryCollectionID,
-        documentId,
+        documentId
       );
       return response;
     } catch (error) {
-      console.log("Error deleting story: ", error)
+      console.log("Error deleting story: ", error);
     }
   }
 
@@ -572,7 +568,7 @@ export class Services {
         config.appwriteStoryCollectionID
       );
 
-      if(response) {
+      if (response) {
         return response.documents;
       } else {
         return [];
