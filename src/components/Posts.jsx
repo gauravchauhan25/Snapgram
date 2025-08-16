@@ -7,6 +7,9 @@ const Post = ({ post, postId, onPostClick }) => {
   const { userProfile } = useProfileContext();
   const [showEdit, setShowEdit] = useState(false);
 
+    const isVideo = post.mimeType?.startsWith("video/");
+  const isImage = post.mimeType?.startsWith("image/");
+
   useEffect(() => {
     const handleResize = () => {
       setIsDisabled(window.innerWidth <= 768);
@@ -70,11 +73,23 @@ const Post = ({ post, postId, onPostClick }) => {
           </div>
         </div>
 
-        <img
-          src={post?.fileUrl}
-          alt={`Post ${post?.$id}`}
-          className="post-image"
-        />
+       {isVideo ? (
+  <video
+    src={post?.fileUrl}
+    className="post-image"   // keep styling identical
+    playsInline
+    preload="metadata"       // shows first frame; stays paused
+    // no autoplay, no loop, no controls -> stays still
+  />
+) : (
+  <img
+    src={post?.fileUrl}
+    alt={`Post ${post?.$id}`}
+    className="post-image"
+    loading="lazy"
+  />
+)}
+
       </div>
 
       {showEdit && <EditPost post={post} onClose={() => setShowEdit(false)} />}

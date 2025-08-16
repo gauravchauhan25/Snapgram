@@ -535,6 +535,10 @@ span {
   padding: 9px 20px;
 }
 
+.muted-btn{
+  padding: 5px;
+}
+
 @media screen and (max-width: 1024px) {
   main .container {
     grid-template-columns: 18vw auto 20vw;
