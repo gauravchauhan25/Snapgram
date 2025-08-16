@@ -25,12 +25,13 @@ const CreatePost = () => {
       toast.error("Location must be less than 30 characters.");
       return;
     }
-    
+
     if (!file) {
       toast.error("Please select an image to upload.");
       return;
     }
-
+    const mimeType = file?.type;
+    
     try {
       setLoading(true);
 
@@ -60,6 +61,7 @@ const CreatePost = () => {
         username,
         avatarUrl,
         fileId: uploadedFile.$id,
+        mimeType,
       });
 
       if (response) {
@@ -81,7 +83,7 @@ const CreatePost = () => {
         setLocation("");
         setFile(null);
         document.getElementById("fileInput").value = "";
-        
+
         setUserPosts((prev) => [response, ...prev]);
       } else {
         console.log("Error :: creating post");

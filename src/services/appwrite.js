@@ -336,7 +336,8 @@ export class Services {
     fileUrl,
     username,
     avatarUrl,
-    fileId
+    fileId,
+    mimeType
   }) {
     try {
       const newPost = await this.databases.createDocument(
@@ -353,6 +354,7 @@ export class Services {
           avatarUrl,
           fileId,
           uploadedAt: new Date().toISOString(),
+          mimeType,
         }
       );
       return newPost;
@@ -526,14 +528,20 @@ export class Services {
   }
 
   //===========ADDS A NEW STORY TO DB===============
-  async addStory(fileUrl) {
+  async addStory(userId, name, username, avatarUrl, fileUrl, fileId) {
     try {
       const response = await this.databases.createDocument(
         config.appwriteDatabaseID,
         config.appwriteStoryCollectionID,
         ID.unique(),
         {
-          storyUrl: fileUrl,
+          userId,
+          name,
+          username,
+          avatarUrl,
+          fileUrl,
+          fileId,
+          createdAt: new Date.toISOString(),
         }
       );
       return response;
@@ -563,7 +571,12 @@ export class Services {
         config.appwriteDatabaseID,
         config.appwriteStoryCollectionID
       );
-      return response.documents;
+
+      if(response) {
+        return response.documents;
+      } else {
+        return [];
+      }
     } catch (error) {
       console.log("Error fetching story: ", error);
       return [];

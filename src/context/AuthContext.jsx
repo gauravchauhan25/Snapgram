@@ -36,9 +36,9 @@ export const AuthProvider = ({ children }) => {
       }}
     >
       <UsersProvider>
-        {/* <StoryProvider> */}
+        <StoryProvider>
           {children}
-        {/* </StoryProvider> */}
+        </StoryProvider>
       </UsersProvider>
     </AuthContext.Provider>
   );

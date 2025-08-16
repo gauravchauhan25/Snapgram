@@ -531,6 +531,10 @@ span {
   text-decoration: underline;
 }
 
+.add-to-story {
+  padding: 9px 20px;
+}
+
 @media screen and (max-width: 1024px) {
   main .container {
     grid-template-columns: 18vw auto 20vw;
@@ -622,7 +626,7 @@ span {
     padding: 0.8rem 0;
     position: relative;
     top: 0;
-    z-index: 1000;
+    z-index: 100;
   }
 
   .logo {

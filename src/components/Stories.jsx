@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { stories } from "../assets/constants";
 import { useProfileContext } from "../context/ProfileContext";
+import { useStoryContext } from "../context/StoryContext";
+import AddStory from "../pages/AddStory";
+import AddStoryModal from "./AddStoryModal";
 
 export default function Stories() {
   const storyContainerRef = useRef(null);
@@ -41,7 +44,10 @@ export default function Stories() {
     });
   };
 
-  const { userProfile} = useProfileContext();
+  const { userProfile } = useProfileContext();
+  const { userStory } = useStoryContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isStoryOpen, setIsStoryOpen] = useState(false);
 
   return (
     <>
@@ -61,12 +67,30 @@ export default function Stories() {
         )}
 
         {/* Loop for creating multiple stories */}
-          <div className="story">
-            <div className="profile-photo">
-              <img src={userProfile?.avatarUrl} alt="" loading="lazy" />
-            </div>
-            <p className="story-name">Your Story</p>
+        <div className="story">
+          <div className="profile-photo">
+            <img
+              src={userProfile?.avatarUrl}
+              alt=""
+              loading="lazy"
+              onClick={() => {
+                setIsStoryOpen(true);
+              }}
+            />
           </div>
+          <p className="story-name">Your Story</p>
+        </div>
+
+        {userStory.map((story) => (
+          <div className="story" key={story.$id}>
+            <div className="profile-photo">
+              <img src={story?.avatarUrl} alt="" loading="lazy"  onClick={() => {
+                setIsModalOpen(true);
+              }} />
+            </div>
+            <p className="story-name">{story?.name}</p>
+          </div>
+        ))}
 
         {canScrollRight && (
           <button
@@ -78,6 +102,14 @@ export default function Stories() {
           </button>
         )}
       </div>
+
+      {isStoryOpen && (
+        <AddStory isOpen={isStoryOpen} onClose={() => setIsStoryOpen(false)} />
+      )}
+
+      {isModalOpen && (
+        <AddStoryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      )}
     </>
   );
 }

@@ -29,6 +29,9 @@ export default function Feed({ feedData }) {
     return "just now";
   };
 
+  const isVideo = feedData.mimeType?.startsWith("video/");
+  const isImage = feedData.mimeType?.startsWith("image/");
+
   return (
     <div>
       <div className="fade-in">
@@ -68,7 +71,23 @@ export default function Feed({ feedData }) {
             </p>
           </div>
 
-          <img src={feedData.fileUrl} alt="feed" className="photo" />
+          {isVideo ? (
+            <video
+              src={feedData.fileUrl} // this should be a getFileView URL
+              className="photo"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          ) : isImage ? (
+            <img
+              src={feedData.fileUrl}
+              alt="feed"
+              className="photo"
+              loading="lazy"
+            />
+          ) : null}
 
           <div className="interaction-icons ">
             <div className="transition transform active:scale-80 hover:scale-110 cursor-pointer">
