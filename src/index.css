@@ -109,12 +109,12 @@ body {
 
 #nprogress .bar {
   background: var(--color-primary) !important; 
-  height: 4px !important;
+  height: 5px !important;
 }
 
 /* Optional: change the glow (shadow under the bar) */
 #nprogress .peg {
-  box-shadow: 0 0 10px #7b00ff, 0 0 5px #5f269b !important;
+  box-shadow: 0 0 10px var(--color-primary), 0 0 5px var(--color-primary) !important;
 }
 
 .fade-in {
