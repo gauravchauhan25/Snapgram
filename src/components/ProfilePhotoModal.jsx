@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { useProfileContext } from "../context/ProfileContext";
-import api from "../services/appwrite";
 
 const ProfilePhotoModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);

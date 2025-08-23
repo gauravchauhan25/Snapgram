@@ -2,18 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import { useProfileContext } from "../context/ProfileContext";
 import { useStoryContext } from "../context/StoryContext";
 import AddStory from "../pages/AddStory";
-import AddStoryModal from "./AddStoryModal";
+import ViewStoryModal from "./ViewStoryModal";
 import { FaPlus } from "react-icons/fa6";
+import ViewMyStoryModal from "./ViewMyStoryModal";
 
 export default function Stories() {
-  const { userProfile } = useProfileContext();
-  const { userStory } = useStoryContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isStoryOpen, setIsStoryOpen] = useState(false);
-
-  const storyContainerRef = useRef(null);
+  const [isMyStoryOpen, setIsMyStoryOpen] = useState(false);
+  const [activeStory, setActiveStory] = useState(null);
+  
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  
+  const { userProfile } = useProfileContext();
+  const { userStory } = useStoryContext();
+  const storyContainerRef = useRef(null);
 
   useEffect(() => {
     const storyContainer = storyContainerRef.current;
@@ -49,6 +53,9 @@ export default function Stories() {
     });
   };
 
+  const defaultImage =
+    "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
+
   return (
     <>
       <div
@@ -69,12 +76,11 @@ export default function Stories() {
         <div className="story">
           <div className="profile-photo">
             <img
-              src={userProfile?.avatarUrl}
-              alt=""
+              src={userProfile?.avatarUrl || defaultImage}
+              alt="mystory"
               loading="lazy"
-
               onClick={() => {
-                setIsStoryOpen(true);
+                setIsMyStoryOpen(true);
               }}
             />
             <button
@@ -94,11 +100,13 @@ export default function Stories() {
           <div className="story" key={story.$id}>
             <div className="profile-photo">
               <img
-                src={story?.avatarUrl}
+                src={story?.avatarUrl || defaultImage}
                 loading="lazy"
                 onClick={() => {
+                  setActiveStory(story); 
                   setIsModalOpen(true);
                 }}
+                alt={story?.name || "story"}
               />
             </div>
             <p className="story-name">{story?.name}</p>
@@ -120,10 +128,18 @@ export default function Stories() {
         <AddStory isOpen={isStoryOpen} onClose={() => setIsStoryOpen(false)} />
       )}
 
-      {isModalOpen && (
-        <AddStoryModal
+      {isMyStoryOpen && (
+        <ViewMyStoryModal isOpen={isMyStoryOpen} onClose={() => setIsMyStoryOpen(false)} />
+      )}
+
+      {isModalOpen && activeStory && (
+        <ViewStoryModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          story={activeStory}
+          onClose={() => {
+            setIsModalOpen(false);
+            setActiveStory(null);
+          }}
         />
       )}
     </>

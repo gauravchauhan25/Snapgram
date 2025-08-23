@@ -6,10 +6,13 @@ import toast, { Toaster } from "react-hot-toast";
 import Post from "../components/Posts";
 import PostModal from "../components/PostModal";
 import { useProfileContext } from "../context/ProfileContext";
+import { useStoryContext } from "../context/StoryContext";
 
 const Profile = () => {
   const { userProfile, setUserProfile, userPosts, setUserPosts } =
     useProfileContext();
+
+  const { setUserStory } = useStoryContext();
 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -73,8 +76,9 @@ const Profile = () => {
       });
 
       const updatedInPosts = await api.updateAvatarInPosts(fileUrl);
+      const updatedInStories = await api.updateAvatarInStory(fileUrl);
 
-      if (!updatedInUsers && !updatedInPosts) {
+      if (!updatedInUsers && !updatedInPosts && !updatedInStories) {
         toast.error("Failed to update profile photo.");
       } else {
         toast.success("Profile photo updated!");
@@ -90,6 +94,8 @@ const Profile = () => {
             avatarUrl: fileUrl,
           }))
         );
+
+        
       }
     } catch (error) {
       console.error("Error updating profile photo:", error);
@@ -195,7 +201,7 @@ const Profile = () => {
           ))}
 
           {selectedPost && (
-            <PostModal post={selectedPost}  onClose={closeModal} />
+            <PostModal post={selectedPost} onClose={closeModal} />
           )}
         </div>
       </div>

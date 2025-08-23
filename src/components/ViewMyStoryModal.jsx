@@ -1,66 +1,68 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  ArrowLeft,
-  Circle,
-  Users,
-  Type,
-  Sticker,
-  Music,
-  MoreHorizontal,
-  Send,
-  Star,
-  Image as ImageIcon,
-} from "lucide-react";
-import api from "../services/appwrite";
-import toast, { Toaster } from "react-hot-toast";
+import { useRef, useState } from "react";
+import { IoCloseSharp } from "react-icons/io5";
 import { useProfileContext } from "../context/ProfileContext";
-import { useStoryContext } from "../context/StoryContext";
+import { useNavigate } from "react-router-dom";
 
-export default function ViewStory({ isOpen, story, onClose }) {
+export default function ViewMyStoryModal({ isOpen, onClose}) {
   const [loading, setLoading] = useState(false);
-  const { userProfile } = useProfileContext?.() || { userProfile: null };
-  const { userStory } = useStoryContext(); //Fetch user story
+  const { userProfile } = useProfileContext();
 
-    const vidRef = useRef(null);
-    const [muted, setMuted] = useState(true);
-  
-  const isVideo = !!file && file.type?.startsWith("video");
-  const isImage = !!file && file.type?.startsWith("image");
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape" && isOpen) onClose?.();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [isOpen, onClose]);
+  const vidRef = useRef(null);
+  const [muted, setMuted] = useState(true);
+
+//   const isVideo = story?.mimeType?.startsWith("video/");
+//   const isImage = story?.mimeType?.startsWith("image/");
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
-      <Toaster position="top-center" />
       <div className="absolute inset-0 bg-neutral-900 md:bg-black" />
 
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-8 p-2 transition transform active:scale-80 hover:scale-110 cursor-pointer"
+        aria-label="Close"
+      >
+        <IoCloseSharp size={36} />
+      </button>
+
       <div
-        className="relative z-[101] mx-3 flex h-screen md:h-[95vh]  w-screen md:max-w-[520px] flex-col overflow-hidden md:rounded-2xl bg-neutral-900 text-[#fff] shadow-2xl ring-1 ring-white/10"
+        className="relative z-[101] mx-3 flex h-screen md:h-[95vh] w-screen md:max-w-[520px] flex-col overflow-hidden md:rounded-2xl bg-neutral-900 text-[#fff] shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between px-3 py-3">
-          <button
-            onClick={onClose}
-            className="inline-flex h-10 w-10 my-2 mx-2 items-center justify-center rounded-full hover:bg-[#fff]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:cursor-pointer"
-            aria-label="Close"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
+        <header className="flex items-center justify-between">
+          <div className=" mx-10 mt-5">
+            <div className="flex gap-5 items-center justify-center">
+              <div className="w-11 h-11 rounded-full overflow-hidden">
+                <img
+                  src={userProfile?.avatarUrl}
+                  alt="avatar"
+                  loading="lazy"
+                  onClick={() => navigate(`/${userProfile?.username}`)}
+                  className="w-full h-full object-cover cursor-pointer"
+                />
+              </div>
+
+              <div className="cursor-pointer">
+                <h3 className="text-[0.9rem] font-semibold">{userProfile?.name}</h3>
+                <p
+                  className="text-[0.8rem] text-[#9D95AE]"
+                  onClick={() => navigate(`/${userProfile?.username}`)}
+                >
+                  @{userProfile?.username}
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div className="h-10 w-10" />
         </header>
 
-        <section className="relative mb-0 flex-1 overflow-auto ring-1 ring-white/5 flex items-center justify-center">
-        
-          {isVideo ? (
+        <section className="relative mb-0 flex-1 overflow-y-hidden flex items-center justify-center">
+          {/* {isVideo ? (
             <div className="relative inline-block">
               <video
                 src={story.fileUrl}
@@ -81,7 +83,7 @@ export default function ViewStory({ isOpen, story, onClose }) {
                     if (!next) vidRef.current.volume = 1;
                   }
                 }}
-                className="post-muted-btn absolute bottom-4 right-3 z-20 rounded-full bg-black text-[#fff] text-lg p-2 hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/40"
+                className="post-muted-btn absolute bottom-4 right-3 z-20 rounded-full bg-black text-[#fff] text-lg p-2 hover:bg-black/70"
                 aria-label={muted ? "Unmute video" : "Mute video"}
                 aria-pressed={!muted}
               >
@@ -115,7 +117,7 @@ export default function ViewStory({ isOpen, story, onClose }) {
               className="photo"
               loading="lazy"
             />
-          ) : null}
+          ) : null} */}
         </section>
       </div>
     </div>

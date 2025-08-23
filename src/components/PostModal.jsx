@@ -2,16 +2,16 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useProfileContext } from "../context/ProfileContext";
 import EditPost from "./EditPost";
-import api from "../services/appwrite";
 import { useRef, useState, useMemo, useEffect } from "react";
 
 const PostModal = ({ post, onClose }) => {
   const [showEdit, setShowEdit] = useState(false);
-  const { userProfile } = useProfileContext();
-  const navigate = useNavigate();
-
   const [muted, setMuted] = useState(true);
+  
   const vidRef = useRef(null);
+  const navigate = useNavigate();
+  
+  const { userProfile } = useProfileContext();
 
   const timeAgo = (timestamp) => {
     const now = new Date();
@@ -40,7 +40,6 @@ const PostModal = ({ post, onClose }) => {
   const defaultImage =
     "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
 
-  // Reset mute when different media is opened
   useEffect(() => setMuted(true), [post?.fileUrl]);
 
   return (
@@ -51,7 +50,7 @@ const PostModal = ({ post, onClose }) => {
           {isVideo ? (
             <>
               <video
-                src={post.fileUrl}
+                // src={post.fileUrl}
                 ref={vidRef}
                 className="modal-image"
                 autoPlay
@@ -156,9 +155,6 @@ const PostModal = ({ post, onClose }) => {
                   __html: (post?.caption || "").replace(/,/g, ",<br />"),
                 }}
               />
-              <span className="harsh-tag">
-                {(post?.hashtags || []).join("  ")}
-              </span>
             </div>
           </div>
         </div>

@@ -7,6 +7,25 @@ export default function Feed({ feedData }) {
   const [muted, setMuted] = useState(true);
   const vidRef = useRef(null);
 
+  useEffect(() => {
+    if (!vidRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          vidRef.current.play().catch(() => {});
+        } else {
+          vidRef.current.pause();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(vidRef.current);
+
+    return () => observer.disconnect();
+  }, [feedData.fileUrl]);
+
   const timeAgo = (timestamp) => {
     const now = new Date();
     const uploadedDate = new Date(timestamp);
@@ -35,27 +54,8 @@ export default function Feed({ feedData }) {
   const isVideo = feedData.mimeType?.startsWith("video/");
   const isImage = feedData.mimeType?.startsWith("image/");
 
-  useEffect(() => {
-    if (!vidRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          vidRef.current.play().catch(() => {});
-        } else {
-          vidRef.current.pause();
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(vidRef.current);
-
-    return () => observer.disconnect();
-  }, [feedData.fileUrl]); // re-run if new video
-
   return (
-    <div>
+    <>
       <div className="fade-in">
         <div className="feed">
           <div className="head">
@@ -159,12 +159,8 @@ export default function Feed({ feedData }) {
               {saveIcon.icon}
             </div>
           </div>
-
-          <div className="action-button">
-            <div className="interaction-buttons"></div>
-          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -4,11 +4,12 @@ import EditPost from "./EditPost";
 
 const Post = ({ post, postId, onPostClick }) => {
   const [isDisabled, setIsDisabled] = useState(false);
-  const { userProfile } = useProfileContext();
   const [showEdit, setShowEdit] = useState(false);
-  const vidRef = useRef(null);
   const [muted, setMuted] = useState(true);
-
+  
+  const vidRef = useRef(null);
+  const { userProfile } = useProfileContext();
+  
   const isVideo = post.mimeType?.startsWith("video/");
   const isImage = post.mimeType?.startsWith("image/");
 

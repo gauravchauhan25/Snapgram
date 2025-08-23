@@ -459,6 +459,32 @@ export class Services {
     }
   }
 
+  //============UPDATE THE AVATAR URL IN THE STORY COLLECTION==================
+  async updateAvatarInStory(fileUrl) {
+    try {
+      const currentUser = await this.getAccount();
+
+      const stories = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteStoryCollectionID,
+        [Query.equal("userId", currentUser.$id)]
+      );
+
+      for (const story of stories.documents) {
+        await this.databases.updateDocument(
+          config.appwriteDatabaseID,
+          config.appwriteStoryCollectionID,
+          story.$id,
+          {
+            avatarUrl: fileUrl,
+          }
+        );
+      }
+    } catch (error) {
+      console.log("Error updating avatar in Posts collection", error);
+    }
+  }
+
   //==========UPLOAD THE FILE TO THE "MEDIA" BUCKET===========
   async uploadFile(file) {
     try {
@@ -532,8 +558,8 @@ export class Services {
         ID.unique(),
         {
           userId,
-          name,
           username,
+          name,
           avatarUrl,
           fileUrl,
           fileId,
@@ -561,7 +587,7 @@ export class Services {
     }
   }
 
-  //===========FETCH ALL THE DOCUMENTS OR STORIES FORM DB==============
+  //===========FETCH ALL THE DOCUMENTS OR STORIES FROM DB==============
   async fetchUserStory() {
     try {
       const account = await this.getAccount();

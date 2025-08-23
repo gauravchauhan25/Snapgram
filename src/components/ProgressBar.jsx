@@ -17,5 +17,4 @@ export default function ProgressBar() {
   }, [location.pathname]);
 
   return null;
-
 }

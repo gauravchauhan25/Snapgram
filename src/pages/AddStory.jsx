@@ -8,7 +8,6 @@ import {
   Music,
   MoreHorizontal,
   Send,
-  Star,
   Image as ImageIcon,
 } from "lucide-react";
 import api from "../services/appwrite";
@@ -43,10 +42,10 @@ export default function AddStory({ isOpen, onClose }) {
 
   // Upload story
   const handleStory = async (e) => {
-    e?.preventDefault?.();
-    
+    e.preventDefault?.();
+
     if (!file) return toast.error("Please select a photo or video first.");
-    
+
     const mimeType = file?.type;
 
     try {
@@ -56,44 +55,40 @@ export default function AddStory({ isOpen, onClose }) {
         toast.error("Upload failed. Try a different file.");
         return;
       }
+
       const fileUrl = await api.getFilePreview(uploadedFile.$id);
-      await api.addStory(
+      const add = await api.addStory(
         userProfile?.userId,
         userProfile?.name,
         userProfile?.username,
-        userProfile?.avatarUrl,
+        userProfile?.avatarUrl || defaultImage,
         fileUrl,
         uploadedFile.$id,
-        mimeType,
+        mimeType
       );
-      toast.success("Story posted");
-      setFile(null);
-      onClose?.();
-    } catch (err) {
-      console.error("Error handling story:", err);
-      toast.error("Something went wrong while posting your story.");
+
+      if (add) {
+        toast.success("Story posted");
+        setFile(null);
+        onClose?.();
+      }
+    } catch (error) {
+      console.error("Error handling story:", error);
+      toast.error("Something went wrong while posting!");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape" && isOpen) onClose?.();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [isOpen, onClose]);
-
   if (!isOpen) return null;
+
+  const defaultImage =
+    "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
-      <Toaster position="top-center" />
-      <div
-        className="absolute inset-0 bg-neutral-900 md:bg-black"
-        // onClick={onClose}
-      />
+      <Toaster />
+      <div className="absolute inset-0 bg-neutral-900 md:bg-black" />
 
       <div
         className="relative z-[101] mx-3 flex h-screen md:h-[95vh]  w-screen md:max-w-[520px] flex-col overflow-hidden md:rounded-2xl bg-neutral-900 text-[#fff] shadow-2xl ring-1 ring-white/10"
@@ -178,7 +173,7 @@ export default function AddStory({ isOpen, onClose }) {
                 </svg>
               </div>
               <p className="text-sm text-[#fff] ">Drag & drop a photo/video</p>
-              <label className="cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm hover:bg-white/15">
+              <label className="cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm hover:bg-white/15 transition transform active:scale-85 hover:scale-110">
                 <input
                   type="file"
                   accept="image/*,video/*"
@@ -258,7 +253,7 @@ function PillButton({ children, className = "" }) {
     <button
       type="button"
       className={
-        "inline-flex items-center rounded-3xl bg-[#fff]/10 px-4 py-2.5 text-sm text-[#fff] hover:bg-[#fff]/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 " +
+        "inline-flex items-center rounded-3xl bg-[#fff]/10 px-4 py-2.5 text-sm hover:bg-[#fff]/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 " +
         className
       }
     >
