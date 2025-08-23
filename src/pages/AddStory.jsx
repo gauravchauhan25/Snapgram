@@ -41,10 +41,14 @@ export default function AddStory({ isOpen, onClose }) {
   const isVideo = !!file && file.type?.startsWith("video");
   const isImage = !!file && file.type?.startsWith("image");
 
-  // Upload story to backend
+  // Upload story
   const handleStory = async (e) => {
     e?.preventDefault?.();
+    
     if (!file) return toast.error("Please select a photo or video first.");
+    
+    const mimeType = file?.type;
+
     try {
       setLoading(true);
       const uploadedFile = await api.uploadFile(file);
@@ -59,7 +63,8 @@ export default function AddStory({ isOpen, onClose }) {
         userProfile?.username,
         userProfile?.avatarUrl,
         fileUrl,
-        uploadedFile.$id
+        uploadedFile.$id,
+        mimeType,
       );
       toast.success("Story posted");
       setFile(null);
@@ -85,7 +90,6 @@ export default function AddStory({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
       <Toaster position="top-center" />
-      {/* Background overlay */}
       <div
         className="absolute inset-0 bg-neutral-900 md:bg-black"
         // onClick={onClose}
@@ -98,7 +102,7 @@ export default function AddStory({ isOpen, onClose }) {
         <header className="flex items-center justify-between px-3 py-3">
           <button
             onClick={onClose}
-            className="inline-flex h-10 w-10 my-2 mx-2 items-center justify-center rounded-full hover:bg-[#fff]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:cursor-pointer"
+            className="transition transform active:scale-90 hover:scale-105 cursor-pointer inline-flex h-10 w-10 my-2 mx-2 items-center justify-center rounded-full hover:bg-[#fff]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:cursor-pointer"
             aria-label="Close"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -187,9 +191,12 @@ export default function AddStory({ isOpen, onClose }) {
           )}
         </section>
 
-        {/* Footer with share options */}
+        {/* Footer for sharing */}
         <footer className="px-3 py-4 flex items-center gap-3 my-3 mx-3">
-          <PillButton>
+          <PillButton
+            className="transition transform active:scale-90 hover:scale-105 cursor-pointer"
+            onClick={handleStory}
+          >
             <div className="flex items-center gap-2 add-to-story">
               <div className="h-6 w-6 rounded-full overflow-hidden">
                 <img
@@ -205,7 +212,7 @@ export default function AddStory({ isOpen, onClose }) {
           <button
             onClick={handleStory}
             disabled={!file || loading}
-            className="ml-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#fff] text-black hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+            className="transition transform active:scale-90 hover:scale-105 ml-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#fff] text-black hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 cursor-pointer"
             aria-label="Share"
           >
             {loading ? (

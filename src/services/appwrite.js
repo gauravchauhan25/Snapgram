@@ -524,7 +524,7 @@ export class Services {
   }
 
   //===========ADDS A NEW STORY TO DB===============
-  async addStory(userId, name, username, avatarUrl, fileUrl, fileId) {
+  async addStory(userId, name, username, avatarUrl, fileUrl, fileId, mimeType) {
     try {
       const response = await this.databases.createDocument(
         config.appwriteDatabaseID,
@@ -537,7 +537,8 @@ export class Services {
           avatarUrl,
           fileUrl,
           fileId,
-          createdAt: new Date.toISOString(),
+          createdAt: new Date().toISOString(),
+          mimeType,
         }
       );
       return response;
@@ -563,16 +564,21 @@ export class Services {
   //===========FETCH ALL THE DOCUMENTS OR STORIES FORM DB==============
   async fetchUserStory() {
     try {
+      const account = await this.getAccount();
+      const userId = account.$id;
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
       const response = await this.databases.listDocuments(
         config.appwriteDatabaseID,
-        config.appwriteStoryCollectionID
+        config.appwriteStoryCollectionID,
+        [
+          Query.greaterThan("$createdAt", since),
+          Query.orderDesc("$createdAt"),
+          Query.notEqual("userId", userId),
+        ]
       );
 
-      if (response) {
-        return response.documents;
-      } else {
-        return [];
-      }
+      return response?.documents ?? [];
     } catch (error) {
       console.log("Error fetching story: ", error);
       return [];

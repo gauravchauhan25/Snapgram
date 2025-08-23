@@ -1,12 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { stories } from "../assets/constants";
+import { useEffect, useRef, useState } from "react";
 import { useProfileContext } from "../context/ProfileContext";
 import { useStoryContext } from "../context/StoryContext";
 import AddStory from "../pages/AddStory";
 import AddStoryModal from "./AddStoryModal";
-import { motion } from "framer-motion"
+import { FaPlus } from "react-icons/fa6";
 
 export default function Stories() {
+  const { userProfile } = useProfileContext();
+  const { userStory } = useStoryContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isStoryOpen, setIsStoryOpen] = useState(false);
+
   const storyContainerRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -45,11 +49,6 @@ export default function Stories() {
     });
   };
 
-  const { userProfile } = useProfileContext();
-  const { userStory } = useStoryContext();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isStoryOpen, setIsStoryOpen] = useState(false);
-
   return (
     <>
       <div
@@ -67,27 +66,40 @@ export default function Stories() {
           </button>
         )}
 
-        {/* Loop for creating multiple stories */}
         <div className="story">
           <div className="profile-photo">
             <img
               src={userProfile?.avatarUrl}
               alt=""
               loading="lazy"
+
               onClick={() => {
                 setIsStoryOpen(true);
               }}
             />
+            <button
+              onClick={() => setIsStoryOpen(true)}
+              className="absolute bottom-2 right-2 bg-gradient-to-r from-[#4a1f84] to-[#4a1f84] 
+              w-6 h-6 flex items-center justify-center rounded-full text-[#fff] 
+              border-2 border-white shadow-md hover:scale-110 transition cursor-pointer"
+            >
+              <FaPlus size={14} />
+            </button>
           </div>
           <p className="story-name">Your Story</p>
         </div>
 
+        {/* Loop for creating multiple stories */}
         {userStory.map((story) => (
           <div className="story" key={story.$id}>
             <div className="profile-photo">
-              <img src={story?.avatarUrl} alt="" loading="lazy"  onClick={() => {
-                setIsModalOpen(true);
-              }} />
+              <img
+                src={story?.avatarUrl}
+                loading="lazy"
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+              />
             </div>
             <p className="story-name">{story?.name}</p>
           </div>
@@ -109,7 +121,10 @@ export default function Stories() {
       )}
 
       {isModalOpen && (
-        <AddStoryModal isOpen={isModalOpen} story={story} onClose={() => setIsModalOpen(false)} />
+        <AddStoryModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       )}
     </>
   );

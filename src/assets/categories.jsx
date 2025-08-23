@@ -90,8 +90,8 @@ export const categories = [
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
           className="bi bi-messenger"
-          width="24"
-          height="24"
+          width="28"
+          height="28"
           viewBox="0 0 20 20"
           style={{
             fill: "var(--color-dark)",

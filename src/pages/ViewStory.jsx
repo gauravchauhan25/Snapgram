@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   Circle,
@@ -16,16 +16,16 @@ import toast, { Toaster } from "react-hot-toast";
 import { useProfileContext } from "../context/ProfileContext";
 import { useStoryContext } from "../context/StoryContext";
 
-export default function AddStoryModal({ isOpen, story, onClose }) {
+export default function ViewStory({ isOpen, story, onClose }) {
   const [loading, setLoading] = useState(false);
   const { userProfile } = useProfileContext?.() || { userProfile: null };
   const { userStory } = useStoryContext(); //Fetch user story
 
-  const vidRef = useRef(null);
-  const [muted, setMuted] = useState(true);
+    const vidRef = useRef(null);
+    const [muted, setMuted] = useState(true);
   
-  const isVideo = userStory.mimeType?.startsWith("video/");
-  const isImage = userStory.mimeType?.startsWith("image/");
+  const isVideo = !!file && file.type?.startsWith("video");
+  const isImage = !!file && file.type?.startsWith("image");
 
   useEffect(() => {
     const onKey = (e) => {

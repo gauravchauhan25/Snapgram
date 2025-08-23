@@ -96,6 +96,7 @@ const CreatePost = () => {
       setLoading(false);
     }
   };
+  
   const handleDrop = (e) => {
     e.preventDefault();
     const droppedFile = e.dataTransfer.files?.[0];
