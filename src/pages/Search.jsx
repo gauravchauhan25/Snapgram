@@ -36,7 +36,7 @@ export default function Search() {
 
   return (
     <div className="search">
-      <div className="search-bar ">
+      <div className="search-bar">
         <img
           src="/icons/search.svg"
           alt="Search Icon"
@@ -53,12 +53,6 @@ export default function Search() {
       </div>
 
       <div className="search-results">
-        {/* <h2>Search Results</h2> */}
-        {/* <div className="search-btns">
-          <button role="button">Users</button>
-          <button role="button">Posts</button>
-        </div> */}
-
         <div className="search-loader">{loading && loaderIcon.icon}</div>
         {!loading && results.length === 0 && query && <p className="flex justify-center items-center text-center text-sm md:text-lg">🙁Sorry! No user found.</p>}
 

@@ -12,22 +12,37 @@ export const StoryProvider = ({ children }) => {
     const checkUserStory = async () => {
       try {
         const fetchedStory = await api.fetchUserStory();
-        setUserStory(fetchedStory);
+
+        const grouped = fetchedStory.reduce((acc, story) => {
+          if (!acc[story.username]) {
+            acc[story.username] = {
+              userId: story.userId,
+              username: story.username,
+              name: story.name,
+              avatarUrl: story.avatarUrl,
+              stories: [],
+            };
+          }
+          acc[story.username].stories.push(story);
+          return acc;
+        }, {});
+
+        setUserStory(Object.values(grouped));
       } catch (error) {
         console.log("Error fetching user stories: ", error);
       }
     };
 
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       checkUserStory();
     } else {
-      setUserStory([])
+      setUserStory([]);
     }
   }, [isAuthenticated]);
 
   useEffect(() => {
     console.log(userStory);
-  }, [])
+  }, []);
 
   return (
     <StoryContext.Provider
@@ -42,4 +57,3 @@ export const StoryProvider = ({ children }) => {
 };
 
 export const useStoryContext = () => useContext(StoryContext);
-

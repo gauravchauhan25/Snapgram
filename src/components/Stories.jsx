@@ -11,10 +11,10 @@ export default function Stories() {
   const [isStoryOpen, setIsStoryOpen] = useState(false);
   const [isMyStoryOpen, setIsMyStoryOpen] = useState(false);
   const [activeStory, setActiveStory] = useState(null);
-  
+
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  
+
   const { userProfile } = useProfileContext();
   const { userStory } = useStoryContext();
   const storyContainerRef = useRef(null);
@@ -96,20 +96,20 @@ export default function Stories() {
         </div>
 
         {/* Loop for creating multiple stories */}
-        {userStory.map((story) => (
-          <div className="story" key={story.$id}>
+        {userStory.map((user) => (
+          <div className="story" key={user.userId}>
             <div className="profile-photo">
               <img
-                src={story?.avatarUrl || defaultImage}
+                src={user?.avatarUrl || defaultImage}
                 loading="lazy"
                 onClick={() => {
-                  setActiveStory(story); 
+                  setActiveStory(user); // 👈 pass entire user object
                   setIsModalOpen(true);
                 }}
-                alt={story?.name || "story"}
+                alt={user?.name || "story"}
               />
             </div>
-            <p className="story-name">{story?.name}</p>
+            <p className="story-name">{user?.name}</p>
           </div>
         ))}
 
@@ -129,13 +129,17 @@ export default function Stories() {
       )}
 
       {isMyStoryOpen && (
-        <ViewMyStoryModal isOpen={isMyStoryOpen} onClose={() => setIsMyStoryOpen(false)} />
+        <ViewMyStoryModal
+          isOpen={isMyStoryOpen}
+          onClose={() => setIsMyStoryOpen(false)}
+        />
       )}
 
       {isModalOpen && activeStory && (
         <ViewStoryModal
           isOpen={isModalOpen}
-          story={activeStory}
+          stories={activeStory.stories} // 👈 pass array of stories
+          user={activeStory} // 👈 pass user info (name, avatarUrl, etc.)
           onClose={() => {
             setIsModalOpen(false);
             setActiveStory(null);
