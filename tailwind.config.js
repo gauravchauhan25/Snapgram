@@ -1,7 +1,7 @@
 // tailwind.config.js
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
-  safelist: ['m-0','m-1','m-2','m-3','m-4','mt-2','mb-2'],
+  safelist: ['p-0','p-1','p-2','p-3','p-4','px-2','py-2','pt-4','pb-4'],
   theme: {
     extend: {
       fontFamily: {

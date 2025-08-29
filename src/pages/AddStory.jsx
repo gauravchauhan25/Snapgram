@@ -94,7 +94,7 @@ export default function AddStory({ isOpen, onClose }) {
         className="relative z-[101] mx-3 flex h-screen md:h-[95vh]  w-screen md:max-w-[520px] flex-col overflow-hidden md:rounded-2xl bg-neutral-900 text-[#fff] shadow-2xl ring-1 ring-white/10"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between px-3 py-3">
+        <header className="flex items-center justify-between px-3 py-1">
           <button
             onClick={onClose}
             className="transition transform active:scale-90 hover:scale-105 cursor-pointer inline-flex h-10 w-10 my-2 mx-2 items-center justify-center rounded-full hover:bg-[#fff]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:cursor-pointer"
@@ -187,7 +187,7 @@ export default function AddStory({ isOpen, onClose }) {
         </section>
 
         {/* Footer for sharing */}
-        <footer className="px-3 py-4 flex items-center gap-3 my-3 mx-3">
+        <footer className="p-1 flex items-center gap-3 my-3 mx-3">
           <PillButton
             className="transition transform active:scale-90 hover:scale-105 cursor-pointer"
             onClick={handleStory}
@@ -253,7 +253,7 @@ function PillButton({ children, className = "" }) {
     <button
       type="button"
       className={
-        "inline-flex items-center rounded-3xl bg-[#fff]/10 px-4 py-2.5 text-sm hover:bg-[#fff]/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 " +
+        "inline-flex items-center rounded-3xl bg-[#fff]/10 p-1 text-sm hover:bg-[#fff]/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 " +
         className
       }
     >

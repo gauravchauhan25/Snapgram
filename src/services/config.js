@@ -6,6 +6,12 @@ const config = {
     appwritePostsCollectionID: String(import.meta.env.VITE_REACT_APP_APPWRITE_POSTS_COLLECTION_ID),
     appwriteStoryCollectionID: String(import.meta.env.VITE_REACT_APP_APPWRITE_STORIES_COLLECTION_ID),
     appwriteBucketID: String(import.meta.env.VITE_REACT_APP_APPWRITE_BUCKET_ID),
+    smtpHost: String(import.meta.env.SMTP_HOST),
+    smtpPort: String(import.meta.env.SMTP_PORT),
+    smtpUser: String(import.meta.env.SMTP_USER),
+    smtpPass: String(import.meta.env.SMTP_PASS),
+    smtpEmail: String(import.meta.env.FROM_EMAIL),
+    smtpFromName: String(import.meta.env.FROM_NAME),
 }
 
 export default config;
