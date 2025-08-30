@@ -95,7 +95,7 @@ export default function ViewStoryModal({ isOpen, onClose, stories, user }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center">
       <button
         onClick={onClose}
         className="absolute right-4 top-4 transition transform active:scale-90 hover:scale-110 cursor-pointer"
@@ -106,7 +106,7 @@ export default function ViewStoryModal({ isOpen, onClose, stories, user }) {
 
       {/* ---------------- STORY CONTAINER ---------------- */}
       <div
-        className="relative z-[101] h-screen md:h-[95vh] w-screen md:max-w-[420px] flex flex-col overflow-hidden bg-neutral-900 text-[#fff]"
+        className="relative z-[101] h-screen md:h-[95vh] w-screen md:max-w-[420px] flex flex-col overflow-hidden bg-neutral-900"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ---------------- PROGRESS BAR ---------------- */}
@@ -153,7 +153,7 @@ export default function ViewStoryModal({ isOpen, onClose, stories, user }) {
                 if (!next) vidRef.current.volume = 1;
               }
             }}
-            className="absolute top-6 right-8 z-20 rounded-full bg-black/70 text-[#fff] text-sm p-1 cursor-pointer"
+            className="absolute top-6 right-8 z-20 rounded-full bg-black/70 text-sm p-1 cursor-pointer"
             aria-label={muted ? "Unmute video" : "Mute video"}
             aria-pressed={!muted}
           >
@@ -171,7 +171,7 @@ export default function ViewStoryModal({ isOpen, onClose, stories, user }) {
                 }
               }
             }}
-            className="absolute top-6 right-20 z-20 rounded-full bg-black/70 text-[#fff] text-sm p-1 cursor-pointer"
+            className="absolute top-6 right-20 z-20 rounded-full bg-black/70 text-sm p-1 cursor-pointer"
             aria-label={vidRef.current?.paused ? "Play video" : "Pause video"}
           >
             {vidRef.current?.paused ? (

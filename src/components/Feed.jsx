@@ -1,11 +1,33 @@
 import { useNavigate } from "react-router-dom";
-import { likedIcon, likeIcon, saveIcon } from "../assets/categories";
+import { likedIcon, likeIcon, savedIcon, saveIcon } from "../assets/categories";
 import { useEffect, useRef, useState } from "react";
 
 export default function Feed({ feedData }) {
   const navigate = useNavigate();
   const [muted, setMuted] = useState(true);
   const vidRef = useRef(null);
+  const [likeCount, setLikeCount] = useState(0);
+  const [saveCount, setSaveCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleLike = () => {
+    if (isLiked) {
+      setLikeCount((prev) => prev - 1);
+    } else {
+      setLikeCount((prev) => prev + 1);
+    }
+    setIsLiked(!isLiked);
+  };
+
+  const handleSave = () => {
+    if (isSaved) {
+      setSaveCount((prev) => prev - 1);
+    } else {
+      setSaveCount((prev) => prev + 1);
+    }
+    setIsSaved(!isSaved);
+  };
 
   useEffect(() => {
     if (!vidRef.current) return;
@@ -151,12 +173,24 @@ export default function Feed({ feedData }) {
           ) : null}
 
           <div className="interaction-icons ">
-            <div className="transition transform active:scale-80 hover:scale-110 cursor-pointer">
-              {likeIcon.icon}
+            <div className="flex items-center justify-center gap-3">
+              <div
+                className="transition transform active:scale-80 hover:scale-110 cursor-pointer"
+                onClick={handleLike}
+              >
+                {isLiked ? likedIcon.icon : likeIcon.icon}
+              </div>
+              {likeCount}
             </div>
 
-            <div className="transition transform active:scale-80 hover:scale-110 cursor-pointer">
-              {saveIcon.icon}
+            <div
+              className="flex items-center justify-center gap-3"
+              onClick={handleSave}
+            >
+              {saveCount}
+              <div className="transition transform active:scale-80 hover:scale-110 cursor-pointer">
+                {isSaved ? savedIcon.icon : saveIcon.icon}
+              </div>
             </div>
           </div>
         </div>

@@ -91,7 +91,7 @@ export default function AddStory({ isOpen, onClose }) {
       <div className="absolute inset-0 bg-neutral-900 md:bg-black" />
 
       <div
-        className="relative z-[101] mx-3 flex h-screen md:h-[95vh]  w-screen md:max-w-[520px] flex-col overflow-hidden md:rounded-2xl bg-neutral-900 text-[#fff] shadow-2xl ring-1 ring-white/10"
+        className="relative z-[101] mx-3 flex h-screen md:h-[95vh]  w-screen md:max-w-[520px] flex-col overflow-hidden md:rounded-2xl bg-neutral-900 shadow-2xl ring-1 ring-white/10"
         onClick={(e) => e.stopPropagation()}
       >
         <header className="flex items-center justify-between px-3 py-1">
@@ -172,7 +172,7 @@ export default function AddStory({ isOpen, onClose }) {
                   />
                 </svg>
               </div>
-              <p className="text-sm text-[#fff] ">Drag & drop a photo/video</p>
+              <p className="text-sm">Drag & drop a photo/video</p>
               <label className="cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm hover:bg-white/15 transition transform active:scale-85 hover:scale-110">
                 <input
                   type="file"

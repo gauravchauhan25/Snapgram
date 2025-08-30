@@ -50,7 +50,7 @@ const PostModal = ({ post, onClose }) => {
           {isVideo ? (
             <>
               <video
-                // src={post.fileUrl}
+                src={post.fileUrl}
                 ref={vidRef}
                 className="modal-image"
                 autoPlay
