@@ -106,7 +106,6 @@ export default function App() {
           />
         </Route>
 
-        {/* Standalone About Page (Protected, but not using RootLayout) */}
         <Route path="/about" element={<About /> } />
       </Routes>
     </>
