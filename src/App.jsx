@@ -17,6 +17,7 @@ import EditProfile from "./pages/EditProfile";
 import ChangePassword from "./pages/ChangePassword";
 import UsersProfile from "./pages/UsersProfile";
 import UserNotFound from "./pages/UserNotFound";
+import About from "./pages/About";
 import ProgressBar from "./components/ProgressBar";
 import api from "./services/appwrite";
 import { useAuthContext } from "./context/AuthContext";
@@ -104,6 +105,9 @@ export default function App() {
             element={<ProtectedRoute element={<UserNotFound />} />}
           />
         </Route>
+
+        {/* Standalone About Page (Protected, but not using RootLayout) */}
+        <Route path="/about" element={<About /> } />
       </Routes>
     </>
   );
