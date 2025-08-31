@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useProfileContext } from "../context/ProfileContext";
 import EditPost from "./EditPost";
+import { likedIcon, likeIcon, savedIcon, saveIcon } from "../assets/categories";
 
 const Post = ({ post, postId, onPostClick }) => {
   const [isDisabled, setIsDisabled] = useState(false);
@@ -9,6 +10,30 @@ const Post = ({ post, postId, onPostClick }) => {
   
   const vidRef = useRef(null);
   const { userProfile } = useProfileContext();
+
+    const [likeCount, setLikeCount] = useState(0);
+  const [saveCount, setSaveCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleLike = () => {
+    if (isLiked) {
+      setLikeCount((prev) => prev - 1);
+    } else {
+      setLikeCount((prev) => prev + 1);
+    }
+    setIsLiked(!isLiked);
+  };
+
+  const handleSave = () => {
+    if (isSaved) {
+      setSaveCount((prev) => prev - 1);
+    } else {
+      setSaveCount((prev) => prev + 1);
+    }
+    setIsSaved(!isSaved);
+  };
+
   
   const isVideo = post.mimeType?.startsWith("video/");
   const isImage = post.mimeType?.startsWith("image/");
@@ -115,6 +140,28 @@ const Post = ({ post, postId, onPostClick }) => {
         ) : isImage ? (
           <img src={post.fileUrl} alt="feed" className="photo" loading="lazy" />
         ) : null}
+
+         <div className="icons">
+            <div className="flex items-center justify-center gap-3">
+              <div
+                className="transition transform active:scale-80 hover:scale-110 cursor-pointer"
+                onClick={handleLike}
+              >
+                {isLiked ? likedIcon.icon : likeIcon.icon}
+              </div>
+              {likeCount}
+            </div>
+
+            <div
+              className="flex items-center justify-center gap-3"
+              onClick={handleSave}
+            >
+              {saveCount}
+              <div className="transition transform active:scale-80 hover:scale-110 cursor-pointer">
+                {isSaved ? savedIcon.icon : saveIcon.icon}
+              </div>
+            </div>
+          </div>
       </div>
 
       {showEdit && <EditPost post={post} onClose={() => setShowEdit(false)} />}

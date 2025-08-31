@@ -48,7 +48,6 @@ const CreatePost = () => {
       }
 
       const fileUrl = await api.getFilePreview(uploadedFile.$id);
-      console.log(fileUrl);
 
       const userId = currentUser.userId;
       const username = currentUser.username || "Anonymous";

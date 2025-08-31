@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import api from "../services/appwrite";
 import { FaRegComment } from "react-icons/fa";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import Spinner from "../components/Spinner";
 import { IoIosHeartEmpty, IoMdShareAlt } from "react-icons/io";
 import { FcLike } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
+import api from "../services/appwrite";
+import Spinner from "../components/Spinner"
 
 function Reels() {
   const [reels, setReels] = useState([]);
@@ -56,10 +56,6 @@ function Reels() {
 
     fetchReels();
   }, []);
-
-  useEffect(() => {
-    console.log(reels);
-  });
 
   // Keyboard navigation
   useEffect(() => {
@@ -146,6 +142,42 @@ function Reels() {
           loop
           className="h-full w-full object-cover rounded-lg shadow-lg"
         />
+        <button
+          type="button"
+          onClick={() => {
+            const next = !muted;
+            setMuted(next);
+            if (vidRef.current) {
+              vidRef.current.muted = next;
+              if (!next) vidRef.current.volume = 1;
+            }
+          }}
+          className="muted-btn absolute bottom-25 right-3 z-20 rounded-full bg-black text-[#fff] text-lg p-2 hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/40"
+          aria-label={muted ? "Unmute video" : "Mute video"}
+          aria-pressed={!muted}
+        >
+          {muted ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M3 10v4h4l5 4V6L7 10H3z" fill="currentColor" />
+              <path
+                d="M16 9l5 5m0-5l-5 5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M3 10v4h4l5 4V6L7 10H3z" fill="currentColor" />
+              <path
+                d="M16 8c1.657 1.343 1.657 6.657 0 8M19 5c3 3 3 11 0 14"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          )}
+        </button>
 
         {/* Top bar: avatar, username, 3 dots */}
         <div className="absolute top-0 left-0 w-full flex justify-between items-center p-4 bg-gradient-to-b from-black/50 to-transparent">

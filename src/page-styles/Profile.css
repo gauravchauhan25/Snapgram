@@ -377,6 +377,10 @@
   font-weight: bolder;
 }
 
+.icons {
+  display: none;
+}
+
 /* ============================PostModal CSS===================================== */
 .modal-backdrop {
   position: fixed;
@@ -553,6 +557,7 @@
 
   .posts {
     margin-top: 0;
+    margin-bottom: 6rem;
   }
 
   .post-card {
@@ -568,5 +573,14 @@
   .editpost-backdrop {
     position: fixed;
     background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    top: 0.8rem;
+    margin: 0 1rem;
   }
 }
