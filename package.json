@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
     "@tailwindcss/vite": "^4.1.11",
+    "aos": "^2.3.4",
     "appwrite": "^18.2.0",
     "bootstrap": "^5.3.7",
     "class-variance-authority": "^0.7.1",
