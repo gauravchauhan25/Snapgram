@@ -95,7 +95,7 @@ export default function ViewStoryModal({ isOpen, onClose, stories, user }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center">
+    <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
       <button
         onClick={onClose}
         className="absolute right-4 top-4 transition transform active:scale-90 hover:scale-110 cursor-pointer"

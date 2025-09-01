@@ -21,6 +21,10 @@ import About from "./pages/About";
 import ProgressBar from "./components/ProgressBar";
 import api from "./services/appwrite";
 import { useAuthContext } from "./context/AuthContext";
+import HelpCenter from "./pages/HelpCenter";
+import ContactSupport from "./pages/ContactSupport";
+import RequestFeature from "./pages/RequestFeature";
+import ReportBug from "./pages/ReportBug";
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated } = useAuthContext();
@@ -107,6 +111,10 @@ export default function App() {
         </Route>
 
         <Route path="/about" element={<About /> } />
+        <Route path="/help-center" element={<HelpCenter /> } />
+        <Route path="/contact-support" element={<ContactSupport /> } />
+        <Route path="/request-feature" element={<RequestFeature /> } />
+        <Route path="/report-bug" element={<ReportBug /> } />
       </Routes>
     </>
   );

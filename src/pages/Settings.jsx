@@ -93,7 +93,7 @@ export default function Settings() {
           <li onClick={handleThemeToggle}>{` ${
             isLightTheme ? "Light Theme Mode" : "Dark Theme Mode"
           }`}</li>
-          <li>Help Center</li>
+          <li onClick={() => navigate("/help-center")} >Help Center</li>
           <li onClick={() => navigate("/about")} >About</li>
           <li onClick={handleLogout} className="flex items-center gap-2">{logoutIcon.icon} Logout</li>
         </ul>
