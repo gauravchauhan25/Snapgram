@@ -239,7 +239,7 @@ import {
               href="https://github.com/gauravchauhan25/"
               target="_blank"
               className="hover:scale-110"
-            >
+            > 
               <FaGithub />
             </a>
 
