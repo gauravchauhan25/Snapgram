@@ -508,13 +508,12 @@
 
 @media screen and (max-width: 650px) {
   .profile-container {
-    width: 90vw;
+    width: 95vw;
     margin: 1rem auto;
   }
 
   .profile-header {
-    width: 95vw;
-    gap: 0.1rem;
+    width: 100vw;
   }
 
   .post-image,
@@ -541,7 +540,7 @@
 
   .profile-description {
     padding: 0;
-    margin: 0.6rem 0.4rem;
+    margin: 1rem 0.4rem;
   }
 
   .profile-description p {
@@ -551,8 +550,8 @@
   }
 
   .profile-picture img {
-    width: 5.5rem;
-    height: 5.5rem;
+    width: 5.2rem;
+    height: 5.2rem;
   }
 
   .posts {

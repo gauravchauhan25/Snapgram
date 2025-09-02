@@ -376,12 +376,12 @@ main .container .left {
 /* -------------Feeds------------------------- */
 .feeds {
   margin-top: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .feed {
-  padding: var(--card-padding);
-  margin: 0.1rem 0;
+  /* padding: var(--card-padding); */
+  margin: 0.6rem 0;
   margin-right: 0.5rem;
   font-size: 0.85rem;
   line-height: 1.5rem;
@@ -390,12 +390,13 @@ main .container .left {
 }
 
 .middle .feeds .feed {
-  margin: 1rem 0;
+  margin: 3rem 0;
 }
 
 .head {
   display: flex;
   justify-content: space-between;
+  padding: 0 0.4rem;
 }
 
 .user {
@@ -425,7 +426,7 @@ span {
   align-items: center;
   position: relative;
   top: 0.8rem;
-  margin: 0 1rem;
+  margin: 0 0.8rem;
 }
 
 .middle .feed .photo {
@@ -508,6 +509,10 @@ span {
   font-size: 0.9rem;
 }
 
+.caption {
+  padding: 0 0.4rem;
+}
+
 .caption p {
   font-size: 0.85rem;
   margin-bottom: 0.6rem;
@@ -540,7 +545,7 @@ span {
   display: none;
 }
 
-.muted-btn { 
+.muted-btn {
   padding: 5px;
 }
 
@@ -582,7 +587,6 @@ span {
     width: 4rem;
   }
 
-
   .left .sidebar .menu-item i {
     padding: 0 1rem;
   }
@@ -609,7 +613,7 @@ span {
   }
 
   .feed {
-    width: 83vw;
+    width: 100vw;
   }
 
   .left .sidebar h3 {
