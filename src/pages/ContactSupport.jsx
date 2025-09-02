@@ -41,9 +41,9 @@ export default function ContactSupport() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-6">
-      <div className="max-w-2xl w-full bg-neutral-900 rounded-2xl shadow-xl p-8">
-        <h1 className="text-3xl font-bold mb-6 flex items-center gap-3">
+    <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-3">
+      <div className="max-w-2xl w-full bg-neutral-900 rounded-2xl shadow-xl px-3 py-5">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3">
           <MessageSquare className="text-blue-500" size={28} />
           Contact Support
         </h1>
@@ -109,7 +109,7 @@ export default function ContactSupport() {
           <div className="flex flex-col sm:flex-row justify-center gap-4 text-sm">
             <a
               href="mailto:gkumarc41@gmail.com"
-              className="flex items-center gap-2 hover:text-blue-400"
+              className="flex items-center justify-center gap-2 hover:text-blue-400"
             >
               <Mail size={16} /> gkumarc41@gmail.com
             </a>

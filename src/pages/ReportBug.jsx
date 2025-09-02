@@ -48,12 +48,12 @@ export default function ReportBug() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-6">
-      <div className="max-w-2xl w-full bg-neutral-900 p-8 rounded-2xl shadow-lg">
+    <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-3">
+      <div className="max-w-2xl w-full bg-neutral-900 p-8 rounded-2xl shadow-lg px-3 py-4">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <Bug className="text-red-500" size={28} />
-          <h1 className="text-2xl font-bold">Report a Bug</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">Report a Bug</h1>
         </div>
 
         {!submitted ? (
