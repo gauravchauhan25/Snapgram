@@ -21,67 +21,66 @@ const SignupForm = () => {
     document.title = "Sign Up - Snapgram";
   }, []);
 
- const validateInputs = ({ username, password, phoneNumber }) => {
-  if (!username) {
-    return "Username is required!";
-  }
+  const validateInputs = ({ username, password, phoneNumber }) => {
+    if (!username) {
+      return "Username is required!";
+    }
 
-  if (/\s/.test(username)) {
-    return "Username cannot contain spaces!";
-  }
+    if (/\s/.test(username)) {
+      return "Username cannot contain spaces!";
+    }
 
-  if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-    return "Username should contain only a-z, 0-9 and underscores!";
-  }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return "Username should contain only a-z, 0-9 and underscores!";
+    }
 
-  if (password.length < 8) {
-    return "Password must be at least 8 characters!";
-  }
+    if (password.length < 8) {
+      return "Password must be at least 8 characters!";
+    }
 
-  if (!/^\d{10}$/.test(phoneNumber)) {
-    return "Invalid Phone Number!";
-  }
+    if (!/^\d{10}$/.test(phoneNumber)) {
+      return "Invalid Phone Number!";
+    }
 
-  return null; // ✅ no errors
-};
+    return null;
+  };
 
-const handleSignIn = async (e) => {
-  e.preventDefault();
+  const handleSignIn = async (e) => {
+    e.preventDefault();
 
-  const errorMsg = validateInputs({ username, password, phoneNumber });
-  if (errorMsg) {
-    toast.error(errorMsg);
-    return;
-  }
-
-  try {
-    const userNameExists = await api.checkUsername(username);
-    if (userNameExists) {
-      toast.error("Username already exists! Try with a new one.");
+    const errorMsg = validateInputs({ username, password, phoneNumber });
+    if (errorMsg) {
+      toast.error(errorMsg);
       return;
     }
 
-    setLoading(true);
-    const newUser = await api.createAccount({
-      email,
-      password,
-      name,
-      username,
-      phoneNumber,
-    });
+    try {
+      const userNameExists = await api.checkUsername(username);
+      if (userNameExists) {
+        toast.error("Username already exists! Try with a new one.");
+        return;
+      }
 
-    if (newUser) {
-      toast.success("Account created!");
-      navigate("/sign-in");
+      setLoading(true);
+      const newUser = await api.createAccount({
+        email,
+        password,
+        name,
+        username,
+        phoneNumber,
+      });
+
+      if (newUser) {
+        toast.success("Account created!");
+        navigate("/sign-in");
+      }
+    } catch (error) {
+      toast.error("Error creating account!");
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    toast.error("Error creating account!");
-    console.log(error);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <>
@@ -103,52 +102,57 @@ const handleSignIn = async (e) => {
             <p>To use Snapgram, please enter your details!</p>
 
             <form onSubmit={handleSignIn}>
-              <label htmlFor="name">Name</label>
+              <label htmlFor="name" className="block text-sm mb-1">Name</label>
               <input
                 type="text"
                 name="name"
                 placeholder="Your Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#4a1f84]"
                 required
               />
 
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email" className="block text-sm mb-1 mt-5">Email</label>
               <input
                 type="email"
                 name="email"
                 placeholder="your@email.com"
                 value={email}
+                className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#4a1f84]"
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
 
-              <label htmlFor="phoneNumber">Phone Number</label>
+              <label htmlFor="phoneNumber" className="block text-sm mb-1 mt-5">Phone Number</label>
               <input
                 type="number"
                 name="phoneNumber"
                 placeholder="+91 XXXXXXXX"
                 value={phoneNumber}
+                className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#4a1f84]"
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 required
               />
 
-              <label htmlFor="username">Create Username</label>
+              <label htmlFor="username" className="block text-sm mb-1 mt-5">Create Username</label>
               <input
                 type="text"
                 name="username"
                 placeholder="Username"
                 value={username}
+                className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#4a1f84]"
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
 
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password" className="block text-sm mb-1 mt-5">Password</label>
               <input
                 type="password"
                 name="password"
                 placeholder="Password"
                 value={password}
+                className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#4a1f84]"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />

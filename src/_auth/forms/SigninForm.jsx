@@ -78,22 +78,22 @@ const SigninForm = () => {
             <p>To use Snapgram, please login!</p>
 
             <form onSubmit={handleLogin}>
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email" className="block text-sm mb-1">Email</label>
               <input
                 type="email"
-                className=""
                 placeholder="Enter your email"
                 value={email}
+                className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#4a1f84]"
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
 
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password" className="block text-sm mb-1 mt-5">Password</label>
               <input
                 type="password"
-                className=""
                 placeholder="Enter your password"
                 value={password}
+                className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#4a1f84]"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />

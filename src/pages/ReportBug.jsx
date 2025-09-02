@@ -1,12 +1,50 @@
 import { useState } from "react";
 import { Bug } from "lucide-react";
+import api from "../services/appwrite";
+import toast from "react-hot-toast";
 
 export default function ReportBug() {
+  const [form, setForm] = useState({ name: "", email: "", bug: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    if (!form.name || !form.email || !form.bug) {
+      toast.error("All fields are required!");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      toast.error("Please enter a valid email address!");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const submit = await api.reportBugs(form.name, form.email, form.bug);
+
+      if (submit) {
+        console.log("Form submitted:", form);
+        setSubmitted(true);
+      } else {
+        toast.error("Error while submitting! Try again later!");
+        setSubmitted(false);
+      }
+    } catch (error) {
+      console.log("Error while submitting:", error);
+      toast.error("Error while submitting! Try again later!");
+      setSubmitted(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -24,8 +62,11 @@ export default function ReportBug() {
               <label className="block mb-2 text-sm font-medium">Name</label>
               <input
                 type="text"
+                name="name"
+                value={form.name || ""}
                 required
                 placeholder="Your name"
+                onChange={handleChange}
                 className="w-full px-4 py-2 rounded-xl bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-red-500"
               />
             </div>
@@ -34,17 +75,25 @@ export default function ReportBug() {
               <label className="block mb-2 text-sm font-medium">Email</label>
               <input
                 type="email"
+                name="email"
+                value={form.email || ""}
                 required
                 placeholder="you@example.com"
+                onChange={handleChange}
                 className="w-full px-4 py-2 rounded-xl bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-red-500"
               />
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-medium">Bug Description</label>
+              <label className="block mb-2 text-sm font-medium">
+                Bug Description
+              </label>
               <textarea
+                name="bug"
+                value={form.bug || ""}
                 required
                 rows="5"
+                onChange={handleChange}
                 placeholder="Describe the issue you found..."
                 className="w-full px-4 py-2 rounded-xl bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-red-500"
               ></textarea>
@@ -54,7 +103,7 @@ export default function ReportBug() {
               type="submit"
               className="w-full bg-red-600 hover:bg-red-700 py-3 px-4 rounded-xl font-semibold shadow-lg cursor-pointer"
             >
-              Submit Bug Report
+              {loading ? "Submitting..." : "Submit Bug Report"}
             </button>
           </form>
         ) : (

@@ -611,19 +611,63 @@ export class Services {
     }
   }
 
+  //=================SEND MESSAGE TO CONTACT SUPPORT=========================
   async contactSupport(name, email, message) {
     try {
-      const response = this.account.createDocument(
+      const response = await this.databases.createDocument(
         config.appwriteDatabaseID,
         config.appwriteContactsCollectionID,
+        ID.unique(),
         {
           name: name,
           email: email,
           message: message,
         }
       );
+      return response;
     } catch (error) {
-      console.log("Error sending message", error)
+      console.log("Error sending message", error);
+      return null;
+    }
+  }
+
+  //====================REPORT BUG TO TEAM============================
+  async reportBugs(name, email, bug) {
+    try {
+      const response = await this.databases.createDocument(
+        config.appwriteDatabaseID,
+        config.appwriteReportBugsCollectionID,
+        ID.unique(),
+        {
+          name: name,
+          email: email,
+          bug: bug,
+        }
+      );
+      return response;
+    } catch (error) {
+      console.log("Error reporting bug:", error);
+      return null;
+    }
+  }
+
+  //=====================REQUEST FOR A NEW FEATURE========================
+  async requestFeature(name, email, feature) {
+    try {
+      const response = await this.databases.createDocument(
+        config.appwriteDatabaseID,
+        config.appwriteRequestFeatureCollectionID,
+        ID.unique(),
+        {
+          name: name,
+          email: email,
+          feature: feature,
+        }
+      );
+      return response;
+    } catch (error) {
+      console.log("Error requesting feature:", error);
+      return null;
     }
   }
 }

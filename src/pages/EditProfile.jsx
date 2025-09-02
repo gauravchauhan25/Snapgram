@@ -21,8 +21,22 @@ const EditProfile = () => {
   const handleEditProfile = async (e) => {
     e.preventDefault();
 
+    if (/\s/.test(username)) {
+      return "Username cannot contain spaces!";
+    }
+
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return "Username should contain only a-z, 0-9 and underscores!";
+    }
+
     try {
       setLoading(true);
+
+      const userNameExists = await api.checkUsername(username);
+      if (userNameExists) {
+        toast.error("Username already exists! Try with a new one.");
+        return;
+      }
 
       const documentId = await api.getCurrentUserDocumentId();
       const response = await api.updateProfile({
@@ -120,6 +134,7 @@ const EditProfile = () => {
               id="bio"
               value={bio}
               placeholder="Tell us a little about yourself..."
+              className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#4a1f84]"
               onChange={(e) => setBio(e.target.value)}
               required
             />

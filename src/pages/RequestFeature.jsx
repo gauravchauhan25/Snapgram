@@ -1,20 +1,42 @@
 import { useState } from "react";
 import { Lightbulb } from "lucide-react";
+import api from "../services/appwrite";
 
 export default function RequestFeature() {
   const [form, setForm] = useState({ name: "", email: "", feature: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Integrate with API / DB / Email service here
-    console.log("Feature Request:", form);
-    setSubmitted(true);
+
+    try {
+      setLoading(true);
+      const submit = await api.requestFeature(
+        form.name,
+        form.email,
+        form.feature
+      );
+
+      if (submit) {
+        console.log("Form submitted:", form);
+        setSubmitted(true);
+      } else {
+        toast.error("Error while submitting! Try again later!");
+        setSubmitted(false);
+      }
+    } catch (error) {
+      console.log("Error while submitting:", error);
+      toast.error("Error while submitting! Try again later!");
+      setSubmitted(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,7 +97,7 @@ export default function RequestFeature() {
               type="submit"
               className="w-full bg-yellow-500 hover:bg-yellow-600  font-semibold py-3 rounded-lg shadow-lg cursor-pointer"
             >
-              Submit Request
+              {loading ? "Submitting..." : "Submit Request"}
             </button>
           </form>
         )}

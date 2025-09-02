@@ -1,20 +1,43 @@
 import { useState } from "react";
 import { Mail, Phone, MessageSquare } from "lucide-react";
+import api from "../services/appwrite";
+import toast from "react-hot-toast";
 
 export default function ContactSupport() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Form submitted:", form);
-    setSubmitted(true);
+    try {
+      setLoading(true);
+      const submit = await api.contactSupport(
+        form.name,
+        form.email,
+        form.message
+      );
+
+      if (submit) {
+        console.log("Form submitted:", form);
+        setSubmitted(true);
+      } else {
+        toast.error("Error while submitting! Try again later!");
+        setSubmitted(false);
+      }
+    } catch (error) {
+      console.log("Error while submitting:", error);
+      toast.error("Error while submitting! Try again later!");
+      setSubmitted(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,7 +49,7 @@ export default function ContactSupport() {
         </h1>
 
         {submitted ? (
-          <div className="text-center space-y-4">
+          <div className="text-center space-y-4 mt-10">
             <h2 className="text-xl font-semibold">🎉 Thank you!</h2>
             <p className="">
               Your message has been received. Our team will get back to you
@@ -40,7 +63,7 @@ export default function ContactSupport() {
               <input
                 type="text"
                 name="name"
-                value={form.name}
+                value={form.name || ""}
                 onChange={handleChange}
                 placeholder="Your Name"
                 required
@@ -52,7 +75,7 @@ export default function ContactSupport() {
               <input
                 type="email"
                 name="email"
-                value={form.email}
+                value={form.email || ""}
                 onChange={handleChange}
                 placeholder="your@email.com"
                 required
@@ -63,7 +86,7 @@ export default function ContactSupport() {
               <label className="block text-sm mb-1">Message</label>
               <textarea
                 name="message"
-                value={form.message}
+                value={form.message || ""}
                 onChange={handleChange}
                 placeholder="Describe your issue or question in detail (e.g., login problems, profile update issues, feedback)."
                 required
@@ -75,7 +98,7 @@ export default function ContactSupport() {
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg shadow-lg cursor-pointer"
             >
-              Send Message
+              {loading ? "Sending..." : "Send Message"}
             </button>
           </form>
         )}
