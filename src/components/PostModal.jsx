@@ -116,13 +116,13 @@ const PostModal = ({ post, onClose }) => {
                     src={post?.avatarUrl || defaultImage}
                     alt="avatar"
                     loading="lazy"
-                    onClick={() => navigate(`/${userProfile?.username}`)}
+                    onClick={() => navigate(`/${post?.username}`)}
                     className="w-full h-full object-cover"
                   />
                 </div>
 
                 <div className="info">
-                  <h3 onClick={() => navigate(`/${userProfile?.username}`)}>
+                  <h3 onClick={() => navigate(`/${post?.username}`)}>
                     {post?.username}
                   </h3>
                   <small>{post?.location}</small>

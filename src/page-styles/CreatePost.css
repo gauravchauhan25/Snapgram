@@ -151,7 +151,7 @@ textarea {
 /* Dropzone styles */
 .dropzone {
   width: 100%;
-  height: 500px;
+  height: 400px;
   padding: 5px;
   border-radius: 8px;
   display: flex;
@@ -188,7 +188,7 @@ textarea {
   }
 
   .edit-container {
-    width: 90vw;
+    width: 98vw;
   }
 
   .title {

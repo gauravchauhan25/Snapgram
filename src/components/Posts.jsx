@@ -62,7 +62,7 @@ const Post = ({ post, postId, onPostClick }) => {
             <div className="user">
               <div className="profile-photo">
                 <img
-                  src={userProfile.avatarUrl}
+                  src={post.avatarUrl}
                   alt={`Post ${post?.$id}`}
                   className="post-image"
                 />

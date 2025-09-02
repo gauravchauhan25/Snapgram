@@ -1,7 +1,7 @@
 .settings-container {
   max-width: 800px;
   margin-bottom: 1rem;
-  padding: 1.3rem;
+  padding: 0.8rem;
 }
 
 .settings-section {
@@ -27,9 +27,9 @@
 
 .settings-section ul li:hover {
   background-color: var(--color-primary);
-  color: var(--color-white);
 }
-.settings-section ul li  button {
+
+.settings-section ul li button {
   background: transparent;
   color: var(--color-dark);
 }
@@ -41,30 +41,9 @@
   padding: 0.8rem 1rem;
 }
 
-.settings-save {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.settings-save button {
-  padding: var(--btn-padding);
-  font-size: 1.2rem;
-  color: var(--color-white);
-  background-color: var(--color-primary);
-  border: none;
-  border-radius: var(--card-border-radius);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.settings-save button:hover {
-  background-color: var(--color-dark);
-}
-
 @media screen and (max-width: 650px) {
   .settings-container {
     margin-bottom: 3rem;
-    padding: 1.3rem;
   }
 
   .settings-title {
