@@ -21,47 +21,72 @@ const SignupForm = () => {
     document.title = "Sign Up - Snapgram";
   }, []);
 
-  const handleSignIn = async (e) => {
-    e.preventDefault();
+ const validateInputs = ({ username, password, phoneNumber }) => {
+  if (!username) {
+    return "Username is required!";
+  }
 
-    if (password.length < 8) {
-      toast.error("Password must be at least 8 characters!");
+  if (/\s/.test(username)) {
+    return "Username cannot contain spaces!";
+  }
+
+  if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+    return "Username should contain only a-z, 0-9 and underscores!";
+  }
+
+  if (password.length < 8) {
+    return "Password must be at least 8 characters!";
+  }
+
+  if (!/^\d{10}$/.test(phoneNumber)) {
+    return "Invalid Phone Number!";
+  }
+
+  return null; // ✅ no errors
+};
+
+const handleSignIn = async (e) => {
+  e.preventDefault();
+
+  const errorMsg = validateInputs({ username, password, phoneNumber });
+  if (errorMsg) {
+    toast.error(errorMsg);
+    return;
+  }
+
+  try {
+    const userNameExists = await api.checkUsername(username);
+    if (userNameExists) {
+      toast.error("Username already exists! Try with a new one.");
       return;
     }
 
-    try {
-      const userNameExists = await api.checkUsername(username);
+    setLoading(true);
+    const newUser = await api.createAccount({
+      email,
+      password,
+      name,
+      username,
+      phoneNumber,
+    });
 
-      if (userNameExists) {
-        toast.error("Username already exists! Try with a new one");
-      }
-
-      setLoading(true);
-      const newUser = await api.createAccount({
-        email,
-        password,
-        name,
-        username,
-        phoneNumber,
-      });
-
-      if (newUser) {
-        toast.success("Account created!");
-        navigate("/sign-in");
-        return;
-      }
-    } catch (error) {
-      toast.error("Error creating account! ");
-      console.log(error);
-    } finally {
-      setLoading(false);
+    if (newUser) {
+      toast.success("Account created!");
+      navigate("/sign-in");
     }
-  };
+  } catch (error) {
+    toast.error("Error creating account!");
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <>
       <Toaster />
-      
+
       <div className="fade-in">
         <div className="signup-main">
           <div className="signup-container">

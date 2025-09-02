@@ -22,11 +22,15 @@ import {
   Edit,
 } from "lucide-react";
 
-  export default function About() {
+export default function About() {
   useEffect(() => {
     Aos.init({
       duration: 1500,
     });
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -239,7 +243,7 @@ import {
               href="https://github.com/gauravchauhan25/"
               target="_blank"
               className="hover:scale-110"
-            > 
+            >
               <FaGithub />
             </a>
 

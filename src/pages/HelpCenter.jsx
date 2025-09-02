@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, Bug, Lightbulb, Mail, HelpCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -118,6 +118,10 @@ export default function HelpCenter() {
     ),
   }));
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-neutral-950 p-6 flex flex-col items-center">
       <div className="max-w-3xl w-full">
@@ -179,8 +183,10 @@ export default function HelpCenter() {
 
         {/* Feedback Buttons */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <button className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 py-3 px-4 rounded-xl shadow-lg cursor-pointer"
-          onClick={() => navigate("/report-bug")}>
+          <button
+            className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 py-3 px-4 rounded-xl shadow-lg cursor-pointer"
+            onClick={() => navigate("/report-bug")}
+          >
             <Bug size={18} /> Report a Bug
           </button>
           <button

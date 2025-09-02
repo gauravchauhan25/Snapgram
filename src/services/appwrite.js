@@ -65,7 +65,7 @@ export class Services {
         ID.unique(),
         {
           userId: userId,
-          username,
+          username: username.replace(/\s+/g, ""),
           name,
           email,
           phoneNumber,
@@ -608,6 +608,22 @@ export class Services {
     } catch (error) {
       console.log("Error fetching story: ", error);
       return [];
+    }
+  }
+
+  async contactSupport(name, email, message) {
+    try {
+      const response = this.account.createDocument(
+        config.appwriteDatabaseID,
+        config.appwriteContactsCollectionID,
+        {
+          name: name,
+          email: email,
+          message: message,
+        }
+      );
+    } catch (error) {
+      console.log("Error sending message", error)
     }
   }
 }
