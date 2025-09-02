@@ -248,6 +248,31 @@ export class Services {
     }
   }
 
+  async updateUsernameInPosts(username) {
+    try {
+      const currentUser = await this.getAccount();
+
+      const posts = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwritePostsCollectionID,
+        [Query.equal("userId", currentUser.$id)]
+      );
+
+      for (const post of posts.documents) {
+        await this.databases.updateDocument(
+          config.appwriteDatabaseID,
+          config.appwritePostsCollectionID,
+          post.$id,
+          {
+            username: username,
+          }
+        );
+      }
+    } catch (error) {
+      console.log("Error while updating username", error);
+    }
+  }
+  
   //=============UPDATE POST COUNT==========================
   async updatePostCount({ documentId, post }) {
     try {

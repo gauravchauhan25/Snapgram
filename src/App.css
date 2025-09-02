@@ -376,7 +376,7 @@ main .container .left {
 /* -------------Feeds------------------------- */
 .feeds {
   margin-top: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .feed {
@@ -390,7 +390,7 @@ main .container .left {
 }
 
 .middle .feeds .feed {
-  margin: 3rem 0;
+  margin-bottom: 3rem;
 }
 
 .head {

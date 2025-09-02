@@ -7,7 +7,7 @@ import { editIcon } from "../assets/categories";
 import toast, { Toaster } from "react-hot-toast";
 
 const EditProfile = () => {
-  const { userProfile, setUserProfile } = useProfileContext();
+  const { userProfile, setUserProfile, setUserPosts } = useProfileContext();
 
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(userProfile?.name || "");
@@ -46,7 +46,9 @@ const EditProfile = () => {
         bio,
       });
 
-      if (response) {
+      const updateUsernameInPosts = await api.updateUsernameInPosts(username);
+
+      if (response || updateUsernameInPosts) {
         console.log("Updated Successfully!", response);
         toast.success("Updated Successfully!");
 
@@ -61,6 +63,13 @@ const EditProfile = () => {
             followers: updatedUser.followers || 0,
             following: updatedUser.following || 0,
           }));
+
+          setUserPosts((prevPosts) =>
+            prevPosts.map((post) => ({
+              ...post,
+              username: username,
+            }))
+          );
         }
       } else {
         console.log("Error :: updating document");
