@@ -316,7 +316,7 @@
 }
 
 .post-card .feed {
-  width: 96vw;
+  width: 98vw;
 }
 
 .post-details {
@@ -473,21 +473,56 @@
   .modal-content {
     height: auto;
   }
+
+  .profile-header {
+    width: 65vw;
+    gap: 2rem;
+  }
 }
 
 @media (max-width: 900px) {
   .modal-backdrop {
     display: none;
   }
+
   .post-card {
-    width: 30vw;
-    flex-direction: column;
+    width: 81vw;
+    margin: 0 1rem;
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .profile-container {
+    width: 100vw;
+    margin: 1rem;
+  }
+
+  .post-image,
+  .post-details {
+    display: block;
+    width: 100%;
+  }
+
+  .profile-picture {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-picture img {
+    width: 10rem;
+    height: 10rem;
   }
 }
 
 @media (max-width: 768px) {
   .profile-container {
-    width: 95vw;
+    width: 90vw;
   }
 
   .post-card:hover,
@@ -499,17 +534,18 @@
   .edit-profile-btn {
     display: none;
   }
-
-  .profile-header {
-    width: 70vw;
-    gap: 2rem;
-  }
 }
 
 @media screen and (max-width: 650px) {
   .profile-container {
     width: 95vw;
     margin: 1rem auto;
+  }
+
+  .profile-picture {
+    width: 30%;
+    height: 30%;
+    justify-content: center;
   }
 
   .profile-header {
@@ -550,8 +586,8 @@
   }
 
   .profile-picture img {
-    width: 5.2rem;
-    height: 5.2rem;
+    width: 5.4rem;
+    height: 5.4rem;
   }
 
   .posts {

@@ -40,10 +40,7 @@ export default function Sidebar({ selectedCategory, setSelectedCategory }) {
               <span>
                 {category.name === "Profile" ? (
                   <div
-                    className="h-auto items-center justify-center rounded-full object-cover"
-                    style={{
-                      marginLeft: "1rem",
-                    }}
+                    className="h-auto items-center justify-center rounded-full object-cover ml-3"
                   >
                     <div className="w-9 h-9 rounded-full overflow-hidden">
                       <img

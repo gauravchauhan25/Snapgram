@@ -119,7 +119,7 @@ function Reels() {
   return (
     <div
       ref={containerRef}
-      className="flex justify-center items-center h-[calc(100vh-60px)] overflow-hidden"
+      className="flex justify-center items-center h-[calc(100vh-130px)] md:h-[calc(100vh-60px)] overflow-hidden"
     >
       <div
         className="relative w-full max-w-[450px] h-full"
@@ -209,6 +209,7 @@ function Reels() {
               }}
             >
               {reels[currentIndex].user?.name}
+              {reels[currentIndex].user?.uploadedAt}
             </span>
           </div>
           <button className="text-2xl transition transform active:scale-80 hover:scale-110 cursor-pointer">
