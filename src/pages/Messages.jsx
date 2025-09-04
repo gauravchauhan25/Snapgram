@@ -5,7 +5,7 @@
 // const socket = io("http://localhost:3001");
 
 export default function Messages() { 
-  return <p>Messages</p>
+  return <p className="flex items-center justify-center">Feature Coming Soon</p>
 }
 
 //   const [selectedChat, setSelectedChat] = useState(null);
