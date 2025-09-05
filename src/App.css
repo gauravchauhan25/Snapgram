@@ -302,9 +302,7 @@ main .container .left {
 }
 
 .middle .stories .story .story-name {
-  /* width: 2rem; */
   font-size: 0.7rem;
-  margin: 0 7px;
   text-align: center;
 }
 
@@ -743,7 +741,7 @@ span {
   }
 
   .middle .stories .story {
-    margin-right: 0.55rem;
+    margin-right: 0.6rem;
   }
 
   .feeds {
