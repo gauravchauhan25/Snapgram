@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../page-styles/CreatePost.css";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import api from "../services/appwrite";
 import { useProfileContext } from "../context/ProfileContext";
 import { deleteIcon, editIcon } from "../assets/categories";
@@ -75,7 +75,6 @@ const EditPost = ({ post, onClose, onSubmit }) => {
 
   return (
     <>
-      <Toaster />
       <div className="editpost-backdrop" onClick={onClose}>
         <div className="editpost-content" onClick={(e) => e.stopPropagation()}>
           <button

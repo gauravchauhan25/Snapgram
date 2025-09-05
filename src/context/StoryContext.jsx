@@ -6,6 +6,8 @@ const StoryContext = createContext();
 
 export const StoryProvider = ({ children }) => {
   const [userStory, setUserStory] = useState([]);
+  const [isStory, setIsStory] = useState(false);
+  const [myStory, setMyStory] = useState([]);
   const { isAuthenticated } = useAuthContext();
 
   useEffect(() => {
@@ -33,22 +35,41 @@ export const StoryProvider = ({ children }) => {
       }
     };
 
+    const checkMyStory = async () => {
+      try {
+        const story = await api.checkMyStory();
+
+        if (story) {
+          setMyStory(story.documents);
+
+          if (story.documents.length  > 0) {
+            setIsStory(true);
+          } else {
+            setIsStory(false);
+          }
+        }
+      } catch (error) {
+        console.log("Error finding my story: ", error);
+      }
+    };
+
     if (isAuthenticated) {
+      checkMyStory();
       checkUserStory();
     } else {
       setUserStory([]);
     }
   }, [isAuthenticated]);
 
-  useEffect(() => {
-    console.log(userStory);
-  }, []);
-
   return (
     <StoryContext.Provider
       value={{
         userStory,
         setUserStory,
+        myStory,
+        setMyStory,
+        isStory,
+        setIsStory,
       }}
     >
       {children}

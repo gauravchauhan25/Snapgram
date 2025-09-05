@@ -25,6 +25,7 @@ import HelpCenter from "./pages/HelpCenter";
 import ContactSupport from "./pages/ContactSupport";
 import RequestFeature from "./pages/RequestFeature";
 import ReportBug from "./pages/ReportBug";
+import { Toaster } from "react-hot-toast";
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated } = useAuthContext();
@@ -42,6 +43,7 @@ export default function App() {
   return (
     <>
       <ProgressBar />
+      <Toaster />
       <Routes>
         {/* Authentication Routes */}
         <Route element={<AuthLayout />}>

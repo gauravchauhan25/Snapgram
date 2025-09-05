@@ -3,7 +3,7 @@ import "../page-styles/CreatePost.css";
 import api from "../services/appwrite";
 import { useProfileContext } from "../context/ProfileContext";
 import { createIcon } from "../assets/categories";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -116,8 +116,6 @@ const CreatePost = () => {
 
   return (
     <>
-      <Toaster />
-
       <div className="edit-container">
         <h1 className="title items-center">
           {createIcon.icon} Create a New Post

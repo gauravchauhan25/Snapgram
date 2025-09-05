@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
 import { useProfileContext } from "../context/ProfileContext";
 import EditPost from "./EditPost";
 import { useRef, useState, useMemo, useEffect } from "react";
@@ -44,7 +43,6 @@ const PostModal = ({ post, onClose }) => {
 
   return (
     <>
-      <Toaster />
       <div className="modal-backdrop" onClick={onClose}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           {isVideo ? (

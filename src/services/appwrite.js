@@ -99,7 +99,7 @@ export class Services {
     }
   }
 
-  //============LOGIN FOR USER===================
+  //==================LOGIN FOR USER=====================
   async login({ email, password }) {
     try {
       return await this.account.createEmailPasswordSession(email, password);
@@ -161,6 +161,7 @@ export class Services {
     }
   }
 
+  // ================SEARCH FOR THE USERS WITH USERNAME AS SEARCHED===================
   async searchUsers(value) {
     try {
       const usernameResults = await this.databases.listDocuments(
@@ -248,6 +249,7 @@ export class Services {
     }
   }
 
+  // ==============UPDATE USERNAME IN EVERY POSTS TILL NOW================
   async updateUsernameInPosts(username) {
     try {
       const currentUser = await this.getAccount();
@@ -272,7 +274,7 @@ export class Services {
       console.log("Error while updating username", error);
     }
   }
-  
+
   //=============UPDATE POST COUNT==========================
   async updatePostCount({ documentId, post }) {
     try {
@@ -624,7 +626,7 @@ export class Services {
         config.appwriteStoryCollectionID,
         [
           Query.greaterThan("$createdAt", since),
-          Query.orderDesc("$createdAt"),
+          Query.orderAsc("$createdAt"),
           Query.notEqual("userId", userId),
         ]
       );
@@ -633,6 +635,25 @@ export class Services {
     } catch (error) {
       console.log("Error fetching story: ", error);
       return [];
+    }
+  }
+  
+  //===========FETCH ALL THE DOCUMENTS OR STORIES FROM DB FOR THE LOGGED IN USERS ONLY==============
+  async checkMyStory() {
+    try {
+      const id = await this.getAccount();
+      const userId = id.$id;
+
+      const response = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteStoryCollectionID,
+        [Query.equal("userId", userId), Query.orderAsc("$createdAt")]
+      );
+      
+      return response;
+    } catch (error) {
+      console.log("Error fetching my story: ", error);
+      return null;
     }
   }
 

@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/appwrite";
 import Post from "../components/Posts";
 import PostModal from "../components/PostModal";
-import { Toaster } from "react-hot-toast";
 
 const UsersProfile = () => {
   const [loading, setLoading] = useState(false);
@@ -78,7 +77,6 @@ const UsersProfile = () => {
 
   return (
     <>
-      <Toaster />
       <div className="profile-fade-in">
         <div className="profile-container">
           <div className="profile-header">

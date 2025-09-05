@@ -5,6 +5,7 @@ import AddStory from "../pages/AddStory";
 import ViewStoryModal from "./ViewStoryModal";
 import { FaPlus } from "react-icons/fa6";
 import ViewMyStoryModal from "./ViewMyStoryModal";
+import api from "../services/appwrite";
 
 export default function Stories() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +17,8 @@ export default function Stories() {
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   const { userProfile } = useProfileContext();
-  const { userStory } = useStoryContext();
+  const { userStory, isStory, myStory } = useStoryContext();
+
   const storyContainerRef = useRef(null);
 
   useEffect(() => {
@@ -38,6 +40,32 @@ export default function Stories() {
       storyContainer.removeEventListener("scroll", updateButtonVisibility);
     };
   }, []);
+
+  // useEffect(() => {
+  //   const checkMyStory = async () => {
+  //     try {
+  //       const story = await api.checkMyStory();
+
+  //       if (story) {
+  //         setMyStory(story.documents);
+
+  //         if (story.documents.length  > 0) {
+  //           setIsStory(true);
+  //         } else {
+  //           setIsStory(false);
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.log("Error finding my story: ", error);
+  //     }
+  //   };
+
+  //   checkMyStory();
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log(myStory);
+  // }, [myStory]);
 
   const scrollLeft = () => {
     storyContainerRef.current.scrollBy({
@@ -73,21 +101,22 @@ export default function Stories() {
           </button>
         )}
 
-        <div className="story">
-          <div className="profile-photo">
+        <div className="story transition-transform duration-500 ease-out active:scale-85 hover:scale-102"
+        >
+          <div className={`profile-photo ${isStory ? "has-story" : ""}`}>
             <img
               src={userProfile?.avatarUrl || defaultImage}
               alt="mystory"
               loading="lazy"
               onClick={() => {
-                setIsMyStoryOpen(true);
+                if (isStory) setIsMyStoryOpen(true);
               }}
             />
             <button
               onClick={() => setIsStoryOpen(true)}
-              className="absolute bottom-2 right-2 bg-gradient-to-r from-[#4a1f84] to-[#4a1f84] 
-              w-6 h-6 flex items-center justify-center rounded-full text-[#fff] 
-              border-2 border-white shadow-md hover:scale-110 transition cursor-pointer"
+              className="absolute bottom-3 right-3 bg-gradient-to-r from-[#4a1f84] to-[#4a1f84] 
+      w-6 h-6 flex items-center justify-center rounded-full text-[#fff] 
+      border-2 border-white shadow-md hover:scale-110 transition cursor-pointer"
             >
               <FaPlus size={14} />
             </button>
@@ -97,8 +126,11 @@ export default function Stories() {
 
         {/* Loop for creating multiple stories */}
         {userStory.map((user) => (
-          <div className="story" key={user.userId}>
-            <div className="profile-photo">
+          <div
+            className="story transition-transform duration-500 ease-out active:scale-85 hover:scale-102"
+            key={user.userId}
+          >
+            <div className="profile-photo has-story">
               <img
                 src={user?.avatarUrl || defaultImage}
                 loading="lazy"
@@ -132,14 +164,15 @@ export default function Stories() {
         <ViewMyStoryModal
           isOpen={isMyStoryOpen}
           onClose={() => setIsMyStoryOpen(false)}
+          myStory={myStory}
         />
       )}
 
       {isModalOpen && activeStory && (
         <ViewStoryModal
           isOpen={isModalOpen}
-          stories={activeStory.stories} // 👈 pass array of stories
-          user={activeStory} // 👈 pass user info (name, avatarUrl, etc.)
+          stories={activeStory.stories || []} //  pass array of stories
+          user={activeStory} //  pass user info (name, avatarUrl, etc.)
           onClose={() => {
             setIsModalOpen(false);
             setActiveStory(null);

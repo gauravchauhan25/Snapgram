@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "../page-styles/Profile.css";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import api from "../services/appwrite";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Post from "../components/Posts";
 import PostModal from "../components/PostModal";
 import { useProfileContext } from "../context/ProfileContext";
@@ -114,7 +114,6 @@ const Profile = () => {
 
   return (
     <>
-      <Toaster />
       <div className="fade-in">
         <input
           id="fileInput"

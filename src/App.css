@@ -271,7 +271,6 @@ main .container .left {
 
 .middle .stories {
   display: flex;
-  /* justify-content: space-evenly; */
   height: 8rem;
   width: 43vw;
   gap: 1rem;
@@ -288,7 +287,7 @@ main .container .left {
 .middle .stories .story {
   display: inline-block;
   position: relative;
-  height: 4rem;
+  height: 4.5rem;
   width: auto;
   cursor: pointer;
 }
@@ -314,8 +313,53 @@ main .container .left {
   height: 6rem;
   align-self: start;
   object-fit: cover;
-  border: 3.5px solid var(--color-primary);
 }
+
+
+/* Rotating gradient border */
+.has-story::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  inset: 0; 
+  border-radius: 50%;
+  padding: 3px;
+   background: conic-gradient(
+    #4a1f84,
+    #6a0dad,
+    #9b30ff,
+    #b266ff,
+    #ff4aff,
+    #9b30ff,
+    #6a0dad,
+    #4a1f84
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+          mask-composite: exclude;
+  animation: spin 2.5s linear infinite;
+  z-index: 1;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Plus button always stays on top */
+.profile-photo button {
+  z-index: 3;
+  position: absolute;
+}
+
+/* 
+.has-story {
+  border: 3.5px solid var(--color-primary);
+} */
 
 /* Scrollers */
 .middle .stories button span {
@@ -696,7 +740,6 @@ span {
     height: 5.5rem;
     align-self: start;
     object-fit: cover;
-    border: 3.5px solid var(--color-primary);
   }
 
   .middle .stories .story {

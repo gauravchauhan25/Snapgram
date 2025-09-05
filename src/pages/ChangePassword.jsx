@@ -4,7 +4,7 @@ import "../page-styles/CreatePost.css";
 import { useEffect, useState } from "react";
 import api from "../services/appwrite";
 import { useProfileContext } from "../context/ProfileContext";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
@@ -62,7 +62,6 @@ const ChangePassword = () => {
 
   return (
     <>
-      <Toaster />
       <div className="edit-container">
         <h1 className="title">Change Password</h1>
 
