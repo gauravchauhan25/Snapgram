@@ -141,7 +141,7 @@ export default function Stories() {
                 alt={user?.name || "story"}
               />
             </div>
-            <p className="story-name">{user?.name}</p>
+            <p className="story-name w-22 truncate">{user?.name}</p>
           </div>
         ))}
 
