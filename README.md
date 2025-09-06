@@ -1,46 +1,48 @@
-# 📸 Snapgram – Connect. Share. Inspire. 🌍
+# ⚡ Node.js Starter Function
 
-A modern **Instagram-inspired** social media platform built with **React.js**, powered by **Appwrite** as the **Backend-as-a-Service (BaaS)**, and secured with **Google OAuth** authentication. **Snapgram** is designed for creators and users who want a **seamless**, **fast**, and **responsive photo-sharing experience**.
+A simple starter function. Edit `src/main.js` to get started and create something awesome! 🚀
 
-## 🚀 Features
+## 🧰 Usage
 
-- 🔐 **Google OAuth Authentication** – Secure sign-in and sign-out powered by Appwrite’s integrated OAuth support.
+### GET /ping
 
-- 👤 **User Profiles** - Each user has a profile displaying:
+- Returns a "Pong" message.
 
-  - Username, Name, Bio
-  - Total Posts
-  - Followers and Following counts
-  - Avatar image
+**Response**
 
-- 🏠 **Home Feed** - View all posts from all users in real-time.
+Sample `200` Response:
 
-- 📝 **Create Post** - Upload a new post! - Auto-generated Post ID and Creation Timestamp\
+```text
+Pong
+```
 
-- 🔎 **Search** - A search feature to discover people and posts by tags or usernames.
-- 🎞️ **Reels** - A separate section to scroll short video-based content.
+### GET, POST, PUT, PATCH, DELETE /
 
-- 💬 **Social Media Functionality** – Users can interact, post, and engage.
-- 📱 **Fully Responsive UI** – Smooth experience on all devices.
-- ⚡ **Fast & Scalable** – Optimized for performance.
-- ⚙️ **Settings Panel** - Customize your profile, change name, username and change bio.
-- ⚡ **Optimized Performance** - Clean state management and API integration ensure fast rendering and smooth transitions.
+- Returns a "Learn More" JSON response.
 
-## 🛠️ Tech Stack
+**Response**
 
-- **Frontend:** React.js, React Router DOM
-- **Authentication:** Google OAuth via Appwrite
-- **Backend:** Appwrite (Database, Auth, Storage)
-- **State Management** - React Context API
-- **Hosting:** - Vercel
+Sample `200` Response:
 
-## ✅ Upcoming Features
+```json
+{
+  "motto": "Build like a team of hundreds_",
+  "learn": "https://appwrite.io/docs",
+  "connect": "https://appwrite.io/discord",
+  "getInspired": "https://builtwith.appwrite.io"
+}
+```
 
-- 📬 - **Direct Messaging** (Planned) - A direct messaging system between users (under development).
-- 👥 - **Followers / Following System** (Planned) - Follow or unfollow users and see who follows you.
-- 🌐 - **Multi-language Support**
-- 🛡️ - **Improved Security & Rate Limiting**
+## ⚙️ Configuration
 
-## 🚧 Current Status
+| Setting           | Value         |
+| ----------------- | ------------- |
+| Runtime           | Node (18.0)   |
+| Entrypoint        | `src/main.js` |
+| Build Commands    | `npm install` |
+| Permissions       | `any`         |
+| Timeout (Seconds) | 15            |
 
-- Snapgram is actively being developed. Contributions, feature ideas, and feedback are welcome! ⭐
+## 🔒 Environment Variables
+
+No environment variables required.
