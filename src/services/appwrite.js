@@ -33,17 +33,21 @@ export class Services {
 
   // Call Appwrite Function to send email
   async funcExecution(email, otp) {
-    try {
-      const execution = await this.functions.createExecution(
-        '68bc6ea9002eb52b00f0',
-        JSON.stringify({ email, otp })
-      );
-      console.log('Execution response:', execution);
-      return execution;
-    } catch (error) {
-      console.log('Error in function execution', error);
-    }
+  try {
+    const payload = JSON.stringify({ email, otp });
+    console.log("📤 Sending payload to Appwrite:", payload);
+
+    const execution = await this.functions.createExecution(
+      "68bc6ea9002eb52b00f0",
+      payload
+    );
+    console.log("Execution response:", execution);
+    return execution;
+  } catch (error) {
+    console.log("Error in function execution", error);
   }
+}
+
 
   // Generate & store OTP
   async sendOtp(email) {
