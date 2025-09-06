@@ -38,6 +38,7 @@ export class Services {
         "68bc2cb7002e67921608", // your function ID
         JSON.stringify({ email, otp })
       );
+      console.log(execution);
       return execution;
     } catch (error) {
       console.log("Error in function execution", error)
@@ -62,7 +63,7 @@ export class Services {
       // Call function to send email
       const response = await this.funcExecution(email, otp);
 
-      if(response) {
+      if (response) {
         return true;
       }
       console.log("Error here!")
