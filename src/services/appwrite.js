@@ -34,18 +34,16 @@ export class Services {
   // Call Appwrite Function to send email
   async funcExecution(email, otp, name) {
     try {
-      const payload = JSON.stringify({ email, otp, name }); // added username
-      console.log('📤 Sending payload to Appwrite:', payload);
+      const payload = JSON.stringify({ email, otp, name }); 
 
       const execution = await this.functions.createExecution(
-        '68bc6ea9002eb52b00f0', // function ID
-        payload, // payload
-        false, // async
-        '/', // path
-        'POST' // method
+        config.appwriteFunctionId, 
+        payload, 
+        false,
+        '/',
+        'POST'
       );
 
-      console.log('Execution response:', execution);
       return execution;
     } catch (error) {
       console.log('Error in function execution', error);
@@ -73,7 +71,6 @@ export class Services {
       if (response) {
         return true;
       }
-      console.log('Error here!');
       return false;
     } catch (error) {
       console.log('Error sending OTP: ', error);

@@ -31,9 +31,10 @@ export default async function (context) {
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #ffffff;">
 
         <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:  20px;    ">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <img src="https://cdn-icons-png.flaticon.com/128/185/185985.png" alt="Snapgram Logo"      style="width:40px; height:40px; object-fit: cover;" />
-          <p style="margin:0; font-weight: bold; color: #333;">${name}</p>
+
+          <p style="margin: 0; font-weight: bold; color: #333;">${name}</p>
         </div>
 
         <!-- Main Title -->
@@ -49,7 +50,7 @@ export default async function (context) {
         </div>
 
         <!-- Warning -->
-        <p style="color: red; font-size: 14px; text-align: center; margin-top: 10px;">
+        <p style="color: red; font-size: 14px; text-align: center; margin-top: 10px; display: flex; align-items: center;">
           ⚠️ Don't share this code with anyone.
         </p>
         <p style="font-size: 14px; color: #555;">If someone asks for this code, do not share it—even if they claim to be from Snapgram.</p>
