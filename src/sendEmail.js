@@ -1,15 +1,20 @@
 import nodemailer from "nodemailer";
 
-export default async function(req, res) {
+export default async function (req) {
   try {
-    const { email, otp } = JSON.parse(req.payload);
+    const payload = req.payload ? JSON.parse(req.payload) : {};
+    const { email, otp } = payload;
+
+    if (!email || !otp) {
+      throw new Error("Missing email or otp in payload");
+    }
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
       secure: true,
       auth: {
-        user: process.env.EMAIL_USER, // set in Appwrite Function env vars
+        user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
@@ -23,7 +28,6 @@ export default async function(req, res) {
 
     console.log("✅ Email sent:", info.messageId);
     return { success: true, message: "OTP sent successfully" };
-
   } catch (error) {
     console.error("❌ Email send error:", error);
     return { success: false, error: error.message };
