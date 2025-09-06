@@ -32,29 +32,28 @@ export class Services {
   }
 
   // Call Appwrite Function to send email
-  async funcExecution(email, otp) {
-   try {
-    const payload = JSON.stringify({ email, otp });
-    console.log("📤 Sending payload to Appwrite:", payload);
+  async funcExecution(email, otp, name) {
+    try {
+      const payload = JSON.stringify({ email, otp, name }); // added username
+      console.log('📤 Sending payload to Appwrite:', payload);
 
-    const execution = await this.functions.createExecution(
-      "68bc6ea9002eb52b00f0", // function ID
-      payload,                // payload
-      false,                  // async
-      '/',                    // path
-      'POST'                  // method
-    );
+      const execution = await this.functions.createExecution(
+        '68bc6ea9002eb52b00f0', // function ID
+        payload, // payload
+        false, // async
+        '/', // path
+        'POST' // method
+      );
 
-    console.log("Execution response:", execution);
-    return execution;
-  } catch (error) {
-    console.log("Error in function execution", error);
+      console.log('Execution response:', execution);
+      return execution;
+    } catch (error) {
+      console.log('Error in function execution', error);
+    }
   }
-}
-
 
   // Generate & store OTP
-  async sendOtp(email) {
+  async sendOtp(email, name) {
     try {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
       const hashedOtp = await bcrypt.hash(otp, 10);
@@ -65,11 +64,11 @@ export class Services {
         config.appwriteDatabaseID,
         config.appwriteOtpCollectionID,
         ID.unique(),
-        { email, otp: hashedOtp, expiresAt }
+        { email, otp: hashedOtp, expiresAt, name }
       );
 
       // Call function to send email
-      const response = await this.funcExecution(email, otp); // 👈 both must be passed
+      const response = await this.funcExecution(email, otp, name); // 👈 both must be passed
 
       if (response) {
         return true;

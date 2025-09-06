@@ -62,7 +62,7 @@ const SignupForm = () => {
       }
 
       setLoading(true);
-      const sendOtp = await api.sendOtp(email);
+      const sendOtp = await api.sendOtp(email, name);
       if(sendOtp) {
         toast.success("Otp Sent!")
         return;
