@@ -7,9 +7,9 @@ import {
   Avatars,
   Storage,
   Functions,
-} from "appwrite";
-import config from "./config.js";
-import bcrypt from "bcryptjs";
+} from 'appwrite';
+import config from './config.js';
+import bcrypt from 'bcryptjs';
 
 export class Services {
   client = new Client();
@@ -32,19 +32,18 @@ export class Services {
   }
 
   // Call Appwrite Function to send email
- async funcExecution(email, otp) {
-  try {
-    const execution = await this.functions.createExecution(
-      "68bc6ea9002eb52b00f0",
-      JSON.stringify({ email, otp }) // 👈 must be stringified
-    );
-    console.log("Execution response:", execution);
-    return execution;
-  } catch (error) {
-    console.log("Error in function execution", error);
+  async funcExecution(email, otp) {
+    try {
+      const execution = await this.functions.createExecution(
+        '68bc6ea9002eb52b00f0',
+        JSON.stringify({ email, otp })
+      );
+      console.log('Execution response:', execution);
+      return execution;
+    } catch (error) {
+      console.log('Error in function execution', error);
+    }
   }
-}
-
 
   // Generate & store OTP
   async sendOtp(email) {
@@ -62,15 +61,15 @@ export class Services {
       );
 
       // Call function to send email
-      const response = await this.funcExecution(email, otp);
+      const response = await this.funcExecution(email, otp); // 👈 both must be passed
 
       if (response) {
         return true;
       }
-      console.log("Error here!")
+      console.log('Error here!');
       return false;
     } catch (error) {
-      console.log("Error sending OTP: ", error);
+      console.log('Error sending OTP: ', error);
       return false;
     }
   }
@@ -99,7 +98,7 @@ export class Services {
 
       return newUser;
     } catch (error) {
-      console.log("Account creation failed: ", error);
+      console.log('Account creation failed: ', error);
       return null;
     }
   }
@@ -113,7 +112,7 @@ export class Services {
         ID.unique(),
         {
           userId: userId,
-          username: username.replace(/\s+/g, ""),
+          username: username.replace(/\s+/g, ''),
           name,
           email,
           phoneNumber,
@@ -121,10 +120,10 @@ export class Services {
         }
       );
 
-      console.log("Added to DB successfully!");
+      console.log('Added to DB successfully!');
       return response;
     } catch (error) {
-      console.error("Error :: adding user: !", JSON.stringify(error, null, 2));
+      console.error('Error :: adding user: !', JSON.stringify(error, null, 2));
       return null;
     }
   }
@@ -135,7 +134,7 @@ export class Services {
       const response = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteUsersCollectionID,
-        [Query.equal("username", username)]
+        [Query.equal('username', username)]
       );
 
       if (response.documents.length === 0) {
@@ -143,7 +142,7 @@ export class Services {
       }
       return true;
     } catch (error) {
-      console.log("Error in checkUsername function: ", error);
+      console.log('Error in checkUsername function: ', error);
     }
   }
 
@@ -152,7 +151,7 @@ export class Services {
     try {
       return await this.account.createEmailPasswordSession(email, password);
     } catch (error) {
-      console.log("Error :: Logging In", error);
+      console.log('Error :: Logging In', error);
     }
   }
 
@@ -160,21 +159,21 @@ export class Services {
   async loginWithGoogle() {
     try {
       this.account.createOAuth2Session(
-        "google",
-        "https://snapgram-private.vercel.app/Home",
-        "https://snapgram-private.vercel.app/sign-in"
+        'google',
+        'https://snapgram-private.vercel.app/Home',
+        'https://snapgram-private.vercel.app/sign-in'
       );
     } catch (error) {
-      console.error("Error :: Google Login:", error);
+      console.error('Error :: Google Login:', error);
     }
   }
 
   //===========LOGOUTS THE USER===============
   async logout() {
     try {
-      return await this.account.deleteSessions("current");
+      return await this.account.deleteSessions('current');
     } catch (error) {
-      console.log("Error :: logout", error);
+      console.log('Error :: logout', error);
     }
   }
 
@@ -198,14 +197,14 @@ export class Services {
       const currentUser = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteUsersCollectionID,
-        [Query.equal("userId", currentAccount.$id)]
+        [Query.equal('userId', currentAccount.$id)]
       );
 
       if (!currentUser || currentUser.documents.length === 0) return null;
 
       return currentUser.documents[0];
     } catch (error) {
-      console.error("Error fetching current user:", error);
+      console.error('Error fetching current user:', error);
       return null;
     }
   }
@@ -216,13 +215,13 @@ export class Services {
       const usernameResults = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteUsersCollectionID,
-        [Query.startsWith("username", value)]
+        [Query.startsWith('username', value)]
       );
 
       const nameResults = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteUsersCollectionID,
-        [Query.startsWith("name", value)]
+        [Query.startsWith('name', value)]
       );
 
       const merged = [
@@ -234,7 +233,7 @@ export class Services {
 
       return { documents: merged };
     } catch (error) {
-      console.log("Error searching users by username:", error);
+      console.log('Error searching users by username:', error);
       return { documents: [] }; // Return an empty array if there's an error
     }
   }
@@ -252,7 +251,7 @@ export class Services {
 
       return response;
     } catch (error) {
-      console.log("Error updating password::", error);
+      console.log('Error updating password::', error);
     }
   }
 
@@ -265,16 +264,16 @@ export class Services {
       const response = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteUsersCollectionID,
-        [Query.equal("userId", userId)]
+        [Query.equal('userId', userId)]
       );
 
       if (response.documents.length === 0) {
-        throw new Error("No matching user document found.");
+        throw new Error('No matching user document found.');
       }
 
       return response.documents[0].$id;
     } catch (error) {
-      console.error("Error fetching user document ID:", error);
+      console.error('Error fetching user document ID:', error);
       return null;
     }
   }
@@ -294,7 +293,7 @@ export class Services {
       );
       return response;
     } catch (error) {
-      console.log("Error updating document: ", error);
+      console.log('Error updating document: ', error);
     }
   }
 
@@ -306,7 +305,7 @@ export class Services {
       const posts = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwritePostsCollectionID,
-        [Query.equal("userId", currentUser.$id)]
+        [Query.equal('userId', currentUser.$id)]
       );
 
       for (const post of posts.documents) {
@@ -320,7 +319,7 @@ export class Services {
         );
       }
     } catch (error) {
-      console.log("Error while updating username", error);
+      console.log('Error while updating username', error);
     }
   }
 
@@ -337,7 +336,7 @@ export class Services {
       );
       return response;
     } catch (error) {
-      console.log("Error updating post Count: ", error);
+      console.log('Error updating post Count: ', error);
     }
   }
 
@@ -350,16 +349,16 @@ export class Services {
       const response = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwritePostsCollectionID,
-        [Query.equal("userId", userId), Query.orderDesc("$createdAt")]
+        [Query.equal('userId', userId), Query.orderDesc('$createdAt')]
       );
 
       if (response.documents.length === 0) {
-        console.log("No matching user posts found.");
+        console.log('No matching user posts found.');
       }
 
       return response.documents || [];
     } catch (error) {
-      console.log("Error while getting document", error);
+      console.log('Error while getting document', error);
       return [];
     }
   }
@@ -370,16 +369,16 @@ export class Services {
       const response = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwritePostsCollectionID,
-        [Query.orderDesc("$createdAt")]
+        [Query.orderDesc('$createdAt')]
       );
 
       if (response.documents.length === 0) {
-        throw new Error("No matching posts found.");
+        throw new Error('No matching posts found.');
       }
 
       return response.documents || [];
     } catch (error) {
-      console.log("Error while getting document", error);
+      console.log('Error while getting document', error);
       return [];
     }
   }
@@ -389,7 +388,7 @@ export class Services {
       const response = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteUsersCollectionID,
-        [Query.equal("userId", userId)]
+        [Query.equal('userId', userId)]
       );
 
       if (response.documents.length > 0) {
@@ -398,7 +397,7 @@ export class Services {
         return null;
       }
     } catch (error) {
-      console.error("Error fetching user by ID:", error);
+      console.error('Error fetching user by ID:', error);
       return null;
     }
   }
@@ -433,7 +432,7 @@ export class Services {
       );
       return newPost;
     } catch (error) {
-      console.log("Error in createPost function! ", error);
+      console.log('Error in createPost function! ', error);
     }
   }
 
@@ -447,7 +446,7 @@ export class Services {
       );
       return newPost;
     } catch (error) {
-      console.log("Error in createPost function! ", error);
+      console.log('Error in createPost function! ', error);
     }
   }
 
@@ -465,7 +464,7 @@ export class Services {
       );
       return response;
     } catch (error) {
-      console.log("Error editpost: ", error);
+      console.log('Error editpost: ', error);
     }
   }
 
@@ -478,7 +477,7 @@ export class Services {
         file
       );
     } catch (error) {
-      console.error("Error:: uploading file:", error);
+      console.error('Error:: uploading file:', error);
     }
   }
 
@@ -486,7 +485,7 @@ export class Services {
   async updateAvatar({ documentId, fileUrl }) {
     try {
       if (!documentId || !fileUrl) {
-        console.error("Missing documentId or avatarURL", {
+        console.error('Missing documentId or avatarURL', {
           documentId,
           fileUrl,
         });
@@ -504,7 +503,7 @@ export class Services {
 
       return response;
     } catch (error) {
-      console.error("Appwrite updateAvatar error:", error);
+      console.error('Appwrite updateAvatar error:', error);
       return null;
     }
   }
@@ -517,7 +516,7 @@ export class Services {
       const posts = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwritePostsCollectionID,
-        [Query.equal("userId", currentUser.$id)]
+        [Query.equal('userId', currentUser.$id)]
       );
 
       for (const post of posts.documents) {
@@ -531,7 +530,7 @@ export class Services {
         );
       }
     } catch (error) {
-      console.log("Error updating avatar in Posts collection", error);
+      console.log('Error updating avatar in Posts collection', error);
     }
   }
 
@@ -543,7 +542,7 @@ export class Services {
       const stories = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteStoryCollectionID,
-        [Query.equal("userId", currentUser.$id)]
+        [Query.equal('userId', currentUser.$id)]
       );
 
       for (const story of stories.documents) {
@@ -557,7 +556,7 @@ export class Services {
         );
       }
     } catch (error) {
-      console.log("Error updating avatar in Posts collection", error);
+      console.log('Error updating avatar in Posts collection', error);
     }
   }
 
@@ -570,7 +569,7 @@ export class Services {
         file
       );
     } catch (error) {
-      console.error("Error:: uploading file:", error);
+      console.error('Error:: uploading file:', error);
     }
   }
 
@@ -579,7 +578,7 @@ export class Services {
     try {
       return this.storage.getFileView(config.appwriteBucketID, fileId);
     } catch (error) {
-      console.log("Error previewing", error);
+      console.log('Error previewing', error);
       return null;
     }
   }
@@ -587,11 +586,11 @@ export class Services {
   //===========DELETE THE FILE FROM BUCKET===============
   async deleteFile(fileId) {
     try {
-      if (!fileId) throw new Error("deleteFile: fileId is missing/undefined");
+      if (!fileId) throw new Error('deleteFile: fileId is missing/undefined');
       await this.storage.deleteFile(config.appwriteBucketID, fileId);
       return true;
     } catch (err) {
-      console.error("Error:: deleting file:", err);
+      console.error('Error:: deleting file:', err);
       return false; // return a boolean so callers can handle UI state
     }
   }
@@ -602,10 +601,10 @@ export class Services {
       return await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwritePostsCollectionID,
-        [Query.equal("userId", userId), Query.orderDesc("$createdAt")]
+        [Query.equal('userId', userId), Query.orderDesc('$createdAt')]
       );
     } catch (error) {
-      console.error("Error fetching posts by user ID:", error);
+      console.error('Error fetching posts by user ID:', error);
       return [];
     }
   }
@@ -616,11 +615,11 @@ export class Services {
       return await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteUsersCollectionID,
-        [Query.equal("username", username)]
+        [Query.equal('username', username)]
       );
       0;
     } catch (error) {
-      console.error("Error fetching user profile by username:", error);
+      console.error('Error fetching user profile by username:', error);
       return null;
     }
   }
@@ -645,7 +644,7 @@ export class Services {
       );
       return response;
     } catch (error) {
-      console.log("Error adding Story: ", error);
+      console.log('Error adding Story: ', error);
     }
   }
 
@@ -659,7 +658,7 @@ export class Services {
       );
       return response;
     } catch (error) {
-      console.log("Error deleting story: ", error);
+      console.log('Error deleting story: ', error);
     }
   }
 
@@ -674,15 +673,15 @@ export class Services {
         config.appwriteDatabaseID,
         config.appwriteStoryCollectionID,
         [
-          Query.greaterThan("$createdAt", since),
-          Query.orderAsc("$createdAt"),
-          Query.notEqual("userId", userId),
+          Query.greaterThan('$createdAt', since),
+          Query.orderAsc('$createdAt'),
+          Query.notEqual('userId', userId),
         ]
       );
 
       return response?.documents ?? [];
     } catch (error) {
-      console.log("Error fetching story: ", error);
+      console.log('Error fetching story: ', error);
       return [];
     }
   }
@@ -696,12 +695,12 @@ export class Services {
       const response = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteStoryCollectionID,
-        [Query.equal("userId", userId), Query.orderAsc("$createdAt")]
+        [Query.equal('userId', userId), Query.orderAsc('$createdAt')]
       );
 
       return response;
     } catch (error) {
-      console.log("Error fetching my story: ", error);
+      console.log('Error fetching my story: ', error);
       return null;
     }
   }
@@ -721,7 +720,7 @@ export class Services {
       );
       return response;
     } catch (error) {
-      console.log("Error sending message", error);
+      console.log('Error sending message', error);
       return null;
     }
   }
@@ -741,7 +740,7 @@ export class Services {
       );
       return response;
     } catch (error) {
-      console.log("Error reporting bug:", error);
+      console.log('Error reporting bug:', error);
       return null;
     }
   }
@@ -761,7 +760,7 @@ export class Services {
       );
       return response;
     } catch (error) {
-      console.log("Error requesting feature:", error);
+      console.log('Error requesting feature:', error);
       return null;
     }
   }
