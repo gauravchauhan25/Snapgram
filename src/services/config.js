@@ -5,6 +5,7 @@ const config = {
     appwriteUsersCollectionID: String(import.meta.env.VITE_REACT_APP_APPWRITE_USERS_COLLECTION_ID),
     appwritePostsCollectionID: String(import.meta.env.VITE_REACT_APP_APPWRITE_POSTS_COLLECTION_ID),
     appwriteStoryCollectionID: String(import.meta.env.VITE_REACT_APP_APPWRITE_STORIES_COLLECTION_ID),
+    appwriteOtpCollectionID: String(import.meta.env.VITE_REACT_APP_APPWRITE_OTPS_COLLECTION_ID),
     appwriteBucketID: String(import.meta.env.VITE_REACT_APP_APPWRITE_BUCKET_ID),
 
     appwriteContactsCollectionID: String(import.meta.env.VITE_REACT_APP_APPWRITE_CONTACT_SUPPORT_COLLECTION_ID),

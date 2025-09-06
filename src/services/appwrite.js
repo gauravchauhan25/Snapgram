@@ -6,8 +6,10 @@ import {
   Query,
   Avatars,
   Storage,
+  Functions,
 } from "appwrite";
 import config from "./config.js";
+import bcrypt from "bcryptjs";
 
 export class Services {
   client = new Client();
@@ -15,6 +17,7 @@ export class Services {
   databases;
   storage;
   avatars;
+  functions;
 
   constructor() {
     this.client
@@ -25,6 +28,49 @@ export class Services {
     this.databases = new Databases(this.client);
     this.storage = new Storage(this.client);
     this.avatars = new Avatars(this.client);
+    this.functions = new Functions(this.client);
+  }
+
+  // Call Appwrite Function to send email
+  async funcExecution(email, otp) {
+    try {
+      const execution = await this.functions.createExecution(
+        "68bc2cb7002e67921608", // your function ID
+        JSON.stringify({ email, otp })
+      );
+      return execution;
+    } catch (error) {
+      console.log("Error in function execution", error)
+    }
+  }
+
+  // Generate & store OTP
+  async sendOtp(email) {
+    try {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const hashedOtp = await bcrypt.hash(otp, 10);
+
+      const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+
+      await this.databases.createDocument(
+        config.appwriteDatabaseID,
+        config.appwriteOtpCollectionID,
+        ID.unique(),
+        { email, otp: hashedOtp, expiresAt }
+      );
+
+      // Call function to send email
+      const response = await this.funcExecution(email, otp);
+
+      if(response) {
+        return true;
+      }
+      console.log("Error here!")
+      return false;
+    } catch (error) {
+      console.log("Error sending OTP: ", error);
+      return false;
+    }
   }
 
   //================CREATES A ACCOUNT FOR USER=================
@@ -135,7 +181,8 @@ export class Services {
     try {
       return await this.account.get();
     } catch (error) {
-      console.error("Error fetching account:", error);
+      // console.error("Error fetching account:", error);
+      return null;
     }
     return null;
   }
@@ -637,7 +684,7 @@ export class Services {
       return [];
     }
   }
-  
+
   //===========FETCH ALL THE DOCUMENTS OR STORIES FROM DB FOR THE LOGGED IN USERS ONLY==============
   async checkMyStory() {
     try {
@@ -649,7 +696,7 @@ export class Services {
         config.appwriteStoryCollectionID,
         [Query.equal("userId", userId), Query.orderAsc("$createdAt")]
       );
-      
+
       return response;
     } catch (error) {
       console.log("Error fetching my story: ", error);

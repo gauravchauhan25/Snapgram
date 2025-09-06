@@ -62,6 +62,15 @@ const SignupForm = () => {
       }
 
       setLoading(true);
+      const sendOtp = await api.sendOtp(email);
+      if(sendOtp) {
+        toast.success("Otp Sent!")
+        return;
+      } else {
+        toast.error("OTP failed");
+        return;
+      }
+
       const newUser = await api.createAccount({
         email,
         password,
@@ -84,8 +93,6 @@ const SignupForm = () => {
 
   return (
     <>
-      <Toaster />
-
       <div className="fade-in">
         <div className="signup-main">
           <div className="signup-container">
