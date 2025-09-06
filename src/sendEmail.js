@@ -7,13 +7,13 @@ export default async function(req, res) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: import.meta.env.EMAIL_USER,
-        pass: import.meta.env.EMAIL_PASS,
+        user: process.env.env.EMAIL_USER,
+        pass: process.env.env.EMAIL_PASS,
       },
     });
 
     await transporter.sendMail({
-      from: import.meta.env.EMAIL_USER,
+      from: process.env.env.EMAIL_USER,
       to: email,
       subject: "Your OTP Code",
       text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
