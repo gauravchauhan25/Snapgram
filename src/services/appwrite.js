@@ -170,6 +170,23 @@ export class Services {
     }
   }
 
+  async checkEmail(email) {
+    try {
+      const response = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
+        [Query.equal('email', email)]
+      );
+
+      if (response.documents.length === 0) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.log('Error in checkUsername function: ', error);
+    }
+  }
+
   //==================LOGIN FOR USER=====================
   async login({ email, password }) {
     try {

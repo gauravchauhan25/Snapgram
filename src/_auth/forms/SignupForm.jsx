@@ -51,6 +51,10 @@ const SignupForm = () => {
     }
 
     try {
+      
+      const emailExists = await api.checkEmail(email);
+      if (emailExists) return toast.error('A user with same email already exists!');
+      
       const userNameExists = await api.checkUsername(username);
       if (userNameExists) return toast.error('Username already exists!');
       

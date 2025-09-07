@@ -32,7 +32,7 @@ export default async function (context) {
 
     <!-- Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-      <img src="https://cdn-icons-png.flaticon.com/128/185/185985.png" alt="Snapgram Logo" style="width:50px; height:50px; object-fit: cover;" />
+      <img src="https://cdn-icons-png.flaticon.com/128/185/185985.png" alt="logo" style="width:50px; height:50px; object-fit: cover;" />
       <p style="margin: 0; font-weight: bold; font-size: 16px;">${name}</p>
     </div>
 

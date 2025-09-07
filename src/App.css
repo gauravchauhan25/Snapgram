@@ -35,6 +35,8 @@
   height: 2.7rem;
   aspect-ratio: 1/1;
   border-radius: 50%;
+  align-self: start;
+  object-fit: cover;
   overflow: hidden;
   cursor: pointer;
 }
@@ -313,6 +315,11 @@ main .container .left {
   object-fit: cover;
 }
 
+.middle .story .profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  
+}
 
 /* Rotating gradient border */
 .has-story::before {
