@@ -1,51 +1,47 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import bgImage from "./social-media-bg.webp";
-import "./signup.css";
-import api from "../../services/appwrite";
-import { useAuthContext } from "../../context/AuthContext";
-import toast, { Toaster } from "react-hot-toast";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import bgImage from './social-media-bg.webp';
+import './signup.css';
+import api from '../../services/appwrite';
+import toast, { Toaster } from 'react-hot-toast';
 
 const SignupForm = () => {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState('');
+
   const navigate = useNavigate();
-  // const { checkAuthUser } = useAuthContext();
 
   useEffect(() => {
-    document.title = "Sign Up - Snapgram";
+    document.title = 'Sign Up - Snapgram';
   }, []);
 
   const validateInputs = ({ username, password, phoneNumber }) => {
     if (!username) {
-      return "Username is required!";
+      return 'Username is required!';
     }
-
     if (/\s/.test(username)) {
-      return "Username cannot contain spaces!";
+      return 'Username cannot contain spaces!';
     }
-
     if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-      return "Username should contain only a-z, 0-9 and underscores!";
+      return 'Username should contain only a-z, 0-9 and underscores!';
     }
-
     if (password.length < 8) {
-      return "Password must be at least 8 characters!";
+      return 'Password must be at least 8 characters!';
     }
-
     if (!/^\d{10}$/.test(phoneNumber)) {
-      return "Invalid Phone Number!";
+      return 'Invalid Phone Number!';
     }
-
     return null;
   };
 
-  const handleSignIn = async (e) => {
+  const handleSignUpSubmit = async (e) => {
     e.preventDefault();
 
     const errorMsg = validateInputs({ username, password, phoneNumber });
@@ -56,36 +52,53 @@ const SignupForm = () => {
 
     try {
       const userNameExists = await api.checkUsername(username);
-      if (userNameExists) {
-        toast.error("Username already exists! Try with a new one.");
-        return;
-      }
-
+      if (userNameExists) return toast.error('Username already exists!');
+      
       setLoading(true);
-      const sendOtp = await api.sendOtp(email, name);
-      if(sendOtp) {
-        toast.success("Otp Sent!")
-        return;
+      const sent = await api.sendOtp(email, name);
+
+      if (sent) {
+        toast.success('OTP sent to your email!');
+        setOtpSent(true);
       } else {
-        toast.error("OTP failed");
-        return;
+        toast.error('Failed to send OTP.');
       }
+    } catch (err) {
+      toast.error('Something went wrong!');
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      const newUser = await api.createAccount({
-        email,
-        password,
-        name,
-        username,
-        phoneNumber,
-      });
+  const handleVerifyOtp = async () => {
+    if (otp.length !== 6) return toast.error('Please enter a 6-digit OTP');
 
-      if (newUser) {
-        toast.success("Account created!");
-        navigate("/sign-in");
+    setLoading(true);
+    try {
+      const isValid = await api.verifyOtp(email, otp);
+
+      if (isValid) {
+        const newUser = await api.createAccount({
+          email,
+          password,
+          name,
+          username,
+          phoneNumber,
+        });
+
+        if(newUser) {
+          toast.success('Account created!');
+          navigate('/sign-in');
+          return;
+        }
+        toast.error("Error Creating Account!");        
+      } else {
+        toast.error('Incorrect OTP!');
       }
-    } catch (error) {
-      toast.error("Error creating account!");
-      console.log(error);
+    } catch (err) {
+      toast.error('Error verifying OTP');
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -93,6 +106,7 @@ const SignupForm = () => {
 
   return (
     <>
+    <Toaster />
       <div className="fade-in">
         <div className="signup-main">
           <div className="signup-container">
@@ -108,8 +122,10 @@ const SignupForm = () => {
             <h4>Create a new Account</h4>
             <p>To use Snapgram, please enter your details!</p>
 
-            <form onSubmit={handleSignIn}>
-              <label htmlFor="name" className="block text-sm mb-1">Name</label>
+            <form onSubmit={handleSignUpSubmit}>
+              <label htmlFor="name" className="block text-sm mb-1">
+                Name
+              </label>
               <input
                 type="text"
                 name="name"
@@ -120,7 +136,9 @@ const SignupForm = () => {
                 required
               />
 
-              <label htmlFor="email" className="block text-sm mb-1 mt-5">Email</label>
+              <label htmlFor="email" className="block text-sm mb-1 mt-5">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -131,7 +149,9 @@ const SignupForm = () => {
                 required
               />
 
-              <label htmlFor="phoneNumber" className="block text-sm mb-1 mt-5">Phone Number</label>
+              <label htmlFor="phoneNumber" className="block text-sm mb-1 mt-5">
+                Phone Number
+              </label>
               <input
                 type="number"
                 name="phoneNumber"
@@ -142,7 +162,9 @@ const SignupForm = () => {
                 required
               />
 
-              <label htmlFor="username" className="block text-sm mb-1 mt-5">Create Username</label>
+              <label htmlFor="username" className="block text-sm mb-1 mt-5">
+                Create Username
+              </label>
               <input
                 type="text"
                 name="username"
@@ -153,7 +175,9 @@ const SignupForm = () => {
                 required
               />
 
-              <label htmlFor="password" className="block text-sm mb-1 mt-5">Password</label>
+              <label htmlFor="password" className="block text-sm mb-1 mt-5">
+                Password
+              </label>
               <input
                 type="password"
                 name="password"
@@ -163,13 +187,12 @@ const SignupForm = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-
               <button type="submit" className="btn-signup" disabled={loading}>
-                {loading ? "Creating..." : "Create Account"}
+                {loading ? 'Sending...' : 'Send OTP'}
               </button>
 
               <p>
-                Already have an account?{" "}
+                Already have an account?{' '}
                 <Link to="/sign-in" className="login-badge">
                   Log In
                 </Link>
@@ -181,6 +204,45 @@ const SignupForm = () => {
           </div>
         </div>
       </div>
+
+      {/* OTP Modal */}
+      {otpSent && (
+        <div className="otp-modal-overlay">
+          <div className="otp-modal">
+            <h3 className="text-[1.1rem]">Enter OTP</h3>
+            <p className="text-[0.9rem]">
+              We sent a 6-digit OTP to your email: <strong>{email}</strong>
+            </p>
+
+            <input
+              type="text"
+              maxLength={6}
+              value={otp}
+              className="w-full px-1 py-1 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-[#4a1f84]"
+              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+              placeholder="Enter OTP"
+              required
+            />
+
+            <div className="flex justify-center items-center">
+              <button
+                onClick={handleVerifyOtp}
+                disabled={loading}
+                className="px-3 py-2 bg-[#3b1072] hover:bg-[#461f79] transition duration-300 rounded-lg cursor-pointer"
+              >
+                {loading ? 'Verifying...' : 'Verify OTP'}
+              </button>
+
+              <button
+                onClick={() => setOtpSent(false)}
+                className="px-3 py-2 bg-red-800 hover:bg-red-900 transition duration-300 rounded-lg cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

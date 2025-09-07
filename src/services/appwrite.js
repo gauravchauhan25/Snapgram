@@ -47,6 +47,7 @@ export class Services {
       return execution;
     } catch (error) {
       console.log('Error in function execution', error);
+      return false;
     }
   }
 
@@ -54,7 +55,6 @@ export class Services {
   async sendOtp(email, name) {
     try {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      const hashedOtp = await bcrypt.hash(otp, 10);
 
       const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
 
@@ -62,15 +62,15 @@ export class Services {
         config.appwriteDatabaseID,
         config.appwriteOtpCollectionID,
         ID.unique(),
-        { email, otp: hashedOtp, expiresAt, name }
+        { email, otp, expiresAt, name }
       );
 
       // Call function to send email
-      const response = await this.funcExecution(email, otp, name); // 👈 both must be passed
+      const response = await this.funcExecution(email, otp, name);
 
       if (response) {
         return true;
-      }
+      } 
       return false;
     } catch (error) {
       console.log('Error sending OTP: ', error);
@@ -78,6 +78,26 @@ export class Services {
     }
   }
 
+  //Verifies the OTP from the DB
+  async verifyOtp(email, otp) {
+    try {
+      const verify = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteOtpCollectionID,
+        [Query.equal("email", email), Query.equal("otp", otp), Query.orderDesc("$createdAt")]
+      );
+
+      if(verify.documents.length == 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (error) {
+      console.log("Error verifying!", error);
+      return false;
+    }
+
+  }
   //================CREATES A ACCOUNT FOR USER=================
   async createAccount({ email, password, name, username, phoneNumber }) {
     try {
