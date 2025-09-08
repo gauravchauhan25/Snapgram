@@ -40,7 +40,7 @@ export default function RequestFeature() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-3">
+    <div className="min-h-screen bg-neutral-950 text-[#fff] flex items-center justify-center p-3">
       <div className="max-w-2xl w-full bg-neutral-900 rounded-2xl shadow-xl px-3 py-5">
         <h1 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3">
           <Lightbulb className="text-yellow-400" size={28} />

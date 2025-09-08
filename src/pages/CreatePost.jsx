@@ -1,59 +1,60 @@
-import { useEffect, useMemo, useState } from "react";
-import "../page-styles/CreatePost.css";
-import api from "../services/appwrite";
-import { useProfileContext } from "../context/ProfileContext";
-import { createIcon } from "../assets/categories";
-import toast from "react-hot-toast";
+import { useEffect, useMemo, useState } from 'react';
+import '../page-styles/CreatePost.css';
+import api from '../services/appwrite';
+import { useProfileContext } from '../context/ProfileContext';
+import { createIcon } from '../assets/categories';
+import toast from 'react-hot-toast';
 
 const CreatePost = () => {
-  const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
-  const [caption, setCaption] = useState("");
+  const [title, setTitle] = useState('');
+  const [location, setLocation] = useState('');
+  const [caption, setCaption] = useState('');
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
 
   const { setUserProfile, setUserPosts } = useProfileContext();
-  const isVideo = !!file && file.type?.startsWith("video");
-  const isImage = !!file && file.type?.startsWith("image");
+
+  const isVideo = !!file && file.type?.startsWith('video');
+  const isImage = !!file && file.type?.startsWith('image');
 
   useEffect(() => {
-    document.title = "Create Post";
+    document.title = 'Create Post';
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (location.length > 30) {
-      toast.error("Location must be less than 30 characters.");
+      toast.error('Location must be less than 30 characters.');
       return;
     }
-
     if (!file) {
-      toast.error("Please select an image to upload.");
+      toast.error('Please select an image or video.');
       return;
     }
-    const mimeType = file?.type;
 
     try {
       setLoading(true);
 
-      const currentUser = await api.getCurrentUser();
-      const uploadedFile = await api.uploadFile(file);
+      const [currentUser, uploadedFile] = await Promise.all([
+        api.getCurrentUser(),
+        api.uploadFile(file),
+      ]);
 
-      if (uploadedFile) {
-        console.log("File uploaded successfully", uploadedFile);
-      } else {
-        toast.error("File Not Supported!");
+      if (!uploadedFile?.$id) {
+        toast.error('File upload failed!');
         return;
       }
 
       const fileUrl = await api.getFilePreview(uploadedFile.$id);
+      const {
+        userId,
+        username = 'Anonymous',
+        avatarUrl = '',
+        posts = 0,
+      } = currentUser;
 
-      const userId = currentUser.userId;
-      const username = currentUser.username || "Anonymous";
-      const avatarUrl = currentUser.avatarUrl || "";
-
-      const response = await api.createPost({
+      const newPost = await api.createPost({
         userId,
         location,
         caption,
@@ -61,58 +62,55 @@ const CreatePost = () => {
         username,
         avatarUrl,
         fileId: uploadedFile.$id,
-        mimeType,
+        mimeType: file.type,
       });
 
-      if (response) {
-        const documentId = await api.getCurrentUserDocumentId();
-
-        await api.updatePostCount({
-          documentId,
-          post: (currentUser.posts || 0) + 1,
-        });
-
-        setUserProfile((prev) => ({
-          ...prev,
-          posts: (prev.posts || 0) + 1,
-        }));
-
-        toast.success("Post Uploaded!");
-        setTitle("");
-        setCaption("");
-        setLocation("");
-        setFile(null);
-        document.getElementById("fileInput").value = "";
-
-        setUserPosts((prev) => [response, ...prev]);
-      } else {
-        console.log("Error :: creating post");
+      if (!newPost) {
+        toast.error('Post creation failed.');
+        return;
       }
+
+      await api.updatePostCount({
+        documentId: await api.getCurrentUserDocumentId(),
+        post: posts + 1,
+      });
+
+      // updating local state
+      setUserProfile((prev) => ({ ...prev, posts: (prev.posts || 0) + 1 }));
+      setUserPosts((prev) => [newPost, ...prev]);
+
+      toast.success('Post uploaded!');
+      setTitle('');
+      setCaption('');
+      setLocation('');
+      setFile(null);
+
+      document.getElementById('fileInput').value = '';
     } catch (error) {
-      console.log("Error creating post:", error);
-      toast.error("Error creating post:", error);
+      console.error('Error creating post:', error);
+      toast.error('Something went wrong while posting.');
     } finally {
       setLoading(false);
     }
-  };
-  
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const droppedFile = e.dataTransfer.files?.[0];
-    if (droppedFile) setFile(droppedFile);
-  };
-
-  const handleDragOver = (e) => e.preventDefault();
-
-  const handleFileSelect = (e) => {
-    const f = e.target.files?.[0];
-    if (f) setFile(f);
   };
 
   const previewUrl = useMemo(
     () => (file ? URL.createObjectURL(file) : null),
     [file]
   );
+
+  const handleFileChange = (f) => f && setFile(f);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    handleFileChange(e.dataTransfer.files?.[0]);
+  };
+
+  const handleFileSelect = (e) => handleFileChange(e.target.files?.[0]);
 
   return (
     <>
@@ -176,7 +174,7 @@ const CreatePost = () => {
                     <span
                       className="choose-file"
                       onClick={() =>
-                        document.getElementById("fileInput").click()
+                        document.getElementById('fileInput').click()
                       }
                     >
                       or Choose your file
@@ -234,11 +232,11 @@ const CreatePost = () => {
             id="fileInput"
             accept="image/*,video/*"
             onChange={handleFileSelect}
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
           />
 
           <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? "Submitting..." : "Create Post"}
+            {loading ? 'Submitting...' : 'Create Post'}
           </button>
         </form>
       </div>

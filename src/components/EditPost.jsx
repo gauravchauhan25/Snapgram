@@ -1,14 +1,14 @@
-import { useState } from "react";
-import "../page-styles/CreatePost.css";
-import toast from "react-hot-toast";
-import api from "../services/appwrite";
-import { useProfileContext } from "../context/ProfileContext";
-import { deleteIcon, editIcon } from "../assets/categories";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import '../page-styles/CreatePost.css';
+import toast from 'react-hot-toast';
+import api from '../services/appwrite';
+import { useProfileContext } from '../context/ProfileContext';
+import { deleteIcon, editIcon } from '../assets/categories';
+import { useNavigate } from 'react-router-dom';
 
 const EditPost = ({ post, onClose, onSubmit }) => {
-  const [newLocation, setNewLocation] = useState(post?.location || "");
-  const [newCaption, setNewCaption] = useState(post?.caption || "");
+  const [newLocation, setNewLocation] = useState(post?.location || '');
+  const [newCaption, setNewCaption] = useState(post?.caption || '');
 
   const navigate = useNavigate();
 
@@ -16,60 +16,65 @@ const EditPost = ({ post, onClose, onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
-      const documentId = post.$id;
-      const editPost = await api.editPost(documentId, newLocation, newCaption);
+      const editPost = await api.editPost(post.$id, newLocation, newCaption);
 
-      if (editPost) {
-        setUserPosts((prevPosts) =>
-          prevPosts.map((post) => ({
-            ...post,
-            location: newLocation,
-            caption: newCaption,
-          }))
-        );
-        toast.success("Post Updated!");
-      } else {
-        toast.error("Error updating post!");
+      if (!editPost) {
+        toast.error('Error updating post!');
+        return;
       }
+
+      setUserPosts((prevPosts) =>
+        prevPosts.map((p) =>
+          p.$id === post.$id
+            ? { ...p, location: newLocation, caption: newCaption }
+            : p
+        )
+      );
+
+      toast.success('Post Updated!');
+      onClose?.();
     } catch (error) {
-      toast.error("Something went wrong!");
-      console.log("Error updating post: ", error);
+      console.error('Error updating post:', error);
+      toast.error('Something went wrong!');
     }
-    onClose();
   };
 
-  const deletePost = async (postsDocId) => {
+  const deletePost = async (postsDocId, fileId) => {
     try {
-      const currentUser = await api.getCurrentUser();
       const del = await api.deletePost(postsDocId);
-      const documentId = await api.getCurrentUserDocumentId();
 
-      if (del) {
-        await api.updatePostCount({
-          documentId,
-          post: (currentUser.posts || 0) - 1,
-        });
-
-        setUserProfile((prev) => ({
-          ...prev,
-          posts: (prev.posts || 0) - 1,
-        }));
-
-        setUserPosts((prevPosts) => prevPosts.filter((post) => post.id !== postsDocId));
-
-        toast.success("Post Deleted");
-        onClose?.();
-        navigate("/Profile")
-
-        await api.deleteFile(post.fileId);
-      } else {
-        toast.error("Error deleting Post!");
+      if (!del) {
+        toast.error('Error deleting Post!');
+        return;
       }
-      return;
+
+      setUserPosts((prev) => prev.filter((p) => p.$id !== postsDocId));
+      setUserProfile((prev) => ({
+        ...prev,
+        posts: Math.max((prev.posts || 1) - 1, 0),
+      }));
+
+      toast.success('Post Deleted');
+      onClose?.();
+      navigate('/Profile');
+
+      api
+        .deleteFile(fileId)
+        .catch((err) =>
+          console.error('Failed to delete file from storage:', err)
+        );
+
+      // Update DB post count
+      const documentId = await api.getCurrentUserDocumentId();
+      await api.updatePostCount({
+        documentId,
+        post: (await api.getCurrentUser()).posts - 1,
+      });
     } catch (error) {
-      console.log("Error",error);
+      console.error('Error deleting post:', error);
+      toast.error('Something went wrong!');
     }
   };
 

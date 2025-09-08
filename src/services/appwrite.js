@@ -34,11 +34,11 @@ export class Services {
   // Call Appwrite Function to send email
   async funcExecution(email, otp, name) {
     try {
-      const payload = JSON.stringify({ email, otp, name }); 
+      const payload = JSON.stringify({ email, otp, name });
 
       const execution = await this.functions.createExecution(
-        config.appwriteFunctionId, 
-        payload, 
+        config.appwriteFunctionId,
+        payload,
         false,
         '/',
         'POST'
@@ -70,7 +70,7 @@ export class Services {
 
       if (response) {
         return true;
-      } 
+      }
       return false;
     } catch (error) {
       console.log('Error sending OTP: ', error);
@@ -78,26 +78,51 @@ export class Services {
     }
   }
 
-  //Verifies the OTP from the DB
+  // VERIFIES THE OTP FROM THE DB
   async verifyOtp(email, otp) {
     try {
       const verify = await this.databases.listDocuments(
         config.appwriteDatabaseID,
         config.appwriteOtpCollectionID,
-        [Query.equal("email", email), Query.equal("otp", otp), Query.orderDesc("$createdAt")]
+        [
+          Query.equal('email', email),
+          Query.equal('otp', otp),
+          Query.orderDesc('$createdAt'),
+        ]
       );
 
-      if(verify.documents.length == 0) {
+      if (verify.documents.length == 0) {
         return false;
       } else {
         return true;
       }
     } catch (error) {
-      console.log("Error verifying!", error);
+      console.log('Error verifying!', error);
       return false;
     }
-
   }
+
+  // DELETES THE OTP AFTER EXPIRY
+  async deleteOtp() {
+    try {
+      const expiredOtps = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteOtpCollectionID,
+        [Query.lessThan('expiresAt', new Date().toISOString())]
+      );
+
+      for (const doc of expiredOtps.documents) {
+        await this.databases.deleteDocument(
+          config.appwriteDatabaseID,
+          config.appwriteOtpCollectionID,
+          doc.$id
+        );
+      }
+    } catch (error) {
+      console.log('Error deleting otp: ', error);
+    }
+  }
+
   //================CREATES A ACCOUNT FOR USER=================
   async createAccount({ email, password, name, username, phoneNumber }) {
     try {
@@ -509,18 +534,6 @@ export class Services {
     }
   }
 
-  //==========UPLOAD THE AVATARIMAGE TO THE STORAGE===========
-  async uploadImage(file) {
-    try {
-      return await this.storage.createFile(
-        config.appwriteBucketID,
-        ID.unique(),
-        file
-      );
-    } catch (error) {
-      console.error('Error:: uploading file:', error);
-    }
-  }
 
   //============UPDATE THE AVATAR URL IN THE USERS COLLECTION=================
   async updateAvatar({ documentId, fileUrl }) {
@@ -668,6 +681,8 @@ export class Services {
   //===========ADDS A NEW STORY TO DB===============
   async addStory(userId, name, username, avatarUrl, fileUrl, fileId, mimeType) {
     try {
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
       const response = await this.databases.createDocument(
         config.appwriteDatabaseID,
         config.appwriteStoryCollectionID,
@@ -681,6 +696,7 @@ export class Services {
           fileId,
           createdAt: new Date().toISOString(),
           mimeType,
+          expiresAt,
         }
       );
       return response;
@@ -700,6 +716,27 @@ export class Services {
       return response;
     } catch (error) {
       console.log('Error deleting story: ', error);
+    }
+  }
+
+  // DELETES THE STORIES AFTER 24 HRS AUTOMATICALLY
+  async deleteExpiredStories() {
+    try {
+      const expiredStories = await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteStoryCollectionID,
+        [Query.lessThan('expiresAt', new Date().toISOString())]
+      );
+
+      for (const doc of expiredStories.documents) {
+        await this.databases.deleteDocument(
+          config.appwriteDatabaseID,
+          config.appwriteStoryCollectionID,
+          doc.$id
+        );
+      }
+    } catch (error) {
+      console.log('Error deleting otp: ', error);
     }
   }
 

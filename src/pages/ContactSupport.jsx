@@ -41,8 +41,8 @@ export default function ContactSupport() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-3">
-      <div className="max-w-2xl w-full bg-neutral-900 rounded-2xl shadow-xl px-3 py-5">
+    <div className="min-h-screen bg-neutral-950 text-[#fff] flex items-center justify-center p-3">
+      <div className="max-w-2xl w-full bg-neutral-900 rounded-2xl shadow-xl px-4 py-5">
         <h1 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3">
           <MessageSquare className="text-blue-500" size={28} />
           Contact Support
@@ -104,7 +104,7 @@ export default function ContactSupport() {
         )}
 
         {/* Alternative Contact Options */}
-        <div className="mt-8 border-t border-neutral-700 pt-2 space-y-3">
+        <div className="mt-4 border-t border-neutral-700 pt-2 space-y-3">
           <p className="text-sm  text-center">Or reach us directly:</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 text-sm">
             <a

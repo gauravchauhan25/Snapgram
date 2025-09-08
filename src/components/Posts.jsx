@@ -144,7 +144,7 @@ const Post = ({ post, postId, onPostClick }) => {
          <div className="icons">
             <div className="flex items-center justify-center gap-3">
               <div
-                className="transition transform active:scale-80 hover:scale-110 cursor-pointer"
+                className="transition transform active:scale-70 hover:scale-120 cursor-pointer"
                 onClick={handleLike}
               >
                 {isLiked ? likedIcon.icon : likeIcon.icon}
@@ -157,7 +157,7 @@ const Post = ({ post, postId, onPostClick }) => {
               onClick={handleSave}
             >
               {saveCount}
-              <div className="transition transform active:scale-80 hover:scale-110 cursor-pointer">
+              <div className="transition transform active:scale-70 hover:scale-120 cursor-pointer">
                 {isSaved ? savedIcon.icon : saveIcon.icon}
               </div>
             </div>

@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { useProfileContext } from "../context/ProfileContext";
-import { useStoryContext } from "../context/StoryContext";
-import AddStory from "../pages/AddStory";
-import ViewStoryModal from "./ViewStoryModal";
-import { FaPlus } from "react-icons/fa6";
-import ViewMyStoryModal from "./ViewMyStoryModal";
-import api from "../services/appwrite";
+import { useEffect, useRef, useState } from 'react';
+import { useProfileContext } from '../context/ProfileContext';
+import { useStoryContext } from '../context/StoryContext';
+import AddStory from '../pages/AddStory';
+import ViewStoryModal from './ViewStoryModal';
+import { FaPlus } from 'react-icons/fa6';
+import ViewMyStoryModal from './ViewMyStoryModal';
+import api from '../services/appwrite';
 
 export default function Stories() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,10 +34,10 @@ export default function Stories() {
 
     updateButtonVisibility();
 
-    storyContainer.addEventListener("scroll", updateButtonVisibility);
+    storyContainer.addEventListener('scroll', updateButtonVisibility);
 
     return () => {
-      storyContainer.removeEventListener("scroll", updateButtonVisibility);
+      storyContainer.removeEventListener('scroll', updateButtonVisibility);
     };
   }, []);
 
@@ -70,26 +70,26 @@ export default function Stories() {
   const scrollLeft = () => {
     storyContainerRef.current.scrollBy({
       left: -200,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
   const scrollRight = () => {
     storyContainerRef.current.scrollBy({
       left: 200,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
   const defaultImage =
-    "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
+    'https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png';
 
   return (
     <>
       <div
         className="stories"
         ref={storyContainerRef}
-        style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+        style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}
       >
         {canScrollLeft && (
           <button
@@ -101,9 +101,8 @@ export default function Stories() {
           </button>
         )}
 
-        <div className="story transition-transform duration-500 ease-out active:scale-85 hover:scale-102"
-        >
-          <div className={`profile-photo ${isStory ? "has-story" : ""}`}>
+        <div className="story transition-transform duration-500 ease-out active:scale-85 hover:scale-102">
+          <div className={`profile-photo ${isStory ? 'has-story' : ''}`}>
             <img
               src={userProfile?.avatarUrl || defaultImage}
               alt="mystory"
@@ -114,7 +113,7 @@ export default function Stories() {
             />
             <button
               onClick={() => setIsStoryOpen(true)}
-              className="absolute bottom-3 right-3 bg-gradient-to-r from-[#4a1f84] to-[#4a1f84] 
+              className="absolute bottom-3 right-2 bg-gradient-to-r from-[#4a1f84] to-[#4a1f84] 
       w-6 h-6 flex items-center justify-center rounded-full text-[#fff] 
       border-2 border-white shadow-md hover:scale-110 transition cursor-pointer"
             >
@@ -135,10 +134,10 @@ export default function Stories() {
                 src={user?.avatarUrl || defaultImage}
                 loading="lazy"
                 onClick={() => {
-                  setActiveStory(user); // 👈 pass entire user object
+                  setActiveStory(user);
                   setIsModalOpen(true);
                 }}
-                alt={user?.name || "story"}
+                alt={user?.name || 'story'}
               />
             </div>
             <p className="story-name w-22 truncate">{user?.name}</p>
@@ -171,8 +170,8 @@ export default function Stories() {
       {isModalOpen && activeStory && (
         <ViewStoryModal
           isOpen={isModalOpen}
-          stories={activeStory.stories || []} //  pass array of stories
-          user={activeStory} //  pass user info (name, avatarUrl, etc.)
+          stories={activeStory.stories || []} // passing array of stories
+          user={activeStory}
           onClose={() => {
             setIsModalOpen(false);
             setActiveStory(null);

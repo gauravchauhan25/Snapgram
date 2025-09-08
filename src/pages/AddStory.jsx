@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeft,
   Circle,
@@ -9,11 +9,11 @@ import {
   MoreHorizontal,
   Send,
   Image as ImageIcon,
-} from "lucide-react";
-import api from "../services/appwrite";
-import toast, { Toaster } from "react-hot-toast";
-import { useProfileContext } from "../context/ProfileContext";
-import { useStoryContext } from "../context/StoryContext";
+} from 'lucide-react';
+import api from '../services/appwrite';
+import toast, { Toaster } from 'react-hot-toast';
+import { useProfileContext } from '../context/ProfileContext';
+import { useStoryContext } from '../context/StoryContext';
 
 export default function AddStory({ isOpen, onClose }) {
   const [file, setFile] = useState(null);
@@ -39,48 +39,53 @@ export default function AddStory({ isOpen, onClose }) {
     () => (file ? URL.createObjectURL(file) : null),
     [file]
   );
-  const isVideo = !!file && file.type?.startsWith("video");
-  const isImage = !!file && file.type?.startsWith("image");
+  const isVideo = !!file && file.type?.startsWith('video');
+  const isImage = !!file && file.type?.startsWith('image');
 
   // Upload story
   const handleStory = async (e) => {
     e.preventDefault?.();
 
-    if (!file) return toast.error("Please select a photo or video first.");
+    if (!file) return toast.error('Please select a photo or video first.');
 
     const mimeType = file?.type;
 
     try {
       setLoading(true);
+
       const uploadedFile = await api.uploadFile(file);
-      if (!uploadedFile) {
-        toast.error("Upload failed. Try a different file.");
+      if (!uploadedFile?.$id) {
+        toast.error('Upload failed. Try a different file.');
         return;
       }
 
       const fileUrl = await api.getFilePreview(uploadedFile.$id);
-      const add = await api.addStory(
+      const avatarUrl = userProfile?.avatarUrl || defaultImage;
+
+      const story = await api.addStory(
         userProfile?.userId,
         userProfile?.name,
         userProfile?.username,
-        userProfile?.avatarUrl || defaultImage,
+        avatarUrl,
         fileUrl,
         uploadedFile.$id,
         mimeType
       );
 
-      if (add) {
-        toast.success("Story posted");
-        setMyStory((prev) => (Array.isArray(prev) ? [...prev, add] : [add]));
-        setIsStory(true);
-      } else {
-        throw new Error("Error");
+      if (!story) {
+        toast.error('Something went wrong while posting!');
+        return;
       }
+
+      toast.success('Story posted');
+      setMyStory((prev) => [...(prev || []), story]); // ✅ safer, avoids unnecessary branching
+      setIsStory(true);
+
       setFile(null);
       onClose?.();
     } catch (error) {
-      console.error("Error handling story:", error);
-      toast.error("Something went wrong while posting!");
+      console.error('Error handling story:', error);
+      toast.error('Something went wrong while posting!');
     } finally {
       setLoading(false);
     }
@@ -89,7 +94,7 @@ export default function AddStory({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const defaultImage =
-    "https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png";
+    'https://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle-300x300.png';
 
   return (
     <>
@@ -261,12 +266,12 @@ function IconBubble({ children }) {
   );
 }
 
-function PillButton({ children, className = "" }) {
+function PillButton({ children, className = '' }) {
   return (
     <button
       type="button"
       className={
-        "inline-flex items-center rounded-3xl bg-[#fff]/10 p-1 text-sm hover:bg-[#fff]/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 " +
+        'inline-flex items-center rounded-3xl bg-[#fff]/10 p-1 text-sm hover:bg-[#fff]/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ' +
         className
       }
     >
