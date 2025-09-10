@@ -671,7 +671,19 @@ export class Services {
         config.appwriteUsersCollectionID,
         [Query.equal('username', username)]
       );
-      0;
+    } catch (error) {
+      console.error('Error fetching user profile by username:', error);
+      return null;
+    }
+  }
+
+  async fetchUserStoryByUsername(username) {
+    try {
+      return await this.databases.listDocuments(
+        config.appwriteDatabaseID,
+        config.appwriteUsersCollectionID,
+        [Query.equal("username", username)]
+      );
     } catch (error) {
       console.error('Error fetching user profile by username:', error);
       return null;
