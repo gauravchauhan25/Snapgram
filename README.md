@@ -4,7 +4,8 @@ A modern **Instagram-inspired** social media platform built with **React.js**, p
 
 ## 🚀 Features
 
-- 🔐 **Google OAuth Authentication** – Secure sign-in and sign-out powered by Appwrite’s integrated OAuth support.
+- 🔐 **Google OAuth Authentication & Email OTP Verification** – Secure sign-in and sign-out powered by Appwrite’s integrated OAuth support. 
+New users can also verify their email using a 6-digit OTP that expires automatically after 5 minutes to ensure secure account creation.
 
 - 👤 **User Profiles** - Each user has a profile displaying:
 
@@ -19,11 +20,15 @@ A modern **Instagram-inspired** social media platform built with **React.js**, p
 
 - 🔎 **Search** - A search feature to discover people and posts by tags or usernames.
 - 🎞️ **Reels** - A separate section to scroll short video-based content.
+- 📖 **Stories** - Users can upload stories that automatically expire after 24 hours, keeping content fresh and relevant.
 
 - 💬 **Social Media Functionality** – Users can interact, post, and engage.
 - 📱 **Fully Responsive UI** – Smooth experience on all devices.
 - ⚡ **Fast & Scalable** – Optimized for performance.
-- ⚙️ **Settings Panel** - Customize your profile, change name, username and change bio.
+- ⚙️ **Settings Panel** - Customize your profile, change name, username, bio, and access additional features like:
+   - 📬 Help Center – Access guides, FAQs, and support information for using Snapgram.
+   - 📖 About Page – Learn more about the developer, the project, and its features.
+
 - ⚡ **Optimized Performance** - Clean state management and API integration ensure fast rendering and smooth transitions.
 
 ## 🛠️ Tech Stack
@@ -36,11 +41,11 @@ A modern **Instagram-inspired** social media platform built with **React.js**, p
 
 ## ✅ Upcoming Features
 
-- 📬 - **Direct Messaging** (Planned) - A direct messaging system between users (under development).
-- 👥 - **Followers / Following System** (Planned) - Follow or unfollow users and see who follows you.
-- 🌐 - **Multi-language Support**
-- 🛡️ - **Improved Security & Rate Limiting**
+- 📬 **Direct Messaging** (Planned) - A direct messaging system between users (under development).
+- 👥 **Followers / Following System** (Planned) - Follow or unfollow users and see who follows you.
+- 🌐 **Multi-language Support**
+- 🛡️ **Improved Security & Rate Limiting**
 
 ## 🚧 Current Status
-
 - Snapgram is actively being developed. Contributions, feature ideas, and feedback are welcome! ⭐
+- For support, bug reports, or feature requests, visit the [Help Center](https://snapgram-private.vercel.app/help-center).
